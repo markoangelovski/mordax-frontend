@@ -2,8 +2,6 @@ import { useRouter } from "next/router";
 
 import useUser from "../../lib/hooks/useUser";
 
-import { User } from "../../lib/interfaces/interfaces";
-
 const User: React.FC = () => {
   const router = useRouter();
 
