@@ -17,6 +17,7 @@ const LocalesDropdown: React.FC = () => {
         shallow: true,
       });
     } else {
+      // @ts-ignore
       router.push(`?l=${locales?.result[0].url.value}`, undefined, {
         shallow: true,
       });
