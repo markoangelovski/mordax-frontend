@@ -4,7 +4,8 @@ import useKey from "./useKey";
 
 import fetchData from "../drivers/fetchData";
 
-import { Result, User } from "../interfaces/interfaces";
+import { Result } from "../interfaces/interfaces";
+import { User } from "../interfaces/user";
 
 const useUser = (): User | undefined => {
   const { oldKey } = useKey();
