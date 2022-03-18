@@ -1,86 +1,112 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
+import { useState } from "react";
+import type { NextPage } from "next";
+import { useRouter } from "next/router";
+import Head from "next/head";
+import Image from "next/image";
+import { useFormik } from "formik";
+import { useQueryClient } from "react-query";
+import * as Yup from "yup";
+
+import Layout from "../components/Layout/Layout";
+
+import fetchData from "../lib/drivers/fetchData";
+
+import useKey from "../lib/hooks/useKey";
+import useUser from "../lib/hooks/useUser";
 
 const Home: NextPage = () => {
+  const [error, setError] = useState<string | null>(null);
+
+  const { setKey } = useKey();
+
+  const router = useRouter();
+
+  const formik = useFormik({
+    initialValues: {
+      key: "",
+    },
+    validationSchema: Yup.object({
+      key: Yup.string()
+        .required("Key is required")
+        .min(32, "Key should have at least 32 characters")
+        .max(32, "Key should not have more than 32 characters"),
+    }),
+    onSubmit: async values => {
+      const result = await fetchData(
+        `/keys/key-info?key=${values.key}&checkKey=${values.key}`
+      );
+
+      if (result?.hasErrors) {
+        setError("Key invalid");
+      } else {
+        setKey(values.key);
+        return router.push("/locales");
+      }
+    },
+  });
+
+  // If user is logged in, redirect to Locales
+  const user = useUser();
+  if (user) router.push("/locales");
+
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2">
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <Layout>
+      <div className="mx-auto flex min-h-screen w-96 items-center">
+        <Head>
+          <title>Create Next App</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
+        <section className="flex-1">
+          <Image
+            src="data:image/jpeg;base64,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AKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD/9kA/+ENNWh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8APD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNC40LjAtRXhpdjIiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6R0lNUD0iaHR0cDovL3d3dy5naW1wLm9yZy94bXAvIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OTJFOTlCNTAxMkU5MTFFODlDNjBCNDQ5NDEzN0UyRkIiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODI3ODlkNDMtOWQ1Ni00NDUzLWJmNTItNzhmYTYwODRjYmQxIiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6NTQ5OWQ2YjEtZDE0Zi00ZGViLWE5OTMtMGJjZmQ3MDhkNWQzIiBkYzpGb3JtYXQ9ImltYWdlL2pwZWciIEdJTVA6QVBJPSIyLjAiIEdJTVA6UGxhdGZvcm09IkxpbnV4IiBHSU1QOlRpbWVTdGFtcD0iMTY0NzE3OTY2NDIzMDE5OSIgR0lNUDpWZXJzaW9uPSIyLjEwLjMwIiB4bXA6Q3JlYXRvclRvb2w9IkdJTVAgMi4xMCI+IDx4bXBNTTpIaXN0b3J5PiA8cmRmOlNlcT4gPHJkZjpsaSBzdEV2dDphY3Rpb249InNhdmVkIiBzdEV2dDpjaGFuZ2VkPSIvIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOjAwOTJkMTU5LWYyYWUtNDk4OS1iOTUyLTAxNWEyMDc2MTVmYSIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iR2ltcCAyLjEwIChMaW51eCkiIHN0RXZ0OndoZW49IjIwMjItMDMtMTNUMTQ6NTQ6MjQrMDE6MDAiLz4gPC9yZGY6U2VxPiA8L3htcE1NOkhpc3Rvcnk+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjkyRTk5QjRFMTJFOTExRTg5QzYwQjQ0OTQxMzdFMkZCIiBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjkyRTk5QjREMTJFOTExRTg5QzYwQjQ0OTQxMzdFMkZCIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDw/eHBhY2tldCBlbmQ9InciPz7/4gKwSUNDX1BST0ZJTEUAAQEAAAKgbGNtcwQwAABtbnRyUkdCIFhZWiAH5gADAA0ADQA0ABNhY3NwQVBQTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA9tYAAQAAAADTLWxjbXMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA1kZXNjAAAB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"
+            alt="Mordax Logo"
+            title="Mordax."
+            width={120}
+            height={120}
+          />
 
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="rounded-md bg-gray-100 p-3 font-mono text-lg">
-            pages/index.tsx
-          </code>
-        </p>
+          <h1 className="mt-24 text-center text-5xl">Mordax.</h1>
 
-        <div className="mt-6 flex max-w-4xl flex-wrap items-center justify-around sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
+          <form
+            className="mt-24 flex flex-col"
+            onSubmit={formik.handleSubmit}
+            onBlur={formik.handleSubmit}
           >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and API.
-            </p>
-          </a>
+            <input
+              className="border-b border-b-black"
+              value={formik.values.key}
+              onChange={formik.handleChange}
+              type="text"
+              name="key"
+              id="key"
+              required
+            />
 
-          <a
-            href="https://nextjs.org/learn"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
+            <span className="relative">
+              {!formik.errors.key ? (
+                <span className="absolute text-sm text-black/25">
+                  Enter access key
+                </span>
+              ) : null}
 
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
+              {formik.errors.key ? (
+                <span className="absolute right-0 text-sm text-red-600/50">
+                  {formik.errors.key}
+                </span>
+              ) : null}
 
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
+              {error && !formik.errors.key ? (
+                <span className="absolute right-0 text-sm text-red-600/50">
+                  {error}
+                </span>
+              ) : null}
+            </span>
+          </form>
+        </section>
+      </div>
+    </Layout>
+  );
+};
 
-      <footer className="flex h-24 w-full items-center justify-center border-t">
-        <a
-          className="flex items-center justify-center gap-2"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-        </a>
-      </footer>
-    </div>
-  )
-}
-
-export default Home
+export default Home;
