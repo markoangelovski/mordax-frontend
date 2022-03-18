@@ -18,9 +18,10 @@ const LocalesDropdown: React.FC = () => {
       });
     } else {
       // @ts-ignore
-      router.push(`?l=${locales?.result[0].url.value}`, undefined, {
-        shallow: true,
-      });
+      locales &&
+        router.push(`?l=${locales?.result[0].url.value}`, undefined, {
+          shallow: true,
+        });
     }
   }, [locales]);
 
