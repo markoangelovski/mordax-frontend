@@ -3,13 +3,14 @@ import { useQuery } from "react-query";
 import useKey from "./useKey";
 
 import { Result } from "../interfaces/interfaces";
+import { Locale } from "../interfaces/locales";
 
 import fetchData from "../drivers/fetchData";
 
 const useLocale = (locale: string, pages: boolean) => {
   const { oldKey } = useKey();
 
-  const { data } = useQuery<Result, Error>(
+  const { data } = useQuery<Result<Locale>, Error>(
     ["locale", locale],
     () =>
       fetchData(
@@ -21,8 +22,7 @@ const useLocale = (locale: string, pages: boolean) => {
     }
   );
 
-  return data;
-  // return locale;
+  return data?.result[0];
 };
 
 export default useLocale;

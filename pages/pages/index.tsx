@@ -22,8 +22,14 @@ const EditPage: NextPage = () => {
       </Head>
 
       <section className="">
-        Edit Page
-        <pre>{JSON.stringify(locale, null, 2)}</pre>
+        Pages
+        {locale?.pages?.map(page => (
+          <div key={page.id}>
+            <Link href={`/pages/edit?l=${router.query.l}&p=${page.id}`}>
+              {page.url}
+            </Link>
+          </div>
+        ))}
       </section>
     </Layout>
   );

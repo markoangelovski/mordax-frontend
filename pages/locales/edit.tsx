@@ -8,7 +8,7 @@ import Layout from "../../components/Layout/Layout";
 
 import useLocale from "../../lib/hooks/useLocale";
 
-const Edit: NextPage = () => {
+const EditLocale: NextPage = () => {
   const router = useRouter();
   // console.log("router", router);
 
@@ -29,4 +29,4 @@ const Edit: NextPage = () => {
   );
 };
 
-export default Edit;
+export default EditLocale;

@@ -6,7 +6,8 @@ import useKey from "./useKey";
 
 import fetchData from "../drivers/fetchData";
 
-import { Result, Locale } from "../interfaces/interfaces";
+import { Result } from "../interfaces/interfaces";
+import { Locale } from "../interfaces/locales";
 
 const useLocales = (): Locale[] | undefined => {
   const { oldKey } = useKey();
