@@ -6,18 +6,18 @@ import useKey from "./useKey";
 
 import fetchData from "../drivers/fetchData";
 
-import { Result } from "../interfaces/interfaces";
+import { Result, Locale } from "../interfaces/interfaces";
 
-const useLocales = () => {
+const useLocales = (): Locale[] | undefined => {
   const { oldKey } = useKey();
 
-  const { data } = useQuery<Result, Error>(
+  const { data } = useQuery<Result<Locale>, Error>(
     "locales",
     () => fetchData(`/locales?key=${oldKey}`),
     { enabled: !!oldKey, refetchOnWindowFocus: false }
   );
 
-  return data;
+  return data?.result;
 };
 
 export default useLocales;

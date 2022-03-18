@@ -22,24 +22,12 @@ const Locales: NextPage = () => {
 
       <section className="">
         Locales:
-        {locales?.result.map((locale, i) => (
+        {locales?.map((locale, i) => (
           <div key={i}>
-            {/* <Link href={`/locales/edit?locale=${locale.url.value}`}> */}
-            <Link
-              href={`/locales/edit?l=${
-                // @ts-ignore
-                locale.url.value
-              }`}
-            >
-              {
-                // @ts-ignore
-                locale.brand.value
-              }
+            <Link href={`/locales/edit?l=${locale.url.value}`}>
+              {locale.brand.value}
             </Link>{" "}
-            {
-              // @ts-ignore
-              locale.locale.value
-            }
+            {locale.locale.value}
           </div>
         ))}
       </section>

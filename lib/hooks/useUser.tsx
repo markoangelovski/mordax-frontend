@@ -10,7 +10,7 @@ const useUser = (): User | undefined => {
   const { oldKey } = useKey();
 
   // TODO: Add check if backend returns error and redirect to login
-  const { data } = useQuery<Result, Error>(
+  const { data } = useQuery<Result<User>, Error>(
     "user",
     () => fetchData(`/keys/key-info?key=${oldKey}&checkKey=${oldKey}`),
     { enabled: !!oldKey, refetchOnWindowFocus: false }

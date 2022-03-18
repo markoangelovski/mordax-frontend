@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 
 import type { NextPage } from "next";
 
@@ -12,8 +12,7 @@ const Edit: NextPage = () => {
   const router = useRouter();
   // console.log("router", router);
 
-  // @ts-ignore
-  const locale = useLocale(router.query.l, false);
+  const locale = useLocale(router.query.l as string, false);
 
   return (
     <Layout>
