@@ -30,14 +30,21 @@ const LocalesDropdown: React.FC = () => {
         <div key={i}>
           <button
             onClick={() =>
+              // @ts-ignore
               router.push(`?l=${locale.url.value}`, undefined, {
                 shallow: true,
               })
             }
           >
-            {locale.brand.value}
+            {
+              // @ts-ignore
+              locale.brand.value
+            }
           </button>{" "}
-          {locale.locale.value}
+          {
+            // @ts-ignore
+            locale.locale.value
+          }
         </div>
       ))}
     </>

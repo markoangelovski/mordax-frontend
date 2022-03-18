@@ -12,6 +12,7 @@ const Edit: NextPage = () => {
   const router = useRouter();
   // console.log("router", router);
 
+  // @ts-ignore
   const locale = useLocale(router.query.l, false);
 
   return (

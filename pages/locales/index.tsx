@@ -25,10 +25,21 @@ const Locales: NextPage = () => {
         {locales?.result.map((locale, i) => (
           <div key={i}>
             {/* <Link href={`/locales/edit?locale=${locale.url.value}`}> */}
-            <Link href={`/locales/edit?l=${locale.url.value}`}>
-              {locale.brand.value}
+            <Link
+              href={`/locales/edit?l=${
+                // @ts-ignore
+                locale.url.value
+              }`}
+            >
+              {
+                // @ts-ignore
+                locale.brand.value
+              }
             </Link>{" "}
-            {locale.locale.value}
+            {
+              // @ts-ignore
+              locale.locale.value
+            }
           </div>
         ))}
       </section>
