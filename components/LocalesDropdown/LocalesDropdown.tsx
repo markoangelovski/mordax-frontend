@@ -12,7 +12,7 @@ const LocalesDropdown: React.FC = () => {
     const queryParams = new URLSearchParams(window.location.search);
     const existingLocale = queryParams.get("l");
 
-    if (existingLocale) {
+    if (existingLocale && existingLocale !== "undefined") {
       router.push(`?l=${existingLocale}`, undefined, {
         shallow: true,
       });
