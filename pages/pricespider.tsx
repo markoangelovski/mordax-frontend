@@ -25,7 +25,7 @@ const priceSpider: NextPage = () => {
 
   const locale = useLocale(router.query.l as string, true);
 
-  const accountData = usePriceSpider(locale?.PS.psAccountId.value as string);
+  const psAccountData = usePriceSpider(locale?.PS?.psAccountId.value as string);
 
   return (
     <Layout>
@@ -43,19 +43,19 @@ const priceSpider: NextPage = () => {
           </div>
         ))}
         <div>Select language: </div>
-        {locale?.PS.psLanguages.map(lang => (
+        {locale?.PS?.psLanguages.map(lang => (
           <div key={lang} onClick={e => setSelectedLang(lang)}>
             {lang}
           </div>
         ))}
         <div>Select country: </div>
-        {locale?.PS.psCountries.map(country => (
+        {locale?.PS?.psCountries.map(country => (
           <div key={country} onClick={e => setSelectedCountry(country)}>
             {country}
           </div>
         ))}
         <div>Select instance: </div>
-        {locale?.PS.psInstances.map(instance => (
+        {locale?.PS?.psInstances.map(instance => (
           <div key={instance} onClick={e => setSelectedInstance(instance)}>
             {instance}
           </div>
@@ -66,7 +66,7 @@ const priceSpider: NextPage = () => {
             {page.url}
           </div>
         ))}
-        <pre>{JSON.stringify(accountData, null, 2)}</pre>
+        <pre>{JSON.stringify(psAccountData, null, 2)}</pre>
       </section>
     </Layout>
   );
