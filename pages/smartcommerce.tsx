@@ -16,12 +16,14 @@ import useSmartCommerce from "../lib/hooks/useSmartCommerce";
 const smartCommerce: NextPage = () => {
   const [selectedField, setSelectedField] = useState<string | null>(null);
   const [selectedPage, setSelectedPage] = useState<string | null>(null);
+  const [selectedEndpoint, setSelectedEndpoint] = useState<string | null>(null);
 
   const router = useRouter();
 
   const locale = useLocale(router.query.l as string, true);
 
-  const retailers = useSmartCommerce(
+  const result = useSmartCommerce(
+    selectedEndpoint as string,
     selectedPage as string,
     selectedField as string
   );
@@ -47,7 +49,14 @@ const smartCommerce: NextPage = () => {
             {page.url}
           </div>
         ))}
-        <pre>{JSON.stringify(retailers, null, 2)}</pre>
+        <button onClick={() => setSelectedEndpoint("retailers")}>
+          Retailers
+        </button>
+        <button onClick={() => setSelectedEndpoint("button")}>Button</button>
+        <button onClick={() => setSelectedEndpoint("carousel")}>
+          Carousel
+        </button>
+        <pre>{JSON.stringify(result, null, 2)}</pre>
       </section>
     </Layout>
   );

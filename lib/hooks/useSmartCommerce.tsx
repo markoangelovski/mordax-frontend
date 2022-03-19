@@ -8,17 +8,21 @@ import { BinLiteProduct } from "../interfaces/binLite";
 import fetchData from "../drivers/fetchData";
 import { SmartCommerceProduct } from "../interfaces/smartCommerce";
 
-const useSmartCommerce = (page: string, mpIdFieldName: string) => {
+const useSmartCommerce = (
+  endpoint: string,
+  page: string,
+  mpIdFieldName: string
+) => {
   const { oldKey } = useKey();
 
-  const { data } = useQuery<Result<SmartCommerceProduct>, Error>(
-    ["smartCommerce", page],
+  const { data } = useQuery<Result<SmartCommerceProduct | object>, Error>(
+    [endpoint, page],
     () =>
       fetchData(
-        `/sc/retailers?key=${oldKey}&url=${page}&mpIdFieldName=${mpIdFieldName}`
+        `/sc/${endpoint}?key=${oldKey}&url=${page}&mpIdFieldName=${mpIdFieldName}`
       ),
     {
-      enabled: !!oldKey && !!page && !!mpIdFieldName,
+      enabled: !!endpoint && !!oldKey && !!page && !!mpIdFieldName,
       refetchOnWindowFocus: false,
     }
   );
