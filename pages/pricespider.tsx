@@ -12,7 +12,11 @@ import useXmlSitemap from "../lib/hooks/useXmlSitemap";
 import useBinLite from "../lib/hooks/useBinLite";
 import useLocale from "../lib/hooks/useLocale";
 import useSmartCommerce from "../lib/hooks/useSmartCommerce";
-import usePriceSpider from "../lib/hooks/usePriceSpider";
+import {
+  usePsCidConfig,
+  usePsConfig,
+  usePsDataSkusMap,
+} from "../lib/hooks/usePriceSpider";
 
 const priceSpider: NextPage = () => {
   const [selectedField, setSelectedField] = useState<string | null>(null);
@@ -21,11 +25,20 @@ const priceSpider: NextPage = () => {
   const [selectedInstance, setSelectedInstance] = useState<string | null>(null);
   const [selectedPage, setSelectedPage] = useState<string | null>(null);
 
+  const [active, setActive] = useState<string>("");
+
   const router = useRouter();
 
   const locale = useLocale(router.query.l as string, true);
 
-  const psAccountData = usePriceSpider(locale?.PS?.psAccountId.value as string);
+  const psAccountId = locale?.PS?.psAccountId.value as string;
+  const psCid = locale?.PS?.psCid.value as string;
+
+  const psConfig = usePsConfig(active, psAccountId);
+
+  const psCidConfig = usePsCidConfig(active, psAccountId, psCid);
+
+  const psDataSkusMap = usePsDataSkusMap(active, psAccountId);
 
   return (
     <Layout>
@@ -66,7 +79,18 @@ const priceSpider: NextPage = () => {
             {page.url}
           </div>
         ))}
-        <pre>{JSON.stringify(psAccountData, null, 2)}</pre>
+        <button onClick={() => setActive("config")}>Config.js</button>
+        <button onClick={() => setActive("cidConfig")}>CID/Config.js</button>
+        <button onClick={() => setActive("dataSkusMap")}>
+          Data/SKUs/map.js
+        </button>
+        {active === "config" && <pre>{JSON.stringify(psConfig, null, 2)}</pre>}
+        {active === "cidConfig" && (
+          <pre>{JSON.stringify(psCidConfig, null, 2)}</pre>
+        )}
+        {active === "dataSkusMap" && (
+          <pre>{JSON.stringify(psDataSkusMap, null, 2)}</pre>
+        )}
       </section>
     </Layout>
   );

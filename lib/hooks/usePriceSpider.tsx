@@ -7,14 +7,16 @@ import { BinLiteProduct } from "../interfaces/binLite";
 
 import fetchData from "../drivers/fetchData";
 
-const usePriceSpider = (accountId: string) => {
+export const usePsConfig = (active: string, accountId: string) => {
   const { oldKey } = useKey();
 
+  const trigger = active === "config";
+
   const { data } = useQuery<Result<object>, Error>(
-    ["priceSpider", accountId],
+    ["psConfig", accountId],
     () => fetchData(`/ps/int/1/${accountId}/config.js?key=${oldKey}`),
     {
-      enabled: !!oldKey && !!accountId,
+      enabled: !!trigger && !!oldKey && !!accountId,
       refetchOnWindowFocus: false,
     }
   );
@@ -22,4 +24,40 @@ const usePriceSpider = (accountId: string) => {
   return data?.result[0];
 };
 
-export default usePriceSpider;
+export const usePsCidConfig = (
+  active: string,
+  accountId: string,
+  cid: string
+) => {
+  const { oldKey } = useKey();
+
+  const trigger = active === "cidConfig";
+
+  const { data } = useQuery<Result<object>, Error>(
+    ["psCidConfig", trigger, accountId, cid],
+    () => fetchData(`/ps/int/1/${accountId}/${cid}/config.js?key=${oldKey}`),
+    {
+      enabled: !!trigger && !!oldKey && !!accountId && !!cid,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  return data?.result[0];
+};
+
+export const usePsDataSkusMap = (active: string, accountId: string) => {
+  const { oldKey } = useKey();
+
+  const trigger = active === "dataSkusMap";
+
+  const { data } = useQuery<Result<object>, Error>(
+    ["psDataSkusMap", trigger, accountId],
+    () => fetchData(`/ps/int/1/${accountId}/data/skus/map.js?key=${oldKey}`),
+    {
+      enabled: !!trigger && !!oldKey && !!accountId,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  return data?.result[0];
+};
