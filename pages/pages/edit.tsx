@@ -11,6 +11,7 @@ import Layout from "../../components/Layout/Layout";
 import usePage from "../../lib/hooks/usePage";
 import fetchData from "../../lib/drivers/fetchData";
 import useKey from "../../lib/hooks/useKey";
+import progressBar from "../../lib/helpers/progressBar";
 
 const EditPage: NextPage = () => {
   const router = useRouter();
@@ -19,8 +20,8 @@ const EditPage: NextPage = () => {
 
   const page = usePage(router.query.p as string);
 
-  const mutation = useMutation((endpoint: string) =>
-    fetchData(endpoint, "DELETE")
+  const { mutate, isLoading, isIdle, isSuccess } = useMutation(
+    (endpoint: string) => fetchData(endpoint, "DELETE")
   );
 
   useEffect(() => {
@@ -47,14 +48,16 @@ const EditPage: NextPage = () => {
         Edit page
         <br />
         <button
-          onClick={() =>
-            mutation.mutate(`/pages?key=${oldKey}&id=${page?.id}`, {
+          onClick={() => {
+            mutate(`/pages?key=${oldKey}&id=${page?.id}`, {
               onSettled: data => {
                 console.log("data", data);
                 // TODO: add a message that page is deleted.
               },
-            })
-          }
+            });
+
+            progressBar(isLoading, isLoading, isSuccess);
+          }}
         >
           Delete page
         </button>

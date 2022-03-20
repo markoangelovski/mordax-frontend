@@ -17,6 +17,7 @@ import useLocale from "../../lib/hooks/useLocale";
 import { Result } from "../../lib/interfaces/interfaces";
 import { Page } from "../../lib/interfaces/pages";
 import Modal from "../../components/Modal/Modal";
+import progressBar from "../../lib/helpers/progressBar";
 
 const NewPage: NextPage = () => {
   const [currentField, setCurrentField] = useState<string>("");
@@ -32,8 +33,8 @@ const NewPage: NextPage = () => {
 
   const locale = useLocale(router.query.l as string, true);
 
-  const mutation = useMutation((endpoint: string) =>
-    fetchData(endpoint, "POST")
+  const { mutate, isLoading, isIdle, isSuccess } = useMutation(
+    (endpoint: string) => fetchData(endpoint, "POST")
   );
 
   const formik = useFormik({
@@ -47,7 +48,7 @@ const NewPage: NextPage = () => {
     }),
     onSubmit: values => {
       setErrorMessage("");
-      mutation.mutate(
+      mutate(
         `/pages?key=${oldKey}&localeUrl=${locale?.url.value}&pageUrl=${
           values.pageUrl
         }&type=${values.type}&data=${makeDataPayload(fields)}`,
@@ -67,6 +68,8 @@ const NewPage: NextPage = () => {
           },
         }
       );
+
+      progressBar(isLoading, isLoading, isSuccess);
     },
   });
 

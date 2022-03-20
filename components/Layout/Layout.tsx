@@ -2,6 +2,7 @@ import Menu from "../Menu/Menu";
 import LocalesDropdown from "../LocalesDropdown/LocalesDropdown";
 import User from "../User/User";
 import Footer from "../Footer/Footer";
+import Header from "../Header/Header";
 
 const Layout: React.FC = ({ children }) => {
   return (
@@ -10,11 +11,7 @@ const Layout: React.FC = ({ children }) => {
         className="min-h-screen"
         style={{ padding: "0 calc((100% - 1440px) / 2)" }}
       >
-        <header>
-          <Menu />
-          <LocalesDropdown />
-          <User />
-        </header>
+        <Header />
         {children}
       </main>
       <Footer />

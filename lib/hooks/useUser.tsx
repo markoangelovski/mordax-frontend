@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "react-query";
+import { useQuery } from "react-query";
 
 import useKey from "./useKey";
 
@@ -21,7 +21,7 @@ const useUser = (): User | undefined => {
     { enabled: !!oldKey, refetchOnWindowFocus: false }
   );
 
-  // progressBar(isLoading, isFetching, isFetched);
+  progressBar(isLoading, isFetching, isFetched);
 
   return data?.result[0];
 };

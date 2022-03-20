@@ -10,6 +10,7 @@ import Layout from "../../components/Layout/Layout";
 import useLocale from "../../lib/hooks/useLocale";
 import fetchData from "../../lib/drivers/fetchData";
 import useKey from "../../lib/hooks/useKey";
+import progressBar from "../../lib/helpers/progressBar";
 
 const EditLocale: NextPage = () => {
   const router = useRouter();
@@ -19,8 +20,8 @@ const EditLocale: NextPage = () => {
 
   const { oldKey } = useKey();
 
-  const mutation = useMutation((endpoint: string) =>
-    fetchData(endpoint, "DELETE")
+  const { mutate, isLoading, isIdle, isSuccess } = useMutation(
+    (endpoint: string) => fetchData(endpoint, "DELETE")
   );
 
   return (
@@ -34,16 +35,15 @@ const EditLocale: NextPage = () => {
         Edit locale
         <br />
         <button
-          onClick={() =>
-            mutation.mutate(
-              `/locales/single?key=${oldKey}&url=${locale?.url.value}`,
-              {
-                onSettled: data => {
-                  console.log("data", data);
-                },
-              }
-            )
-          }
+          onClick={() => {
+            mutate(`/locales/single?key=${oldKey}&url=${locale?.url.value}`, {
+              onSettled: data => {
+                console.log("data", data);
+              },
+            });
+
+            progressBar(isLoading, isLoading, isSuccess);
+          }}
         >
           Delete locale
         </button>

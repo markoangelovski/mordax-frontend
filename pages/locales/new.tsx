@@ -19,6 +19,7 @@ import useUser from "../../lib/hooks/useUser";
 import useLocale from "../../lib/hooks/useLocale";
 import { Result } from "../../lib/interfaces/interfaces";
 import { Page } from "../../lib/interfaces/pages";
+import progressBar from "../../lib/helpers/progressBar";
 
 const NewPage: NextPage = () => {
   const [current3rdParty, setCurrent3rdParty] = useState<string>("");
@@ -41,8 +42,8 @@ const NewPage: NextPage = () => {
     body: BodyInit | undefined;
   }
 
-  const mutation = useMutation(({ endpoint, body }: Payload) =>
-    fetchData(endpoint, "POST", body)
+  const { mutate, isLoading, isIdle, isSuccess } = useMutation(
+    ({ endpoint, body }: Payload) => fetchData(endpoint, "POST", body)
   );
 
   const formik = useFormik({
@@ -90,7 +91,7 @@ const NewPage: NextPage = () => {
       }
 
       setErrorMessage("");
-      mutation.mutate(
+      mutate(
         { endpoint: `/locales?` + queryParams.toString(), body },
         {
           onSettled: (data: Result<Page>, error) => {
@@ -109,6 +110,8 @@ const NewPage: NextPage = () => {
           },
         }
       );
+
+      progressBar(isLoading, isLoading, isSuccess);
     },
   });
 
