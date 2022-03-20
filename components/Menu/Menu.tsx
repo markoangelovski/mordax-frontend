@@ -11,19 +11,22 @@ interface Props {
   l: string;
 }
 
-const MenuItem = ({ label, endpoint, pathname, l }: Props) => (
-  <Link href={`/${endpoint}?l=${l}`}>
-    <span
-      className={`flex h-10 cursor-pointer items-center px-5 hover:bg-gray-100 ${
-        pathname === `/${endpoint}`
-          ? "text-sky-700 before:absolute before:-left-0 before:h-6 before:border-l-8 before:border-sky-700"
-          : ""
-      }`}
-    >
-      {label}
-    </span>
-  </Link>
-);
+const MenuItem = ({ label, endpoint, pathname, l }: Props) => {
+  const rgx = new RegExp(endpoint);
+  return (
+    <Link href={`/${endpoint}?l=${l}`}>
+      <span
+        className={`flex h-10 cursor-pointer items-center px-5 hover:bg-gray-100 ${
+          rgx.test(pathname)
+            ? "text-sky-700 before:absolute before:-left-0 before:h-6 before:border-l-8 before:border-sky-700"
+            : ""
+        }`}
+      >
+        {label}
+      </span>
+    </Link>
+  );
+};
 
 const Menu: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -57,7 +60,7 @@ const Menu: React.FC = () => {
             onClick={() => setIsOpen(false)}
           ></div>
           <aside
-            className="absolute top-2	z-50 rounded-lg bg-white pt-1 shadow-xl will-change-transform"
+            className="absolute top-2 z-50	min-w-max rounded-lg bg-white pt-1 shadow-xl will-change-transform"
             // style={{
             //   transform: "translate3d(0px, 16px, 0px)",
             //   transition: "opacity 0.3s ease-in-out",

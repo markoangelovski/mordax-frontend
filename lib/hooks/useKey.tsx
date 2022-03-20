@@ -3,11 +3,12 @@ import { useRouter } from "next/router";
 import { useQueryClient } from "react-query";
 
 interface Keys {
-  oldKey: string;
-  setKey?: Function;
+  oldKey: string | null;
+  setKey: Function;
+  removeKey: Function;
 }
 
-const useKey = () => {
+const useKey = (): Keys => {
   const [oldKey, setOldKey] = useState<string | null>(null);
 
   const router = useRouter();
@@ -24,7 +25,11 @@ const useKey = () => {
     window.localStorage.setItem("mordax_key", key);
   };
 
-  return { oldKey, setKey };
+  const removeKey = () => {
+    window.localStorage.removeItem("mordax_key");
+  };
+
+  return { oldKey, setKey, removeKey };
 };
 
 export default useKey;

@@ -14,10 +14,12 @@ const Header: React.FC = () => {
 
   return (
     <header className="flex flex-col pt-6 pl-6 pr-6">
-      <div>
+      <div className="flex justify-between">
         <Menu />
-        <LocalesDropdown />
-        <User />
+        <div>
+          <LocalesDropdown />
+          <User />
+        </div>
       </div>
       <div>
         <Image
