@@ -6,11 +6,15 @@ import { Result } from "../interfaces/interfaces";
 import { Locale } from "../interfaces/locales";
 
 import fetchData from "../drivers/fetchData";
+import progressBar from "../helpers/progressBar";
 
 const useLocale = (locale: string, pages: boolean) => {
   const { oldKey } = useKey();
 
-  const { data } = useQuery<Result<Locale>, Error>(
+  const { data, isLoading, isFetching, isFetched } = useQuery<
+    Result<Locale>,
+    Error
+  >(
     ["locale", locale],
     () =>
       fetchData(
@@ -22,6 +26,8 @@ const useLocale = (locale: string, pages: boolean) => {
       refetchOnWindowFocus: false,
     }
   );
+
+  progressBar(isLoading, isFetching, isFetched);
 
   return data?.result[0];
 };

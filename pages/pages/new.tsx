@@ -16,12 +16,15 @@ import useUser from "../../lib/hooks/useUser";
 import useLocale from "../../lib/hooks/useLocale";
 import { Result } from "../../lib/interfaces/interfaces";
 import { Page } from "../../lib/interfaces/pages";
+import Modal from "../../components/Modal/Modal";
 
 const NewPage: NextPage = () => {
   const [currentField, setCurrentField] = useState<string>("");
   const [currentFieldValue, setCurrentFieldValue] = useState<string>("");
   const [fields, setFields] = useState<object[]>([]);
   const [errorMessage, setErrorMessage] = useState<string>("");
+
+  const [response, setResponse] = useState<Result<Page>>();
 
   const { oldKey } = useKey();
 
@@ -56,9 +59,11 @@ const NewPage: NextPage = () => {
               );
             if (data.hasErrors) return setErrorMessage("Invalid access key.");
 
-            return router.push(
-              `/pages/edit?l=${router.query.l}&p=${data.result[0].id}`
-            );
+            setResponse(data);
+
+            // return router.push(
+            //   `/pages/edit?l=${router.query.l}&p=${data.result[0].id}`
+            // );
           },
         }
       );
@@ -144,6 +149,7 @@ const NewPage: NextPage = () => {
           <button>Cancel</button>
           <input type="submit" value="Save" />
         </form>
+        {response ? <Modal /> : null}
       </section>
     </Layout>
   );

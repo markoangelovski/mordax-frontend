@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useFormik } from "formik";
 import { useMutation, useQueryClient } from "react-query";
 import * as Yup from "yup";
+import NProgress from "nprogress";
 
 import * as urls from "../../config";
 
@@ -139,6 +140,8 @@ const NewPage: NextPage = () => {
       }
     },
   };
+
+  // NProgress.start();
 
   return (
     <Layout>

@@ -7,6 +7,7 @@ import { BinLiteProduct } from "../interfaces/binLite";
 
 import fetchData from "../drivers/fetchData";
 import { SmartCommerceProduct } from "../interfaces/smartCommerce";
+import progressBar from "../helpers/progressBar";
 
 const useSmartCommerce = (
   endpoint: string,
@@ -15,7 +16,10 @@ const useSmartCommerce = (
 ) => {
   const { oldKey } = useKey();
 
-  const { data } = useQuery<Result<SmartCommerceProduct | object>, Error>(
+  const { data, isLoading, isFetching, isFetched } = useQuery<
+    Result<SmartCommerceProduct | object>,
+    Error
+  >(
     [endpoint, page],
     () =>
       fetchData(
@@ -27,6 +31,8 @@ const useSmartCommerce = (
       refetchOnWindowFocus: false,
     }
   );
+
+  progressBar(isLoading, isFetching, isFetched);
 
   return data?.result;
 };
