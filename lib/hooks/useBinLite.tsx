@@ -12,7 +12,7 @@ const useBinLite = (locale: string) => {
 
   const { data } = useQuery<Result<BinLiteProduct>, Error>(
     ["binLite", locale],
-    () => fetchData(`/binlite/retailers?key=${oldKey}&url=${locale}`),
+    () => fetchData(`/binlite/retailers?key=${oldKey}&url=${locale}`, "GET"),
     {
       enabled: !!oldKey && !!locale,
       refetchOnWindowFocus: false,

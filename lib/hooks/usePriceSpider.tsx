@@ -14,7 +14,7 @@ export const usePsConfig = (active: string, accountId: string) => {
 
   const { data } = useQuery<Result<object>, Error>(
     ["psConfig", accountId],
-    () => fetchData(`/ps/int/1/${accountId}/config.js?key=${oldKey}`),
+    () => fetchData(`/ps/int/1/${accountId}/config.js?key=${oldKey}`, "GET"),
     {
       enabled: !!trigger && !!oldKey && !!accountId,
       refetchOnWindowFocus: false,
@@ -35,7 +35,8 @@ export const usePsCidConfig = (
 
   const { data } = useQuery<Result<object>, Error>(
     ["psCidConfig", trigger, accountId, cid],
-    () => fetchData(`/ps/int/1/${accountId}/${cid}/config.js?key=${oldKey}`),
+    () =>
+      fetchData(`/ps/int/1/${accountId}/${cid}/config.js?key=${oldKey}`, "GET"),
     {
       enabled: !!trigger && !!oldKey && !!accountId && !!cid,
       refetchOnWindowFocus: false,
@@ -52,7 +53,8 @@ export const usePsDataSkusMap = (active: string, accountId: string) => {
 
   const { data } = useQuery<Result<object>, Error>(
     ["psDataSkusMap", trigger, accountId],
-    () => fetchData(`/ps/int/1/${accountId}/data/skus/map.js?key=${oldKey}`),
+    () =>
+      fetchData(`/ps/int/1/${accountId}/data/skus/map.js?key=${oldKey}`, "GET"),
     {
       enabled: !!trigger && !!oldKey && !!accountId,
       refetchOnWindowFocus: false,

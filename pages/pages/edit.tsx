@@ -2,17 +2,26 @@ import { useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { NextRouter, useRouter } from "next/router";
+import { useMutation } from "react-query";
 
 import type { NextPage } from "next";
 
 import Layout from "../../components/Layout/Layout";
 
 import usePage from "../../lib/hooks/usePage";
+import fetchData from "../../lib/drivers/fetchData";
+import useKey from "../../lib/hooks/useKey";
 
 const EditPage: NextPage = () => {
   const router = useRouter();
 
+  const { oldKey } = useKey();
+
   const page = usePage(router.query.p as string);
+
+  const mutation = useMutation((endpoint: string) =>
+    fetchData(endpoint, "DELETE")
+  );
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -36,6 +45,19 @@ const EditPage: NextPage = () => {
 
       <section className="">
         Edit page
+        <br />
+        <button
+          onClick={() =>
+            mutation.mutate(`/pages?key=${oldKey}&id=${page?.id}`, {
+              onSettled: data => {
+                console.log("data", data);
+                // TODO: add a message that page is deleted.
+              },
+            })
+          }
+        >
+          Delete page
+        </button>
         <pre>{JSON.stringify(page, null, 2)}</pre>
       </section>
     </Layout>

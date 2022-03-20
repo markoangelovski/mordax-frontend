@@ -12,7 +12,7 @@ const usePage = (pageId: string) => {
 
   const { data } = useQuery<Result<Page>, Error>(
     ["page", pageId],
-    () => fetchData(`/pages?key=${oldKey}&id=${pageId}`),
+    () => fetchData(`/pages?key=${oldKey}&id=${pageId}`, "GET"),
     {
       enabled: !!oldKey && !!pageId,
       refetchOnWindowFocus: false,

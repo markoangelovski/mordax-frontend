@@ -14,7 +14,8 @@ const useLocale = (locale: string, pages: boolean) => {
     ["locale", locale],
     () =>
       fetchData(
-        `/locales/single?key=${oldKey}&url=${locale}&includePages=${pages}`
+        `/locales/single?key=${oldKey}&url=${locale}&includePages=${pages}`,
+        "GET"
       ),
     {
       enabled: !!oldKey && !!locale && locale !== "undefined",

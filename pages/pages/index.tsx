@@ -23,6 +23,7 @@ const EditPage: NextPage = () => {
 
       <section className="">
         Pages
+        <Link href={`/pages/new?l=${router.query.l}`}>+ Add a page</Link>
         {locale?.pages?.map(page => (
           <div key={page.id}>
             <Link href={`/pages/edit?l=${router.query.l}&p=${page.id}`}>

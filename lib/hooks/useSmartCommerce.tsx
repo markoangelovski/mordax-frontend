@@ -19,7 +19,8 @@ const useSmartCommerce = (
     [endpoint, page],
     () =>
       fetchData(
-        `/sc/${endpoint}?key=${oldKey}&url=${page}&mpIdFieldName=${mpIdFieldName}`
+        `/sc/${endpoint}?key=${oldKey}&url=${page}&mpIdFieldName=${mpIdFieldName}`,
+        "GET"
       ),
     {
       enabled: !!endpoint && !!oldKey && !!page && !!mpIdFieldName,

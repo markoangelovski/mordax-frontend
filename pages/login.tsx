@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import Image from "next/image";
 import { useFormik } from "formik";
-import { useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import * as Yup from "yup";
 
 import Layout from "../components/Layout/Layout";
@@ -14,12 +14,16 @@ import fetchData from "../lib/drivers/fetchData";
 import useKey from "../lib/hooks/useKey";
 import useUser from "../lib/hooks/useUser";
 
-const Home: NextPage = () => {
-  const [error, setError] = useState<string | null>(null);
+const Login: NextPage = () => {
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const { setKey } = useKey();
 
   const router = useRouter();
+
+  const mutation = useMutation((endpoint: string) =>
+    fetchData(endpoint, "GET")
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -31,20 +35,26 @@ const Home: NextPage = () => {
         .min(32, "Key should have at least 32 characters")
         .max(32, "Key should not have more than 32 characters"),
     }),
-    onSubmit: async values => {
-      const result = await fetchData(
-        `/keys/key-info?key=${values.key}&checkKey=${values.key}`
+    onSubmit: values => {
+      setErrorMessage("");
+      mutation.mutate(
+        `/keys/key-info?key=${values.key}&checkKey=${values.key}`,
+        {
+          onSettled: (data, error) => {
+            if (data instanceof Error || error)
+              return setErrorMessage(
+                "Error occurred while fetching data. Please try again later."
+              );
+            if (data.hasErrors) return setErrorMessage("Invalid access key.");
+            setKey(values.key);
+            return router.push("/locales");
+          },
+        }
       );
-
-      if (result?.hasErrors) {
-        setError("Key invalid");
-      } else {
-        setKey(values.key);
-        return router.push("/locales");
-      }
     },
   });
 
+  // TODO: Dodaj loading screen dok se user provjerava
   // If user is logged in, redirect to Locales
   const user = useUser();
   if (user) router.push("/locales");
@@ -96,9 +106,9 @@ const Home: NextPage = () => {
                 </span>
               ) : null}
 
-              {error && !formik.errors.key ? (
+              {errorMessage && !formik.errors.key ? (
                 <span className="absolute right-0 text-sm text-red-600/50">
-                  {error}
+                  {errorMessage}
                 </span>
               ) : null}
             </span>
@@ -109,4 +119,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Login;

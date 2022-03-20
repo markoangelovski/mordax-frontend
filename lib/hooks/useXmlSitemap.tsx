@@ -12,7 +12,7 @@ const useXmlSitemap = (locale: string) => {
 
   const { data } = useQuery<Result<object>, Error>(
     ["xmlSitemap", locale],
-    () => fetchData(`/locales/sitemap.xml?key=${oldKey}&url=${locale}`),
+    () => fetchData(`/locales/sitemap.xml?key=${oldKey}&url=${locale}`, "GET"),
     {
       enabled: !!oldKey && !!locale,
       refetchOnWindowFocus: false,

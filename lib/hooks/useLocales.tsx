@@ -14,7 +14,7 @@ const useLocales = (): Locale[] | undefined => {
 
   const { data } = useQuery<Result<Locale>, Error>(
     "locales",
-    () => fetchData(`/locales?key=${oldKey}`),
+    () => fetchData(`/locales?key=${oldKey}`, "GET"),
     { enabled: !!oldKey, refetchOnWindowFocus: false }
   );
 

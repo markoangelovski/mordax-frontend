@@ -4,9 +4,13 @@ import * as urls from "../../config";
 
 // import useKey from "./useKey";
 
-const fetchData = async (endpoint: string) =>
-  fetch(urls.api + endpoint)
+const fetchData = (
+  endpoint: string,
+  method: string,
+  body?: BodyInit | undefined
+) =>
+  fetch(urls.api + endpoint, { method, body })
     .then(res => res.json())
-    .catch(err => console.warn("Error fetching data: ", err.message));
+    .catch(err => err);
 
 export default fetchData;

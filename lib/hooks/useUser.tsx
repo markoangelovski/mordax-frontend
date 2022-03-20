@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 
 import useKey from "./useKey";
 
@@ -13,7 +13,7 @@ const useUser = (): User | undefined => {
   // TODO: Add check if backend returns error and redirect to login
   const { data } = useQuery<Result<User>, Error>(
     "user",
-    () => fetchData(`/keys/key-info?key=${oldKey}&checkKey=${oldKey}`),
+    () => fetchData(`/keys/key-info?key=${oldKey}&checkKey=${oldKey}`, "GET"),
     { enabled: !!oldKey, refetchOnWindowFocus: false }
   );
 

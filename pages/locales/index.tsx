@@ -22,6 +22,7 @@ const Locales: NextPage = () => {
 
       <section className="">
         Locales:
+        <Link href={`/locales/new?l=${router.query.l}`}>+ Add locale</Link>
         {locales?.map((locale, i) => (
           <div key={i}>
             <Link href={`/locales/edit?l=${locale.url.value}`}>

@@ -31,14 +31,14 @@ const priceSpider: NextPage = () => {
 
   const locale = useLocale(router.query.l as string, true);
 
-  const psAccountId = locale?.PS?.psAccountId.value as string;
-  const psCid = locale?.PS?.psCid.value as string;
+  const accountId = locale?.PS?.psAccountId.value as string;
+  const cid = locale?.PS?.psCid.value as string;
 
-  const psConfig = usePsConfig(active, psAccountId);
+  const config = usePsConfig(active, accountId);
 
-  const psCidConfig = usePsCidConfig(active, psAccountId, psCid);
+  const cidConfig = usePsCidConfig(active, accountId, cid);
 
-  const psDataSkusMap = usePsDataSkusMap(active, psAccountId);
+  const dataSkusMap = usePsDataSkusMap(active, accountId);
 
   return (
     <Layout>
@@ -84,12 +84,12 @@ const priceSpider: NextPage = () => {
         <button onClick={() => setActive("dataSkusMap")}>
           Data/SKUs/map.js
         </button>
-        {active === "config" && <pre>{JSON.stringify(psConfig, null, 2)}</pre>}
+        {active === "config" && <pre>{JSON.stringify(config, null, 2)}</pre>}
         {active === "cidConfig" && (
-          <pre>{JSON.stringify(psCidConfig, null, 2)}</pre>
+          <pre>{JSON.stringify(cidConfig, null, 2)}</pre>
         )}
         {active === "dataSkusMap" && (
-          <pre>{JSON.stringify(psDataSkusMap, null, 2)}</pre>
+          <pre>{JSON.stringify(dataSkusMap, null, 2)}</pre>
         )}
       </section>
     </Layout>

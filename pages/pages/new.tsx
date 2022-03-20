@@ -1,86 +1,152 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
+import { useState } from "react";
+import type { NextPage } from "next";
+import { useRouter } from "next/router";
+import Head from "next/head";
+import Image from "next/image";
+import { useFormik } from "formik";
+import { useMutation, useQueryClient } from "react-query";
+import * as Yup from "yup";
 
-const Home: NextPage = () => {
+import Layout from "../../components/Layout/Layout";
+
+import fetchData from "../../lib/drivers/fetchData";
+
+import useKey from "../../lib/hooks/useKey";
+import useUser from "../../lib/hooks/useUser";
+import useLocale from "../../lib/hooks/useLocale";
+import { Result } from "../../lib/interfaces/interfaces";
+import { Page } from "../../lib/interfaces/pages";
+
+const NewPage: NextPage = () => {
+  const [currentField, setCurrentField] = useState<string>("");
+  const [currentFieldValue, setCurrentFieldValue] = useState<string>("");
+  const [fields, setFields] = useState<object[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
+  const { oldKey } = useKey();
+
+  const router = useRouter();
+
+  const locale = useLocale(router.query.l as string, true);
+
+  const mutation = useMutation((endpoint: string) =>
+    fetchData(endpoint, "POST")
+  );
+
+  const formik = useFormik({
+    initialValues: {
+      pageUrl: "",
+      type: "",
+    },
+    validationSchema: Yup.object({
+      pageUrl: Yup.string().url().required("Page URL is required."),
+      type: Yup.string(),
+    }),
+    onSubmit: values => {
+      setErrorMessage("");
+      mutation.mutate(
+        `/pages?key=${oldKey}&localeUrl=${locale?.url.value}&pageUrl=${
+          values.pageUrl
+        }&type=${values.type}&data=${makeDataPayload(fields)}`,
+        {
+          onSettled: (data: Result<Page>, error) => {
+            if (data instanceof Error || error)
+              return setErrorMessage(
+                "Error occurred while fetching data. Please try again later."
+              );
+            if (data.hasErrors) return setErrorMessage("Invalid access key.");
+
+            return router.push(
+              `/pages/edit?l=${router.query.l}&p=${data.result[0].id}`
+            );
+          },
+        }
+      );
+    },
+  });
+
+  const makeDataPayload = (data: object[]) =>
+    data.reduce(
+      (acc, curr) => acc + `${Object.keys(curr)[0]}:${Object.values(curr)[0]};`,
+      ""
+    );
+
+  const handleAddField = () => {
+    if (!currentField || !currentFieldValue) return;
+    setFields(fields => [...fields, { [currentField]: currentFieldValue }]);
+    setCurrentField("");
+    setCurrentFieldValue("");
+  };
+
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2">
+    <Layout>
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
+      <section className="">
+        <h2>Details</h2>
+        <form className="" onSubmit={formik.handleSubmit}>
+          <span>Locale url</span>
+          <input
+            className=""
+            defaultValue={locale?.url.value}
+            type="text"
+            name="localeUrl"
+            id="localeUrl"
+            disabled
+          />
 
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="rounded-md bg-gray-100 p-3 font-mono text-lg">
-            pages/index.tsx
-          </code>
-        </p>
+          <span>URL*</span>
+          <input
+            className=""
+            placeholder="Page URL"
+            value={formik.values.pageUrl}
+            onChange={formik.handleChange} // TODO: Napravi validaciju da page URL pripada locale url. LocaleURL.test(pageUrl)
+            type="url"
+            name="pageUrl"
+            id="pageUrl"
+            required
+          />
 
-        <div className="mt-6 flex max-w-4xl flex-wrap items-center justify-around sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and API.
-            </p>
-          </a>
+          <span>Type</span>
+          <input
+            className=""
+            placeholder="product, article, etc."
+            value={formik.values.type}
+            onChange={formik.handleChange}
+            type="text"
+            name="type"
+            id="type"
+          />
 
-          <a
-            href="https://nextjs.org/learn"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
+          <span>Field</span>
+          {locale?.fields.map(field => (
+            <div key={field} onClick={() => setCurrentField(field)}>
+              {field}
+            </div>
+          ))}
 
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
+          <span>Value</span>
+          <input
+            className=""
+            placeholder="Enter value"
+            value={currentFieldValue}
+            onChange={e => setCurrentFieldValue(e.target.value)}
+            type="text"
+          />
 
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
+          <button type="button" onClick={handleAddField}>
+            Add
+          </button>
 
-      <footer className="flex h-24 w-full items-center justify-center border-t">
-        <a
-          className="flex items-center justify-center gap-2"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-        </a>
-      </footer>
-    </div>
-  )
-}
+          <button>Cancel</button>
+          <input type="submit" value="Save" />
+        </form>
+      </section>
+    </Layout>
+  );
+};
 
-export default Home
+export default NewPage;
