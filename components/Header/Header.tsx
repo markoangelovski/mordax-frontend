@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 
 import { logo } from "../../lib/misc/logo";
 
-import LocalesDropdown from "../LocalesDropdown/LocalesDropdown";
 import Menu from "../Menu/Menu";
+import LocalesDropdown from "../LocalesDropdown/LocalesDropdown";
 import User from "../User/User";
 
 const Header: React.FC = () => {
@@ -16,7 +16,7 @@ const Header: React.FC = () => {
     <header className="flex flex-col pt-6 pl-6 pr-6">
       <div className="flex justify-between">
         <Menu />
-        <div>
+        <div className="flex">
           <LocalesDropdown />
           <User />
         </div>

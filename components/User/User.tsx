@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { useRouter } from "next/router";
-import { QueryClient } from "react-query";
 
 import { UserIcon } from "./User.icons";
 
@@ -10,22 +8,12 @@ import useKey from "../../lib/hooks/useKey";
 const User: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const router = useRouter();
-
   const user = useUser();
 
   const { removeKey } = useKey();
 
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: Infinity,
-      },
-    },
-  });
-
   return (
-    <div className="h-8 w-8">
+    <div className="ml-8 h-8 w-8">
       <button
         onClick={() => setIsOpen(open => !open)}
         className="border-grey-50 pointer m-0 flex h-full w-full items-center justify-center rounded-full border"
