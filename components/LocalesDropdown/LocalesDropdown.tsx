@@ -121,33 +121,10 @@ const LocalesDropdown: React.FC = () => {
                     </button>
                   </div>
                 </div>
-                <div className="relative max-h-72 w-80 overflow-auto">
-                  {!searchedLocale.length
-                    ? locales?.map((locale, i) => (
-                        <LocaleItem
-                          key={i}
-                          locale={locale}
-                          selectedLocale={selectedLocale}
-                          setIsOpen={setIsOpen}
-                          setSearchedLocale={setSearchedLocale}
-                        />
-                      ))
-                    : locales
-                        ?.filter(locale => {
-                          let rgx;
-                          try {
-                            // Handle errors in case someone enter Regex-reserved character, such as +
-                            rgx = new RegExp(searchedLocale, "gi");
-                          } catch (error: any) {
-                            console.warn(error.message);
-                          }
-                          if (
-                            rgx?.test(locale.brand.value) ||
-                            rgx?.test(locale.locale.value)
-                          )
-                            return true;
-                        })
-                        .map((locale, i) => (
+                <div className="overflow-hidden rounded-b-lg">
+                  <div className="relative max-h-72 w-80 overflow-auto">
+                    {!searchedLocale.length
+                      ? locales?.map((locale, i) => (
                           <LocaleItem
                             key={i}
                             locale={locale}
@@ -155,7 +132,32 @@ const LocalesDropdown: React.FC = () => {
                             setIsOpen={setIsOpen}
                             setSearchedLocale={setSearchedLocale}
                           />
-                        ))}
+                        ))
+                      : locales
+                          ?.filter(locale => {
+                            let rgx;
+                            try {
+                              // Handle errors in case someone enter Regex-reserved character, such as +
+                              rgx = new RegExp(searchedLocale, "gi");
+                            } catch (error: any) {
+                              console.warn(error.message);
+                            }
+                            if (
+                              rgx?.test(locale.brand.value) ||
+                              rgx?.test(locale.locale.value)
+                            )
+                              return true;
+                          })
+                          .map((locale, i) => (
+                            <LocaleItem
+                              key={i}
+                              locale={locale}
+                              selectedLocale={selectedLocale}
+                              setIsOpen={setIsOpen}
+                              setSearchedLocale={setSearchedLocale}
+                            />
+                          ))}
+                  </div>
                 </div>
                 <div className="absolute -top-2 right-2 h-4 w-4 rotate-45 bg-white"></div>
               </div>
