@@ -9,6 +9,7 @@ import Layout from "../components/Layout/Layout";
 
 import usePage from "../lib/hooks/usePage";
 import useXmlSitemap from "../lib/hooks/useXmlSitemap";
+import CurrentSection from "../components/CurrentSection/CurrentSection";
 
 const inspectXmlSitemap: NextPage = () => {
   const router = useRouter();
@@ -23,6 +24,7 @@ const inspectXmlSitemap: NextPage = () => {
       </Head>
 
       <section className="">
+        <CurrentSection label="XML Sitemap Inspector" />
         XML Sitemap Inspector
         <pre>{JSON.stringify(xmlSitemap, null, 2)}</pre>
       </section>

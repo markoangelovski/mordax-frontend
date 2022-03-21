@@ -9,6 +9,7 @@ import Layout from "../../components/Layout/Layout";
 import useLocale from "../../lib/hooks/useLocale";
 import MicroLinks from "../../components/MicroLinks/MicroLinks";
 import { handleMicroLink } from "../locales";
+import CurrentSection from "../../components/CurrentSection/CurrentSection";
 
 const EditPage: NextPage = () => {
   const router = useRouter();
@@ -38,6 +39,7 @@ const EditPage: NextPage = () => {
             }
           ]}
         />
+        <CurrentSection label="Pages" />
         Pages
         <Link href={`/pages/new?l=${router.query.l}`}>+ Add a page</Link>
         {locale?.pages?.map(page => (

@@ -18,6 +18,9 @@ import { Result } from "../../lib/interfaces/interfaces";
 import { Page } from "../../lib/interfaces/pages";
 import Modal from "../../components/Modal/Modal";
 import progressBar from "../../lib/helpers/progressBar";
+import MicroLinks from "../../components/MicroLinks/MicroLinks";
+import { handleMicroLink } from "../locales";
+import CurrentSection from "../../components/CurrentSection/CurrentSection";
 
 const NewPage: NextPage = () => {
   const [currentField, setCurrentField] = useState<string>("");
@@ -40,11 +43,11 @@ const NewPage: NextPage = () => {
   const formik = useFormik({
     initialValues: {
       pageUrl: "",
-      type: "",
+      type: ""
     },
     validationSchema: Yup.object({
       pageUrl: Yup.string().url().required("Page URL is required."),
-      type: Yup.string(),
+      type: Yup.string()
     }),
     onSubmit: values => {
       setErrorMessage("");
@@ -65,12 +68,12 @@ const NewPage: NextPage = () => {
             // return router.push(
             //   `/pages/edit?l=${router.query.l}&p=${data.result[0].id}`
             // );
-          },
+          }
         }
       );
 
       progressBar(isLoading, isLoading, isSuccess);
-    },
+    }
   });
 
   const makeDataPayload = (data: object[]) =>
@@ -94,6 +97,21 @@ const NewPage: NextPage = () => {
       </Head>
 
       <section className="">
+        <MicroLinks
+          items={[
+            {
+              label: "Locales",
+              active: false,
+              action: () => handleMicroLink(router, "locales")
+            },
+            {
+              label: "Pages",
+              active: true,
+              action: () => handleMicroLink(router, "pages")
+            }
+          ]}
+        />
+        <CurrentSection label="Pages" />
         <h2>Details</h2>
         <form className="" onSubmit={formik.handleSubmit}>
           <span>Locale url</span>

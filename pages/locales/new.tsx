@@ -22,6 +22,7 @@ import { Page } from "../../lib/interfaces/pages";
 import progressBar from "../../lib/helpers/progressBar";
 import MicroLinks from "../../components/MicroLinks/MicroLinks";
 import { handleMicroLink } from ".";
+import CurrentSection from "../../components/CurrentSection/CurrentSection";
 
 const NewPage: NextPage = () => {
   const [current3rdParty, setCurrent3rdParty] = useState<string>("");
@@ -170,6 +171,7 @@ const NewPage: NextPage = () => {
             }
           ]}
         />
+        <CurrentSection label="Locales" />
         <h2>Details</h2>
         <form className="" onSubmit={formik.handleSubmit} ref={templateRef}>
           <span>Brand*</span>

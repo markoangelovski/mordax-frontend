@@ -1,5 +1,3 @@
-import React from "react";
-
 import { MicroLink } from "../../pages/locales";
 
 interface PropsAll {

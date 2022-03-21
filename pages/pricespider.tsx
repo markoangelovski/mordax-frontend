@@ -18,6 +18,7 @@ import {
   usePsDataSkusMap
 } from "../lib/hooks/usePriceSpider";
 import MicroLinks from "../components/MicroLinks/MicroLinks";
+import CurrentSection from "../components/CurrentSection/CurrentSection";
 
 const priceSpider: NextPage = () => {
   const [selectedField, setSelectedField] = useState<string | null>(null);
@@ -68,6 +69,7 @@ const priceSpider: NextPage = () => {
             }
           ]}
         />
+        <CurrentSection label="PriceSpider Inspector" />
         PriceSpider Inspector
         <div>Select PriceSpider SKU field: </div>
         {locale?.fields.map(field => (

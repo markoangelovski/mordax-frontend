@@ -12,6 +12,7 @@ import useXmlSitemap from "../lib/hooks/useXmlSitemap";
 import useBinLite from "../lib/hooks/useBinLite";
 import useLocale from "../lib/hooks/useLocale";
 import useSmartCommerce from "../lib/hooks/useSmartCommerce";
+import CurrentSection from "../components/CurrentSection/CurrentSection";
 
 const smartCommerce: NextPage = () => {
   const [selectedField, setSelectedField] = useState<string | null>(null);
@@ -36,6 +37,7 @@ const smartCommerce: NextPage = () => {
       </Head>
 
       <section className="">
+        <CurrentSection label="SmartCommerce Inspector" />
         SmartCommerce Inspector
         <div>Select SmartCommerce SKU field: </div>
         {locale?.fields.map(field => (

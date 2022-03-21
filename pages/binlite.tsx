@@ -10,6 +10,7 @@ import Layout from "../components/Layout/Layout";
 import usePage from "../lib/hooks/usePage";
 import useXmlSitemap from "../lib/hooks/useXmlSitemap";
 import useBinLite from "../lib/hooks/useBinLite";
+import CurrentSection from "../components/CurrentSection/CurrentSection";
 
 const binLite: NextPage = () => {
   const router = useRouter();
@@ -24,6 +25,7 @@ const binLite: NextPage = () => {
       </Head>
 
       <section className="">
+        <CurrentSection label="BIN Lite Inspector" />
         BIN Lite Inspector
         <pre>{JSON.stringify(xmlSitemap, null, 2)}</pre>
       </section>

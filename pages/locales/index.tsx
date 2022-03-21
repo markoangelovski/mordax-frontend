@@ -6,6 +6,7 @@ import type { NextPage } from "next";
 
 import Layout from "../../components/Layout/Layout";
 import MicroLinks from "../../components/MicroLinks/MicroLinks";
+import CurrentSection from "../../components/CurrentSection/CurrentSection";
 
 import useLocales from "../../lib/hooks/useLocales";
 
@@ -46,6 +47,7 @@ const Locales: NextPage = () => {
             }
           ]}
         />
+        <CurrentSection label="Locales" />
         Locales:
         <Link href={`/locales/new?l=${router.query.l}`}>+ Add locale</Link>
         {locales?.map((locale, i) => (

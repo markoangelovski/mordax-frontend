@@ -13,6 +13,7 @@ import useKey from "../../lib/hooks/useKey";
 import progressBar from "../../lib/helpers/progressBar";
 import MicroLinks from "../../components/MicroLinks/MicroLinks";
 import { handleMicroLink } from ".";
+import CurrentSection from "../../components/CurrentSection/CurrentSection";
 
 const EditLocale: NextPage = () => {
   const router = useRouter();
@@ -48,6 +49,7 @@ const EditLocale: NextPage = () => {
             }
           ]}
         />
+        <CurrentSection label="Locales" />
         Edit locale
         <br />
         <button
