@@ -15,8 +15,9 @@ import useSmartCommerce from "../lib/hooks/useSmartCommerce";
 import {
   usePsCidConfig,
   usePsConfig,
-  usePsDataSkusMap,
+  usePsDataSkusMap
 } from "../lib/hooks/usePriceSpider";
+import MicroLinks from "../components/MicroLinks/MicroLinks";
 
 const priceSpider: NextPage = () => {
   const [selectedField, setSelectedField] = useState<string | null>(null);
@@ -25,7 +26,7 @@ const priceSpider: NextPage = () => {
   const [selectedInstance, setSelectedInstance] = useState<string | null>(null);
   const [selectedPage, setSelectedPage] = useState<string | null>(null);
 
-  const [active, setActive] = useState<string>("");
+  const [active, setActive] = useState<string>(""); // Currently selected active section
 
   const router = useRouter();
 
@@ -48,6 +49,25 @@ const priceSpider: NextPage = () => {
       </Head>
 
       <section className="">
+        <MicroLinks
+          items={[
+            {
+              label: "Config.js",
+              active: active === "config",
+              action: () => setActive("config")
+            },
+            {
+              label: "CID/Config.js",
+              active: active === "cidConfig",
+              action: () => setActive("cidConfig")
+            },
+            {
+              label: "Data/SKUs/map.js",
+              active: active === "dataSkusMap",
+              action: () => setActive("dataSkusMap")
+            }
+          ]}
+        />
         PriceSpider Inspector
         <div>Select PriceSpider SKU field: </div>
         {locale?.fields.map(field => (
@@ -79,11 +99,6 @@ const priceSpider: NextPage = () => {
             {page.url}
           </div>
         ))}
-        <button onClick={() => setActive("config")}>Config.js</button>
-        <button onClick={() => setActive("cidConfig")}>CID/Config.js</button>
-        <button onClick={() => setActive("dataSkusMap")}>
-          Data/SKUs/map.js
-        </button>
         {active === "config" && <pre>{JSON.stringify(config, null, 2)}</pre>}
         {active === "cidConfig" && (
           <pre>{JSON.stringify(cidConfig, null, 2)}</pre>

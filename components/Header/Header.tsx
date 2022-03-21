@@ -14,10 +14,10 @@ const Header: React.FC = () => {
 
   return (
     <header
-      className="flex flex-col pt-6 pl-6 pr-6"
+      className="flex flex-col"
       style={{ padding: "0 calc((100% - 1440px) / 2)" }}
     >
-      <div className="flex flex-col pt-6 pl-6 pr-6">
+      <div className="flex flex-col px-6 pt-6">
         <div className="flex justify-between">
           <Menu />
           <div className="flex">

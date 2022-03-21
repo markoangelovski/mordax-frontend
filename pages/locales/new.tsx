@@ -20,6 +20,8 @@ import useLocale from "../../lib/hooks/useLocale";
 import { Result } from "../../lib/interfaces/interfaces";
 import { Page } from "../../lib/interfaces/pages";
 import progressBar from "../../lib/helpers/progressBar";
+import MicroLinks from "../../components/MicroLinks/MicroLinks";
+import { handleMicroLink } from ".";
 
 const NewPage: NextPage = () => {
   const [current3rdParty, setCurrent3rdParty] = useState<string>("");
@@ -58,7 +60,7 @@ const NewPage: NextPage = () => {
       scCarouselKey: "",
       scEcEndpointKey: "",
       BINLiteKey: "",
-      psKey: "",
+      psKey: ""
     },
     validationSchema: Yup.object({
       brand: Yup.string()
@@ -75,14 +77,14 @@ const NewPage: NextPage = () => {
       scEcEndpointKey: Yup.string().max(256, "Maximum 256 characters!"),
       BINLiteKey: Yup.string().max(256, "Maximum 256 characters!"),
       psKey: Yup.string().max(256, "Maximum 256 characters!"),
-      hrefLang: Yup.string().max(256, "Maximum 256 characters!"),
+      hrefLang: Yup.string().max(256, "Maximum 256 characters!")
     }),
     onSubmit: values => {
       const queryParams = new URLSearchParams({
         key: oldKey as string,
         ...values,
         thirdParties: thirdParties.join(),
-        fields: fields.join(),
+        fields: fields.join()
       });
 
       let body;
@@ -107,12 +109,12 @@ const NewPage: NextPage = () => {
             // return router.push(
             //   `/locales/edit?l=${router.query.l}`
             // );
-          },
+          }
         }
       );
 
       progressBar(isLoading, isLoading, isSuccess);
-    },
+    }
   });
 
   interface Field {
@@ -141,7 +143,7 @@ const NewPage: NextPage = () => {
         setFields(fields => [...fields, currentField]);
         setCurrentField("");
       }
-    },
+    }
   };
 
   // NProgress.start();
@@ -154,6 +156,20 @@ const NewPage: NextPage = () => {
       </Head>
 
       <section className="">
+        <MicroLinks
+          items={[
+            {
+              label: "Locales",
+              active: true,
+              action: () => handleMicroLink(router, "locales")
+            },
+            {
+              label: "Pages",
+              active: false,
+              action: () => handleMicroLink(router, "pages")
+            }
+          ]}
+        />
         <h2>Details</h2>
         <form className="" onSubmit={formik.handleSubmit} ref={templateRef}>
           <span>Brand*</span>

@@ -1,18 +1,29 @@
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 
 import type { NextPage } from "next";
 
 import Layout from "../../components/Layout/Layout";
+import MicroLinks from "../../components/MicroLinks/MicroLinks";
 
 import useLocales from "../../lib/hooks/useLocales";
+
+export interface MicroLink {
+  label: string;
+  active: boolean;
+  action: () => void;
+}
+
+export const handleMicroLink = (router: NextRouter, endpoint: string) =>
+  router.push(`/${endpoint}?l=${router.query.l}`, undefined, {
+    shallow: true
+  });
 
 const Locales: NextPage = () => {
   const router = useRouter();
   const locales = useLocales();
-  // console.log("locales from /locales", locales);
-  // console.log("router", router);
+
   return (
     <Layout>
       <Head>
@@ -21,6 +32,20 @@ const Locales: NextPage = () => {
       </Head>
 
       <section className="">
+        <MicroLinks
+          items={[
+            {
+              label: "Locales",
+              active: true,
+              action: () => handleMicroLink(router, "locales")
+            },
+            {
+              label: "Pages",
+              active: false,
+              action: () => handleMicroLink(router, "pages")
+            }
+          ]}
+        />
         Locales:
         <Link href={`/locales/new?l=${router.query.l}`}>+ Add locale</Link>
         {locales?.map((locale, i) => (

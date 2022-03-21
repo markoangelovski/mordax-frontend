@@ -11,6 +11,8 @@ import useLocale from "../../lib/hooks/useLocale";
 import fetchData from "../../lib/drivers/fetchData";
 import useKey from "../../lib/hooks/useKey";
 import progressBar from "../../lib/helpers/progressBar";
+import MicroLinks from "../../components/MicroLinks/MicroLinks";
+import { handleMicroLink } from ".";
 
 const EditLocale: NextPage = () => {
   const router = useRouter();
@@ -32,6 +34,20 @@ const EditLocale: NextPage = () => {
       </Head>
 
       <section className="">
+        <MicroLinks
+          items={[
+            {
+              label: "Locales",
+              active: true,
+              action: () => handleMicroLink(router, "locales")
+            },
+            {
+              label: "Pages",
+              active: false,
+              action: () => handleMicroLink(router, "pages")
+            }
+          ]}
+        />
         Edit locale
         <br />
         <button
@@ -39,7 +55,7 @@ const EditLocale: NextPage = () => {
             mutate(`/locales/single?key=${oldKey}&url=${locale?.url.value}`, {
               onSettled: data => {
                 console.log("data", data);
-              },
+              }
             });
 
             progressBar(isLoading, isLoading, isSuccess);
