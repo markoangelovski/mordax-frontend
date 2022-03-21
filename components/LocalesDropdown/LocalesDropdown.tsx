@@ -23,7 +23,7 @@ const LocaleItem = ({
 
   return (
     <span
-      className="flex h-10 cursor-pointer items-center items-center py-2.5 pl-7 pr-3 last:rounded-b-lg hover:bg-gray-100"
+      className="flex h-10 cursor-pointer items-center items-center py-2.5 pl-7 pr-3 hover:bg-gray-100"
       onClick={() => {
         router.push(`?l=${locale.url.value}`, undefined, {
           shallow: true,

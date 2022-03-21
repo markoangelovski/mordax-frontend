@@ -9,7 +9,7 @@ const Layout: React.FC = ({ children }) => {
     <>
       <main
         className="min-h-screen"
-        style={{ padding: "0 calc((100% - 1440px) / 2)" }}
+        // style={{ padding: "0 calc((100% - 1440px) / 2)" }}
       >
         <Header />
         {children}
