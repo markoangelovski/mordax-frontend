@@ -19,6 +19,10 @@ import {
 } from "../lib/hooks/usePriceSpider";
 import MicroLinks from "../components/MicroLinks/MicroLinks";
 import CurrentSection from "../components/CurrentSection/CurrentSection";
+import {
+  Container,
+  ContentContainer
+} from "../components/Containers/Containers";
 
 const priceSpider: NextPage = () => {
   const [selectedField, setSelectedField] = useState<string | null>(null);
@@ -70,44 +74,50 @@ const priceSpider: NextPage = () => {
           ]}
         />
         <CurrentSection label="PriceSpider Inspector" />
-        PriceSpider Inspector
-        <div>Select PriceSpider SKU field: </div>
-        {locale?.fields.map(field => (
-          <div key={field} onClick={e => setSelectedField(field)}>
-            {field}
-          </div>
-        ))}
-        <div>Select language: </div>
-        {locale?.PS?.psLanguages.map(lang => (
-          <div key={lang} onClick={e => setSelectedLang(lang)}>
-            {lang}
-          </div>
-        ))}
-        <div>Select country: </div>
-        {locale?.PS?.psCountries.map(country => (
-          <div key={country} onClick={e => setSelectedCountry(country)}>
-            {country}
-          </div>
-        ))}
-        <div>Select instance: </div>
-        {locale?.PS?.psInstances.map(instance => (
-          <div key={instance} onClick={e => setSelectedInstance(instance)}>
-            {instance}
-          </div>
-        ))}
-        <div>Select product: </div>
-        {locale?.pages?.map(page => (
-          <div key={page.id} onClick={e => setSelectedPage(page.url)}>
-            {page.url}
-          </div>
-        ))}
-        {active === "config" && <pre>{JSON.stringify(config, null, 2)}</pre>}
-        {active === "cidConfig" && (
-          <pre>{JSON.stringify(cidConfig, null, 2)}</pre>
-        )}
-        {active === "dataSkusMap" && (
-          <pre>{JSON.stringify(dataSkusMap, null, 2)}</pre>
-        )}
+        <Container>
+          <ContentContainer>
+            PriceSpider Inspector
+            <div>Select PriceSpider SKU field: </div>
+            {locale?.fields.map(field => (
+              <div key={field} onClick={e => setSelectedField(field)}>
+                {field}
+              </div>
+            ))}
+            <div>Select language: </div>
+            {locale?.PS?.psLanguages.map(lang => (
+              <div key={lang} onClick={e => setSelectedLang(lang)}>
+                {lang}
+              </div>
+            ))}
+            <div>Select country: </div>
+            {locale?.PS?.psCountries.map(country => (
+              <div key={country} onClick={e => setSelectedCountry(country)}>
+                {country}
+              </div>
+            ))}
+            <div>Select instance: </div>
+            {locale?.PS?.psInstances.map(instance => (
+              <div key={instance} onClick={e => setSelectedInstance(instance)}>
+                {instance}
+              </div>
+            ))}
+            <div>Select product: </div>
+            {locale?.pages?.map(page => (
+              <div key={page.id} onClick={e => setSelectedPage(page.url)}>
+                {page.url}
+              </div>
+            ))}
+            {active === "config" && (
+              <pre>{JSON.stringify(config, null, 2)}</pre>
+            )}
+            {active === "cidConfig" && (
+              <pre>{JSON.stringify(cidConfig, null, 2)}</pre>
+            )}
+            {active === "dataSkusMap" && (
+              <pre>{JSON.stringify(dataSkusMap, null, 2)}</pre>
+            )}
+          </ContentContainer>
+        </Container>
       </section>
     </Layout>
   );

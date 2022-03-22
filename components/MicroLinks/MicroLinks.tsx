@@ -1,4 +1,5 @@
 import { MicroLink } from "../../pages/locales";
+import { Container } from "../Containers/Containers";
 
 interface PropsAll {
   items: MicroLink[];
@@ -25,13 +26,13 @@ const MicroLink = ({ item }: PropsSingle) => {
 
 const MicroLinks = ({ items }: PropsAll) => {
   return (
-    <div style={{ padding: "0 calc((100% - 1440px) / 2)" }}>
+    <Container>
       <div className="flex flex-wrap px-6 pt-3.5">
         {items.map((item, i) => (
           <MicroLink key={i} item={item} />
         ))}
       </div>
-    </div>
+    </Container>
   );
 };
 

@@ -10,7 +10,7 @@ import { Result } from "../interfaces/interfaces";
 import { Locale } from "../interfaces/locales";
 import progressBar from "../helpers/progressBar";
 
-const useLocales = (): Locale[] | undefined => {
+const useLocales = (): Result<Locale> | undefined => {
   const { oldKey } = useKey();
 
   const { data, isLoading, isFetching, isFetched } = useQuery<
@@ -18,12 +18,12 @@ const useLocales = (): Locale[] | undefined => {
     Error
   >("locales", () => fetchData(`/locales?key=${oldKey}`, "GET"), {
     enabled: !!oldKey,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: false
   });
 
   progressBar(isLoading, isFetching, isFetched);
 
-  return data?.result;
+  return data;
 };
 
 export default useLocales;

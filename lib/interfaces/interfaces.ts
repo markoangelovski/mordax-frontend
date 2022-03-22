@@ -1,7 +1,13 @@
 export interface Result<T> {
   hasErrors: Boolean;
   errors: Object[];
-  info: Object;
+  info: {
+    skip?: number;
+    limit: number;
+    locales?: number;
+    total?: number;
+    entries: number;
+  };
   result: T[];
 }
 

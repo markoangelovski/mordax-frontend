@@ -19,8 +19,12 @@ import { Page } from "../../lib/interfaces/pages";
 import Modal from "../../components/Modal/Modal";
 import progressBar from "../../lib/helpers/progressBar";
 import MicroLinks from "../../components/MicroLinks/MicroLinks";
-import { handleMicroLink } from "../locales";
 import CurrentSection from "../../components/CurrentSection/CurrentSection";
+import {
+  Container,
+  ContentContainer
+} from "../../components/Containers/Containers";
+import { handleLinkClick } from "../../lib/helpers/utils";
 
 const NewPage: NextPage = () => {
   const [currentField, setCurrentField] = useState<string>("");
@@ -52,9 +56,11 @@ const NewPage: NextPage = () => {
     onSubmit: values => {
       setErrorMessage("");
       mutate(
-        `/pages?key=${oldKey}&localeUrl=${locale?.url.value}&pageUrl=${
-          values.pageUrl
-        }&type=${values.type}&data=${makeDataPayload(fields)}`,
+        `/pages?key=${oldKey}&localeUrl=${
+          locale?.result[0]?.url.value
+        }&pageUrl=${values.pageUrl}&type=${values.type}&data=${makeDataPayload(
+          fields
+        )}`,
         {
           onSettled: (data: Result<Page>, error) => {
             if (data instanceof Error || error)
@@ -102,75 +108,79 @@ const NewPage: NextPage = () => {
             {
               label: "Locales",
               active: false,
-              action: () => handleMicroLink(router, "locales")
+              action: () => handleLinkClick(router, "locales")
             },
             {
               label: "Pages",
               active: true,
-              action: () => handleMicroLink(router, "pages")
+              action: () => handleLinkClick(router, "pages")
             }
           ]}
         />
         <CurrentSection label="Pages" />
-        <h2>Details</h2>
-        <form className="" onSubmit={formik.handleSubmit}>
-          <span>Locale url</span>
-          <input
-            className=""
-            defaultValue={locale?.url.value}
-            type="text"
-            name="localeUrl"
-            id="localeUrl"
-            disabled
-          />
+        <Container>
+          <ContentContainer>
+            <h2>Details</h2>
+            <form className="" onSubmit={formik.handleSubmit}>
+              <span>Locale url</span>
+              <input
+                className=""
+                defaultValue={locale?.result[0].url.value}
+                type="text"
+                name="localeUrl"
+                id="localeUrl"
+                disabled
+              />
 
-          <span>URL*</span>
-          <input
-            className=""
-            placeholder="Page URL"
-            value={formik.values.pageUrl}
-            onChange={formik.handleChange} // TODO: Napravi validaciju da page URL pripada locale url. LocaleURL.test(pageUrl)
-            type="url"
-            name="pageUrl"
-            id="pageUrl"
-            required
-          />
+              <span>URL*</span>
+              <input
+                className=""
+                placeholder="Page URL"
+                value={formik.values.pageUrl}
+                onChange={formik.handleChange} // TODO: Napravi validaciju da page URL pripada locale url. LocaleURL.test(pageUrl)
+                type="url"
+                name="pageUrl"
+                id="pageUrl"
+                required
+              />
 
-          <span>Type</span>
-          <input
-            className=""
-            placeholder="product, article, etc."
-            value={formik.values.type}
-            onChange={formik.handleChange}
-            type="text"
-            name="type"
-            id="type"
-          />
+              <span>Type</span>
+              <input
+                className=""
+                placeholder="product, article, etc."
+                value={formik.values.type}
+                onChange={formik.handleChange}
+                type="text"
+                name="type"
+                id="type"
+              />
 
-          <span>Field</span>
-          {locale?.fields.map(field => (
-            <div key={field} onClick={() => setCurrentField(field)}>
-              {field}
-            </div>
-          ))}
+              <span>Field</span>
+              {locale?.result[0].fields.map(field => (
+                <div key={field} onClick={() => setCurrentField(field)}>
+                  {field}
+                </div>
+              ))}
 
-          <span>Value</span>
-          <input
-            className=""
-            placeholder="Enter value"
-            value={currentFieldValue}
-            onChange={e => setCurrentFieldValue(e.target.value)}
-            type="text"
-          />
+              <span>Value</span>
+              <input
+                className=""
+                placeholder="Enter value"
+                value={currentFieldValue}
+                onChange={e => setCurrentFieldValue(e.target.value)}
+                type="text"
+              />
 
-          <button type="button" onClick={handleAddField}>
-            Add
-          </button>
+              <button type="button" onClick={handleAddField}>
+                Add
+              </button>
 
-          <button>Cancel</button>
-          <input type="submit" value="Save" />
-        </form>
-        {response ? <Modal /> : null}
+              <button>Cancel</button>
+              <input type="submit" value="Save" />
+            </form>
+            {response ? <Modal /> : null}
+          </ContentContainer>
+        </Container>
       </section>
     </Layout>
   );

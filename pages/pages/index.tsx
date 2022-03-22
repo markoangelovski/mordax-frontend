@@ -8,12 +8,16 @@ import Layout from "../../components/Layout/Layout";
 
 import useLocale from "../../lib/hooks/useLocale";
 import MicroLinks from "../../components/MicroLinks/MicroLinks";
-import { handleMicroLink } from "../locales";
 import CurrentSection from "../../components/CurrentSection/CurrentSection";
+import {
+  Container,
+  ContentContainer
+} from "../../components/Containers/Containers";
+import { handleLinkClick } from "../../lib/helpers/utils";
+import AddEntryButton from "../../components/AddEntryButton/AddEntryButton";
 
-const EditPage: NextPage = () => {
+const Page: NextPage = () => {
   const router = useRouter();
-  // console.log("router", router);
 
   const locale = useLocale(router.query.l as string, true);
 
@@ -30,28 +34,67 @@ const EditPage: NextPage = () => {
             {
               label: "Locales",
               active: false,
-              action: () => handleMicroLink(router, "locales")
+              action: () => handleLinkClick(router, "locales")
             },
             {
               label: "Pages",
               active: true,
-              action: () => handleMicroLink(router, "pages")
+              action: () => handleLinkClick(router, "pages")
             }
           ]}
         />
         <CurrentSection label="Pages" />
-        Pages
-        <Link href={`/pages/new?l=${router.query.l}`}>+ Add a page</Link>
-        {locale?.pages?.map(page => (
-          <div key={page.id}>
-            <Link href={`/pages/edit?l=${router.query.l}&p=${page.id}`}>
-              {page.url}
-            </Link>
-          </div>
-        ))}
+        <Container>
+          <ContentContainer>
+            <div className="mb-6 flex items-center justify-between">
+              <div className="mb-6 flex max-w-2xl items-center text-sm text-gray-400">
+                <span>
+                  {locale?.result[0].brand.value}{" "}
+                  {locale?.result[0].locale.value} pages
+                </span>
+              </div>
+              <AddEntryButton
+                label="Add a page"
+                action={() => handleLinkClick(router, "pages/new")}
+              />
+            </div>
+            <div className="mb-4">
+              {/* Filter products by active status - dropdown placeholder */}
+              <div className="box-content flex h-14 items-center justify-between bg-slate-100 px-4 text-sm tracking-wide">
+                <div className="flex items-center">
+                  <div className="text-sm tracking-wide">
+                    <span>
+                      {/* TODO: normaliziraj pagination atribute u responsu, sad su svi različiti */}
+                      {`${locale?.info.skip ? locale?.info.skip : 1} - ${
+                        locale?.info.skip
+                          ? locale?.info.limit + locale?.info.skip
+                          : locale?.info.entries
+                      } of
+                      ${locale?.info.total}
+                      Pages`}
+                    </span>
+                  </div>
+                  <div className="ml-2 box-content h-6 border-l border-slate-300 pl-2 leading-6">
+                    <span>Sort: Type, A–Z</span>
+                  </div>
+                </div>
+                <div>search</div>
+              </div>
+            </div>
+            Pages
+            <Link href={`/pages/new?l=${router.query.l}`}>+ Add a page</Link>
+            {locale?.result[0].pages?.map(page => (
+              <div key={page.id}>
+                <Link href={`/pages/edit?l=${router.query.l}&p=${page.id}`}>
+                  {page.url}
+                </Link>
+              </div>
+            ))}
+          </ContentContainer>
+        </Container>
       </section>
     </Layout>
   );
 };
 
-export default EditPage;
+export default Page;

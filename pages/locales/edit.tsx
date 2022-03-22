@@ -12,8 +12,13 @@ import fetchData from "../../lib/drivers/fetchData";
 import useKey from "../../lib/hooks/useKey";
 import progressBar from "../../lib/helpers/progressBar";
 import MicroLinks from "../../components/MicroLinks/MicroLinks";
-import { handleMicroLink } from ".";
+
 import CurrentSection from "../../components/CurrentSection/CurrentSection";
+import {
+  Container,
+  ContentContainer
+} from "../../components/Containers/Containers";
+import { handleLinkClick } from "../../lib/helpers/utils";
 
 const EditLocale: NextPage = () => {
   const router = useRouter();
@@ -40,32 +45,39 @@ const EditLocale: NextPage = () => {
             {
               label: "Locales",
               active: true,
-              action: () => handleMicroLink(router, "locales")
+              action: () => handleLinkClick(router, "locales")
             },
             {
               label: "Pages",
               active: false,
-              action: () => handleMicroLink(router, "pages")
+              action: () => handleLinkClick(router, "pages")
             }
           ]}
         />
         <CurrentSection label="Locales" />
-        Edit locale
-        <br />
-        <button
-          onClick={() => {
-            mutate(`/locales/single?key=${oldKey}&url=${locale?.url.value}`, {
-              onSettled: data => {
-                console.log("data", data);
-              }
-            });
+        <Container>
+          <ContentContainer>
+            Edit locale
+            <br />
+            <button
+              onClick={() => {
+                mutate(
+                  `/locales/single?key=${oldKey}&url=${locale?.result[0].url.value}`,
+                  {
+                    onSettled: data => {
+                      console.log("data", data);
+                    }
+                  }
+                );
 
-            progressBar(isLoading, isLoading, isSuccess);
-          }}
-        >
-          Delete locale
-        </button>
-        <pre>{JSON.stringify(locale, null, 2)}</pre>
+                progressBar(isLoading, isLoading, isSuccess);
+              }}
+            >
+              Delete locale
+            </button>
+            <pre>{JSON.stringify(locale, null, 2)}</pre>
+          </ContentContainer>
+        </Container>
       </section>
     </Layout>
   );

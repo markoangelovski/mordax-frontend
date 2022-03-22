@@ -7,10 +7,7 @@ import Header from "../Header/Header";
 const Layout: React.FC = ({ children }) => {
   return (
     <>
-      <main
-        className="min-h-screen"
-        // style={{ padding: "0 calc((100% - 1440px) / 2)" }}
-      >
+      <main className="min-h-screen">
         <Header />
         {children}
       </main>

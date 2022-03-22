@@ -13,8 +13,13 @@ import fetchData from "../../lib/drivers/fetchData";
 import useKey from "../../lib/hooks/useKey";
 import progressBar from "../../lib/helpers/progressBar";
 import MicroLinks from "../../components/MicroLinks/MicroLinks";
-import { handleMicroLink } from "../locales";
+
 import CurrentSection from "../../components/CurrentSection/CurrentSection";
+import {
+  Container,
+  ContentContainer
+} from "../../components/Containers/Containers";
+import { handleLinkClick } from "../../lib/helpers/utils";
 
 const EditPage: NextPage = () => {
   const router = useRouter();
@@ -53,33 +58,37 @@ const EditPage: NextPage = () => {
             {
               label: "Locales",
               active: false,
-              action: () => handleMicroLink(router, "locales")
+              action: () => handleLinkClick(router, "locales")
             },
             {
               label: "Pages",
               active: true,
-              action: () => handleMicroLink(router, "pages")
+              action: () => handleLinkClick(router, "pages")
             }
           ]}
         />
         <CurrentSection label="Pages" />
-        Edit page
-        <br />
-        <button
-          onClick={() => {
-            mutate(`/pages?key=${oldKey}&id=${page?.id}`, {
-              onSettled: data => {
-                console.log("data", data);
-                // TODO: add a message that page is deleted.
-              }
-            });
+        <Container>
+          <ContentContainer>
+            Edit page
+            <br />
+            <button
+              onClick={() => {
+                mutate(`/pages?key=${oldKey}&id=${page?.id}`, {
+                  onSettled: data => {
+                    console.log("data", data);
+                    // TODO: add a message that page is deleted.
+                  }
+                });
 
-            progressBar(isLoading, isLoading, isSuccess);
-          }}
-        >
-          Delete page
-        </button>
-        <pre>{JSON.stringify(page, null, 2)}</pre>
+                progressBar(isLoading, isLoading, isSuccess);
+              }}
+            >
+              Delete page
+            </button>
+            <pre>{JSON.stringify(page, null, 2)}</pre>
+          </ContentContainer>
+        </Container>
       </section>
     </Layout>
   );

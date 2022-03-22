@@ -21,8 +21,13 @@ import { Result } from "../../lib/interfaces/interfaces";
 import { Page } from "../../lib/interfaces/pages";
 import progressBar from "../../lib/helpers/progressBar";
 import MicroLinks from "../../components/MicroLinks/MicroLinks";
-import { handleMicroLink } from ".";
+
 import CurrentSection from "../../components/CurrentSection/CurrentSection";
+import {
+  Container,
+  ContentContainer
+} from "../../components/Containers/Containers";
+import { handleLinkClick } from "../../lib/helpers/utils";
 
 const NewPage: NextPage = () => {
   const [current3rdParty, setCurrent3rdParty] = useState<string>("");
@@ -162,191 +167,195 @@ const NewPage: NextPage = () => {
             {
               label: "Locales",
               active: true,
-              action: () => handleMicroLink(router, "locales")
+              action: () => handleLinkClick(router, "locales")
             },
             {
               label: "Pages",
               active: false,
-              action: () => handleMicroLink(router, "pages")
+              action: () => handleLinkClick(router, "pages")
             }
           ]}
         />
         <CurrentSection label="Locales" />
-        <h2>Details</h2>
-        <form className="" onSubmit={formik.handleSubmit} ref={templateRef}>
-          <span>Brand*</span>
-          <input
-            className=""
-            value={formik.values.brand}
-            onChange={formik.handleChange}
-            type="text"
-            name="brand"
-            id="brand"
-            required
-          />
-          <br />
+        <Container>
+          <ContentContainer>
+            <h2>Details</h2>
+            <form className="" onSubmit={formik.handleSubmit} ref={templateRef}>
+              <span>Brand*</span>
+              <input
+                className=""
+                value={formik.values.brand}
+                onChange={formik.handleChange}
+                type="text"
+                name="brand"
+                id="brand"
+                required
+              />
+              <br />
 
-          <span>Locale*</span>
-          <input
-            className=""
-            value={formik.values.locale}
-            onChange={formik.handleChange}
-            type="text"
-            name="locale"
-            id="locale"
-            required
-          />
-          <br />
+              <span>Locale*</span>
+              <input
+                className=""
+                value={formik.values.locale}
+                onChange={formik.handleChange}
+                type="text"
+                name="locale"
+                id="locale"
+                required
+              />
+              <br />
 
-          <span>URL*</span>
-          <input
-            className=""
-            placeholder="Page URL"
-            value={formik.values.url}
-            onChange={formik.handleChange}
-            type="url"
-            name="url"
-            id="url"
-            required
-          />
-          <br />
+              <span>URL*</span>
+              <input
+                className=""
+                placeholder="Page URL"
+                value={formik.values.url}
+                onChange={formik.handleChange}
+                type="url"
+                name="url"
+                id="url"
+                required
+              />
+              <br />
 
-          <span>Third parties</span>
-          <input
-            className=""
-            placeholder="Enter 3rd party name"
-            value={current3rdParty}
-            onChange={e => setCurrent3rdParty(e.target.value)}
-            type="text"
-            name="type"
-            id="type"
-          />
-          <button
-            type="button"
-            onClick={() => field.name("thirdParties").add()}
-          >
-            Add
-          </button>
-          {thirdParties}
-          <br />
+              <span>Third parties</span>
+              <input
+                className=""
+                placeholder="Enter 3rd party name"
+                value={current3rdParty}
+                onChange={e => setCurrent3rdParty(e.target.value)}
+                type="text"
+                name="type"
+                id="type"
+              />
+              <button
+                type="button"
+                onClick={() => field.name("thirdParties").add()}
+              >
+                Add
+              </button>
+              {thirdParties}
+              <br />
 
-          <span>Custom fields</span>
-          <input
-            className=""
-            placeholder="Enter field name"
-            value={currentField}
-            onChange={e => setCurrentField(e.target.value)}
-            type="text"
-            name="type"
-            id="type"
-          />
-          <button type="button" onClick={() => field.name("fields").add()}>
-            Add
-          </button>
-          {fields}
-          <br />
+              <span>Custom fields</span>
+              <input
+                className=""
+                placeholder="Enter field name"
+                value={currentField}
+                onChange={e => setCurrentField(e.target.value)}
+                type="text"
+                name="type"
+                id="type"
+              />
+              <button type="button" onClick={() => field.name("fields").add()}>
+                Add
+              </button>
+              {fields}
+              <br />
 
-          <span>Capitol</span>
-          <input
-            className=""
-            placeholder="Washington"
-            value={formik.values.capitol}
-            onChange={formik.handleChange}
-            type="text"
-            name="capitol"
-            id="capitol"
-          />
-          <br />
+              <span>Capitol</span>
+              <input
+                className=""
+                placeholder="Washington"
+                value={formik.values.capitol}
+                onChange={formik.handleChange}
+                type="text"
+                name="capitol"
+                id="capitol"
+              />
+              <br />
 
-          <span>SmartCommerce button key</span>
-          <input
-            className=""
-            placeholder="2b6fa9fb-a075-4aa3-b5b0-b4d3ae99c0cc"
-            value={formik.values.scButtonKey}
-            onChange={formik.handleChange}
-            type="text"
-            name="scButtonKey"
-            id="scButtonKey"
-          />
-          <br />
+              <span>SmartCommerce button key</span>
+              <input
+                className=""
+                placeholder="2b6fa9fb-a075-4aa3-b5b0-b4d3ae99c0cc"
+                value={formik.values.scButtonKey}
+                onChange={formik.handleChange}
+                type="text"
+                name="scButtonKey"
+                id="scButtonKey"
+              />
+              <br />
 
-          <span>SmartCommerce carousel key</span>
-          <input
-            className=""
-            placeholder="c8bacf32-9250-4bcd-8a85-1de98e859a26"
-            value={formik.values.scCarouselKey}
-            onChange={formik.handleChange}
-            type="text"
-            name="scCarouselKey"
-            id="scCarouselKey"
-          />
-          <br />
+              <span>SmartCommerce carousel key</span>
+              <input
+                className=""
+                placeholder="c8bacf32-9250-4bcd-8a85-1de98e859a26"
+                value={formik.values.scCarouselKey}
+                onChange={formik.handleChange}
+                type="text"
+                name="scCarouselKey"
+                id="scCarouselKey"
+              />
+              <br />
 
-          <span>SmartCommerce EC endpoint key</span>
-          <input
-            className=""
-            placeholder="4c4d8dc0-f852-4362-8131-4b55f6d559df"
-            value={formik.values.scEcEndpointKey}
-            onChange={formik.handleChange}
-            type="text"
-            name="scEcEndpointKey"
-            id="scEcEndpointKey"
-          />
-          <br />
+              <span>SmartCommerce EC endpoint key</span>
+              <input
+                className=""
+                placeholder="4c4d8dc0-f852-4362-8131-4b55f6d559df"
+                value={formik.values.scEcEndpointKey}
+                onChange={formik.handleChange}
+                type="text"
+                name="scEcEndpointKey"
+                id="scEcEndpointKey"
+              />
+              <br />
 
-          <span>PriceSpider key</span>
-          <input
-            className=""
-            placeholder="1766-123456789012345678901234"
-            value={formik.values.psKey}
-            onChange={formik.handleChange}
-            type="text"
-            name="psKey"
-            id="psKey"
-          />
-          <br />
+              <span>PriceSpider key</span>
+              <input
+                className=""
+                placeholder="1766-123456789012345678901234"
+                value={formik.values.psKey}
+                onChange={formik.handleChange}
+                type="text"
+                name="psKey"
+                id="psKey"
+              />
+              <br />
 
-          <span>BIN Lite key</span>
-          <input
-            className=""
-            placeholder="1f374124-0e33-4fa1-b4c5-899b009d4fd1"
-            value={formik.values.BINLiteKey}
-            onChange={formik.handleChange}
-            type="text"
-            name="BINLiteKey"
-            id="BINLiteKey"
-          />
-          <br />
+              <span>BIN Lite key</span>
+              <input
+                className=""
+                placeholder="1f374124-0e33-4fa1-b4c5-899b009d4fd1"
+                value={formik.values.BINLiteKey}
+                onChange={formik.handleChange}
+                type="text"
+                name="BINLiteKey"
+                id="BINLiteKey"
+              />
+              <br />
 
-          <span>Hreflang</span>
-          <input
-            className=""
-            placeholder="en-ca"
-            value={formik.values.hrefLang}
-            onChange={formik.handleChange}
-            type="text"
-            name="hrefLang"
-            id="hrefLang"
-          />
-          <br />
+              <span>Hreflang</span>
+              <input
+                className=""
+                placeholder="en-ca"
+                value={formik.values.hrefLang}
+                onChange={formik.handleChange}
+                type="text"
+                name="hrefLang"
+                id="hrefLang"
+              />
+              <br />
 
-          <p>Select a file containing page details.</p>
+              <p>Select a file containing page details.</p>
 
-          <strong>Requirements:</strong>
-          <ul>
-            <li>.xlsx format</li>
-            <li>5 MB maximum</li>
-          </ul>
+              <strong>Requirements:</strong>
+              <ul>
+                <li>.xlsx format</li>
+                <li>5 MB maximum</li>
+              </ul>
 
-          <a href={urls.api + `/locales/template?key=${oldKey}`} download>
-            Download example file
-          </a>
+              <a href={urls.api + `/locales/template?key=${oldKey}`} download>
+                Download example file
+              </a>
 
-          <input type="file" name="template" id="template" />
+              <input type="file" name="template" id="template" />
 
-          <button>Cancel</button>
-          <input type="submit" value="Save" />
-        </form>
+              <button>Cancel</button>
+              <input type="submit" value="Save" />
+            </form>
+          </ContentContainer>
+        </Container>
       </section>
     </Layout>
   );

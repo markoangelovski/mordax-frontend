@@ -17,7 +17,7 @@ const LocaleItem = ({
   locale,
   selectedLocale,
   setIsOpen,
-  setSearchedLocale,
+  setSearchedLocale
 }: Props) => {
   const router = useRouter();
 
@@ -26,7 +26,7 @@ const LocaleItem = ({
       className="flex h-10 cursor-pointer items-center items-center py-2.5 pl-7 pr-3 hover:bg-gray-100"
       onClick={() => {
         router.push(`?l=${locale.url.value}`, undefined, {
-          shallow: true,
+          shallow: true
         });
         setIsOpen(false);
         setSearchedLocale("");
@@ -53,13 +53,13 @@ const LocalesDropdown: React.FC = () => {
 
     if (!existingLocale) {
       locales &&
-        router.push(`?l=${locales[0].url.value}`, undefined, {
-          shallow: true,
+        router.push(`?l=${locales.result[0].url.value}`, undefined, {
+          shallow: true
         });
     }
   }, [locales]);
 
-  const selectedLocale = locales?.find(
+  const selectedLocale = locales?.result.find(
     locale => locale.url.value === router.query.l
   );
 
@@ -75,7 +75,9 @@ const LocalesDropdown: React.FC = () => {
             <span>
               {selectedLocale
                 ? selectedLocale.brand.value + " " + selectedLocale.locale.value
-                : locales[0].brand.value + " " + locales[0].locale.value}
+                : locales.result[0].brand.value +
+                  " " +
+                  locales.result[0].locale.value}
             </span>
           )}
           {isOpen ? (
@@ -124,7 +126,7 @@ const LocalesDropdown: React.FC = () => {
                 <div className="overflow-hidden rounded-b-lg">
                   <div className="relative max-h-72 w-80 overflow-auto">
                     {!searchedLocale.length
-                      ? locales?.map((locale, i) => (
+                      ? locales?.result.map((locale, i) => (
                           <LocaleItem
                             key={i}
                             locale={locale}
@@ -133,7 +135,7 @@ const LocalesDropdown: React.FC = () => {
                             setSearchedLocale={setSearchedLocale}
                           />
                         ))
-                      : locales
+                      : locales?.result
                           ?.filter(locale => {
                             let rgx;
                             try {

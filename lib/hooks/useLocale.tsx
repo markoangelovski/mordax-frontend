@@ -8,7 +8,10 @@ import { Locale } from "../interfaces/locales";
 import fetchData from "../drivers/fetchData";
 import progressBar from "../helpers/progressBar";
 
-const useLocale = (locale: string, pages: boolean) => {
+const useLocale = (
+  locale: string,
+  pages: boolean
+): Result<Locale> | undefined => {
   const { oldKey } = useKey();
 
   const { data, isLoading, isFetching, isFetched } = useQuery<
@@ -23,13 +26,13 @@ const useLocale = (locale: string, pages: boolean) => {
       ),
     {
       enabled: !!oldKey && !!locale && locale !== "undefined",
-      refetchOnWindowFocus: false,
+      refetchOnWindowFocus: false
     }
   );
 
   progressBar(isLoading, isFetching, isFetched);
 
-  return data?.result[0];
+  return data;
 };
 
 export default useLocale;

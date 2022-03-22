@@ -13,6 +13,10 @@ import useBinLite from "../lib/hooks/useBinLite";
 import useLocale from "../lib/hooks/useLocale";
 import useSmartCommerce from "../lib/hooks/useSmartCommerce";
 import CurrentSection from "../components/CurrentSection/CurrentSection";
+import {
+  Container,
+  ContentContainer
+} from "../components/Containers/Containers";
 
 const smartCommerce: NextPage = () => {
   const [selectedField, setSelectedField] = useState<string | null>(null);
@@ -38,27 +42,33 @@ const smartCommerce: NextPage = () => {
 
       <section className="">
         <CurrentSection label="SmartCommerce Inspector" />
-        SmartCommerce Inspector
-        <div>Select SmartCommerce SKU field: </div>
-        {locale?.fields.map(field => (
-          <div key={field} onClick={e => setSelectedField(field)}>
-            {field}
-          </div>
-        ))}
-        <div>Select product: </div>
-        {locale?.pages?.map(page => (
-          <div key={page.id} onClick={e => setSelectedPage(page.url)}>
-            {page.url}
-          </div>
-        ))}
-        <button onClick={() => setSelectedEndpoint("retailers")}>
-          Retailers
-        </button>
-        <button onClick={() => setSelectedEndpoint("button")}>Button</button>
-        <button onClick={() => setSelectedEndpoint("carousel")}>
-          Carousel
-        </button>
-        <pre>{JSON.stringify(result, null, 2)}</pre>
+        <Container>
+          <ContentContainer>
+            SmartCommerce Inspector
+            <div>Select SmartCommerce SKU field: </div>
+            {locale?.fields.map(field => (
+              <div key={field} onClick={e => setSelectedField(field)}>
+                {field}
+              </div>
+            ))}
+            <div>Select product: </div>
+            {locale?.pages?.map(page => (
+              <div key={page.id} onClick={e => setSelectedPage(page.url)}>
+                {page.url}
+              </div>
+            ))}
+            <button onClick={() => setSelectedEndpoint("retailers")}>
+              Retailers
+            </button>
+            <button onClick={() => setSelectedEndpoint("button")}>
+              Button
+            </button>
+            <button onClick={() => setSelectedEndpoint("carousel")}>
+              Carousel
+            </button>
+            <pre>{JSON.stringify(result, null, 2)}</pre>
+          </ContentContainer>
+        </Container>
       </section>
     </Layout>
   );
