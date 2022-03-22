@@ -87,33 +87,39 @@ const Menu: React.FC = () => {
                   l={l as string}
                 />
 
-                <MenuItem
-                  label={"XML Sitemap Inspector"}
-                  endpoint={"/inspect-xml-sitemap"}
-                  pathname={pathname}
-                  l={l as string}
-                />
+                <div className="mt-8">
+                  <div className="mx-5 mb-2 text-sm font-semibold uppercase leading-4 tracking-wider">
+                    <span>Inspector tools</span>
+                  </div>
 
-                <MenuItem
-                  label={"BIN Lite Inspector"}
-                  endpoint={"/binlite"}
-                  pathname={pathname}
-                  l={l as string}
-                />
+                  <MenuItem
+                    label={"XML Sitemap Inspector"}
+                    endpoint={"/inspect-xml-sitemap"}
+                    pathname={pathname}
+                    l={l as string}
+                  />
 
-                <MenuItem
-                  label={"SmartCommerce Inspector"}
-                  endpoint={"/smartcommerce"}
-                  pathname={pathname}
-                  l={l as string}
-                />
+                  <MenuItem
+                    label={"BIN Lite Inspector"}
+                    endpoint={"/binlite"}
+                    pathname={pathname}
+                    l={l as string}
+                  />
 
-                <MenuItem
-                  label={"PriceSpider Inspector"}
-                  endpoint={"/pricespider"}
-                  pathname={pathname}
-                  l={l as string}
-                />
+                  <MenuItem
+                    label={"SmartCommerce Inspector"}
+                    endpoint={"/smartcommerce"}
+                    pathname={pathname}
+                    l={l as string}
+                  />
+
+                  <MenuItem
+                    label={"PriceSpider Inspector"}
+                    endpoint={"/pricespider"}
+                    pathname={pathname}
+                    l={l as string}
+                  />
+                </div>
               </div>
               <div className="absolute -top-2 left-6 h-4 w-4 rotate-45 bg-white"></div>
             </div>
