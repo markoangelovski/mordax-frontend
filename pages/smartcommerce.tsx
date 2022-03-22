@@ -46,13 +46,13 @@ const smartCommerce: NextPage = () => {
           <ContentContainer>
             SmartCommerce Inspector
             <div>Select SmartCommerce SKU field: </div>
-            {locale?.fields.map(field => (
+            {locale?.result[0].fields.map(field => (
               <div key={field} onClick={e => setSelectedField(field)}>
                 {field}
               </div>
             ))}
             <div>Select product: </div>
-            {locale?.pages?.map(page => (
+            {locale?.result[0].pages?.map(page => (
               <div key={page.id} onClick={e => setSelectedPage(page.url)}>
                 {page.url}
               </div>

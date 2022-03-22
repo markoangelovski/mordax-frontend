@@ -37,8 +37,16 @@ const priceSpider: NextPage = () => {
 
   const locale = useLocale(router.query.l as string, true);
 
-  const accountId = locale?.PS?.psAccountId.value as string;
-  const cid = locale?.PS?.psCid.value as string;
+  const fields = locale?.result[0].fields;
+
+  const accountId = locale?.result[0].PS?.psAccountId.value as string;
+  const cid = locale?.result[0].PS?.psCid.value as string;
+
+  const psLanguages = locale?.result[0].PS?.psLanguages;
+  const psCountries = locale?.result[0].PS?.psCountries;
+  const psInstances = locale?.result[0].PS?.psInstances;
+
+  const pages = locale?.result[0].pages;
 
   const config = usePsConfig(active, accountId);
 
@@ -78,31 +86,31 @@ const priceSpider: NextPage = () => {
           <ContentContainer>
             PriceSpider Inspector
             <div>Select PriceSpider SKU field: </div>
-            {locale?.fields.map(field => (
+            {fields?.map(field => (
               <div key={field} onClick={e => setSelectedField(field)}>
                 {field}
               </div>
             ))}
             <div>Select language: </div>
-            {locale?.PS?.psLanguages.map(lang => (
+            {psLanguages?.map(lang => (
               <div key={lang} onClick={e => setSelectedLang(lang)}>
                 {lang}
               </div>
             ))}
             <div>Select country: </div>
-            {locale?.PS?.psCountries.map(country => (
+            {psCountries?.map(country => (
               <div key={country} onClick={e => setSelectedCountry(country)}>
                 {country}
               </div>
             ))}
             <div>Select instance: </div>
-            {locale?.PS?.psInstances.map(instance => (
+            {psInstances?.map(instance => (
               <div key={instance} onClick={e => setSelectedInstance(instance)}>
                 {instance}
               </div>
             ))}
             <div>Select product: </div>
-            {locale?.pages?.map(page => (
+            {pages?.map(page => (
               <div key={page.id} onClick={e => setSelectedPage(page.url)}>
                 {page.url}
               </div>
