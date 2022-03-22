@@ -26,6 +26,12 @@ const Locales: NextPage = () => {
   const router = useRouter();
   const locales = useLocales();
 
+  const skip = locales?.info.skip || 0;
+  const fetchedLocales = locales?.info.locales || 0;
+  const total = locales?.info.total || 0;
+
+  const minLocaleCount = locales?.result.length ? 1 : 0;
+
   return (
     <Layout>
       <Head>
@@ -66,12 +72,10 @@ const Locales: NextPage = () => {
                 <div className="flex items-center">
                   <div className="text-sm tracking-wide">
                     <span>
-                      {`${locales?.info.skip ? locales?.info.skip : 1} - ${
-                        locales?.info.skip
-                          ? locales?.info.limit + locales?.info.skip
-                          : locales?.info.locales
+                      {`${skip ? skip : minLocaleCount} - ${
+                        skip ? skip + fetchedLocales : fetchedLocales
                       } of
-                      ${locales?.info.total}
+                      ${total}
                       Locales`}
                     </span>
                   </div>

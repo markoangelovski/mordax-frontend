@@ -16,7 +16,10 @@ const useKey = (): Keys => {
   useEffect(() => {
     const key = window.localStorage.getItem("mordax_key");
 
-    if (!key) router.push("/login");
+    if (!key)
+      router.push("/login", undefined, {
+        shallow: true
+      });
 
     setOldKey(key);
   }, []);

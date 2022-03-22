@@ -1,15 +1,16 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
-import Layout from "../components/Layout/Layout";
+import type { NextPage } from "next";
 
 const Home: NextPage = () => {
-  return (
-    <Layout>
-      <div>Home</div>
-    </Layout>
-  );
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push("/home");
+  }, []);
+
+  return <div>Redirecting...</div>;
 };
 
 export default Home;

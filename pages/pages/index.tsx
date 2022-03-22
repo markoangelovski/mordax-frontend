@@ -21,6 +21,12 @@ const Page: NextPage = () => {
 
   const locale = useLocale(router.query.l as string, true);
 
+  const skip = locale?.info.skip || 0;
+  const fetchedEntries = locale?.info.entries || 0;
+  const total = locale?.info.total || 0;
+
+  const minEntriesCount = locale?.result.length ? 1 : 0;
+
   return (
     <Layout>
       <Head>
@@ -65,12 +71,10 @@ const Page: NextPage = () => {
                   <div className="text-sm tracking-wide">
                     <span>
                       {/* TODO: normaliziraj pagination atribute u responsu, sad su svi različiti */}
-                      {`${locale?.info.skip ? locale?.info.skip : 1} - ${
-                        locale?.info.skip
-                          ? locale?.info.limit + locale?.info.skip
-                          : locale?.info.entries
+                      {`${skip ? skip : minEntriesCount} - ${
+                        skip ? skip + fetchedEntries : fetchedEntries
                       } of
-                      ${locale?.info.total}
+                      ${total}
                       Pages`}
                     </span>
                   </div>

@@ -29,13 +29,13 @@ const Login: NextPage = () => {
 
   const formik = useFormik({
     initialValues: {
-      key: "",
+      key: ""
     },
     validationSchema: Yup.object({
       key: Yup.string()
         .required("Key is required")
         .min(32, "Key should have at least 32 characters")
-        .max(32, "Key should not have more than 32 characters"),
+        .max(32, "Key should not have more than 32 characters")
     }),
     onSubmit: values => {
       setErrorMessage("");
@@ -47,18 +47,18 @@ const Login: NextPage = () => {
             );
           if (data.hasErrors) return setErrorMessage("Invalid access key.");
           setKey(values.key);
-          return router.push("/locales");
-        },
+          return router.push("/home");
+        }
       });
 
       progressBar(isLoading, isLoading, isSuccess);
-    },
+    }
   });
 
   // TODO: Dodaj loading screen dok se user provjerava
   // If user is logged in, redirect to Locales
   const user = useUser();
-  if (user) router.push("/locales");
+  if (user) router.push("/home");
 
   return (
     <Layout>

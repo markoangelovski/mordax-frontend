@@ -7,17 +7,18 @@ import { Hamburger, HamburgerOpen } from "./Menu.icons";
 interface Props {
   label: string;
   endpoint: string;
-  pathname: string;
-  l: string;
+  pathname?: string;
+  l?: string;
 }
 
 const MenuItem = ({ label, endpoint, pathname, l }: Props) => {
   const rgx = new RegExp(endpoint);
+
   return (
-    <Link href={`/${endpoint}?l=${l}`}>
+    <Link href={`${endpoint}${l ? `?l=${l}` : ``}`}>
       <span
         className={`flex h-10 cursor-pointer items-center px-5 hover:bg-gray-100 ${
-          rgx.test(pathname)
+          pathname && rgx.test(pathname)
             ? "text-sky-700 before:absolute before:-left-0 before:h-6 before:border-l-8 before:border-sky-700"
             : ""
         }`}
@@ -33,10 +34,8 @@ const Menu: React.FC = () => {
 
   const {
     pathname,
-    query: { l },
+    query: { l }
   } = useRouter();
-
-  if (pathname === "/login") return null;
 
   return (
     <div className="">
@@ -69,43 +68,49 @@ const Menu: React.FC = () => {
             <div className="relative">
               <div className="py-8">
                 <MenuItem
+                  label={"Home"}
+                  endpoint={"/home"}
+                  pathname={pathname}
+                />
+
+                <MenuItem
                   label={"Locales"}
-                  endpoint={"locales"}
+                  endpoint={"/locales"}
                   pathname={pathname}
                   l={l as string}
                 />
 
                 <MenuItem
                   label={"Pages"}
-                  endpoint={"pages"}
+                  endpoint={"/pages"}
                   pathname={pathname}
                   l={l as string}
                 />
 
                 <MenuItem
                   label={"XML Sitemap Inspector"}
-                  endpoint={"inspect-xml-sitemap"}
+                  endpoint={"/inspect-xml-sitemap"}
                   pathname={pathname}
                   l={l as string}
                 />
 
                 <MenuItem
                   label={"BIN Lite Inspector"}
-                  endpoint={"binlite"}
+                  endpoint={"/binlite"}
                   pathname={pathname}
                   l={l as string}
                 />
 
                 <MenuItem
                   label={"SmartCommerce Inspector"}
-                  endpoint={"smartcommerce"}
+                  endpoint={"/smartcommerce"}
                   pathname={pathname}
                   l={l as string}
                 />
 
                 <MenuItem
                   label={"PriceSpider Inspector"}
-                  endpoint={"pricespider"}
+                  endpoint={"/pricespider"}
                   pathname={pathname}
                   l={l as string}
                 />

@@ -9,9 +9,9 @@ import User from "../User/User";
 import { Container } from "../Containers/Containers";
 
 const Header: React.FC = () => {
-  const router = useRouter();
+  const { pathname } = useRouter();
 
-  if (router.pathname === "/login") return null;
+  if (pathname === "/login") return null;
 
   return (
     <header>
@@ -20,7 +20,7 @@ const Header: React.FC = () => {
           <div className="flex justify-between">
             <Menu />
             <div className="flex">
-              <LocalesDropdown />
+              {pathname === "/home" ? null : <LocalesDropdown />}
               <User />
             </div>
           </div>
