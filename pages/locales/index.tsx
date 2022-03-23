@@ -9,6 +9,7 @@ import MicroLinks from "../../components/MicroLinks/MicroLinks";
 import CurrentSection from "../../components/CurrentSection/CurrentSection";
 
 import useLocales from "../../lib/hooks/useLocales";
+import { useLocaleInfo } from "../../lib/hooks/useLocale";
 import AddEntryButton from "../../components/AddEntryButton/AddEntryButton";
 import {
   Container,
