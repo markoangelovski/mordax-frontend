@@ -23,15 +23,20 @@ import {
   Container,
   ContentContainer
 } from "../components/Containers/Containers";
+import TextJsonSwitch from "../components/TextJsonSwitch/TextJsonSwitch";
+import JsonView from "../components/JsonView/JsonView";
 
 const priceSpider: NextPage = () => {
+  // Set default active switch to text
+  const [activeSwitch, setActiveSwitch] = useState<string>("json");
+
   const [selectedField, setSelectedField] = useState<string | null>(null);
   const [selectedLang, setSelectedLang] = useState<string | null>(null);
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [selectedInstance, setSelectedInstance] = useState<string | null>(null);
   const [selectedPage, setSelectedPage] = useState<string | null>(null);
 
-  const [active, setActive] = useState<string>(""); // Currently selected active section
+  const [active, setActive] = useState<string>("config"); // Currently selected active section
 
   const router = useRouter();
 
@@ -77,53 +82,136 @@ const priceSpider: NextPage = () => {
             {
               label: "Data/SKUs/map.js",
               active: active === "dataSkusMap",
-              action: () => setActive("dataSkusMap")
+              action: () =>
+                confirm(
+                  "Warning, it will take some time to fetch this data. Are you sure you want to proceed?"
+                ) && setActive("dataSkusMap")
             }
           ]}
         />
         <CurrentSection label="PriceSpider Inspector" />
+        <TextJsonSwitch
+          activeSwitch={activeSwitch}
+          setActiveSwitch={setActiveSwitch}
+        />
         <Container>
           <ContentContainer>
-            PriceSpider Inspector
-            <div>Select PriceSpider SKU field: </div>
+            {/* <div>Select PriceSpider SKU field: </div>
             {fields?.map(field => (
               <div key={field} onClick={e => setSelectedField(field)}>
                 {field}
               </div>
-            ))}
-            <div>Select language: </div>
+            ))} */}
+
+            <label htmlFor="ps-sku">Select PriceSpider SKU field: </label>
+            <select
+              name="ps-sku"
+              id="ps-sku"
+              onInput={e => setSelectedField(e.currentTarget.value)}
+            >
+              <option value="">--Please choose an option--</option>
+              {fields?.map(field => (
+                <option key={field} value={field}>
+                  {field}
+                </option>
+              ))}
+            </select>
+            <br />
+            {/* <div>Select language: </div>
             {psLanguages?.map(lang => (
               <div key={lang} onClick={e => setSelectedLang(lang)}>
                 {lang}
               </div>
-            ))}
-            <div>Select country: </div>
+            ))} */}
+
+            <label htmlFor="ps-language">Select language: </label>
+            <select
+              name="ps-language"
+              id="ps-language"
+              onInput={e => setSelectedLang(e.currentTarget.value)}
+            >
+              <option value="">--Please choose an option--</option>
+              {psLanguages?.map(lang => (
+                <option key={lang} value={lang}>
+                  {lang}
+                </option>
+              ))}
+            </select>
+            <br />
+            {/* <div>Select country: </div>
             {psCountries?.map(country => (
               <div key={country} onClick={e => setSelectedCountry(country)}>
                 {country}
               </div>
-            ))}
-            <div>Select instance: </div>
+            ))} */}
+
+            <label htmlFor="ps-country">Select country: </label>
+            <select
+              name="ps-country"
+              id="ps-country"
+              onInput={e => setSelectedCountry(e.currentTarget.value)}
+            >
+              <option value="">--Please choose an option--</option>
+              {psCountries?.map(country => (
+                <option key={country} value={country}>
+                  {country}
+                </option>
+              ))}
+            </select>
+            <br />
+
+            <label htmlFor="ps-instance">Select instance: </label>
+            <select
+              name="ps-instance"
+              id="ps-instance"
+              onInput={e => setSelectedCountry(e.currentTarget.value)}
+            >
+              <option value="">--Please choose an option--</option>
+              {psInstances?.map(instance => (
+                <option key={instance} value={instance}>
+                  {instance}
+                </option>
+              ))}
+            </select>
+            <br />
+            {/* <div>Select instance: </div>
             {psInstances?.map(instance => (
               <div key={instance} onClick={e => setSelectedInstance(instance)}>
                 {instance}
               </div>
-            ))}
-            <div>Select product: </div>
+            ))} */}
+
+            {/* <div>Select product: </div>
             {pages?.map(page => (
               <div key={page.id} onClick={e => setSelectedPage(page.url)}>
                 {page.url}
               </div>
-            ))}
-            {active === "config" && (
-              <pre>{JSON.stringify(config, null, 2)}</pre>
-            )}
-            {active === "cidConfig" && (
-              <pre>{JSON.stringify(cidConfig, null, 2)}</pre>
-            )}
-            {active === "dataSkusMap" && (
-              <pre>{JSON.stringify(dataSkusMap, null, 2)}</pre>
-            )}
+            ))} */}
+
+            <label htmlFor="ps-product">Select product: </label>
+            <select
+              name="ps-product"
+              id="ps-product"
+              onInput={e => setSelectedPage(e.currentTarget.value)}
+            >
+              <option value="">--Please choose an option--</option>
+              {pages?.map(page => (
+                <option key={page.id} value={page.url}>
+                  {page.url}
+                </option>
+              ))}
+            </select>
+
+            {active === "config" &&
+              (activeSwitch === "json" ? <JsonView data={config} /> : null)}
+
+            {active === "cidConfig" &&
+              (activeSwitch === "json" ? <JsonView data={cidConfig} /> : null)}
+
+            {active === "dataSkusMap" &&
+              (activeSwitch === "json" ? (
+                <JsonView data={dataSkusMap} />
+              ) : null)}
           </ContentContainer>
         </Container>
       </section>

@@ -7,7 +7,7 @@ import type { NextPage } from "next";
 
 import Layout from "../../components/Layout/Layout";
 
-import useLocale, { useLocaleInfo } from "../../lib/hooks/useLocale";
+import useLocale from "../../lib/hooks/useLocale";
 import fetchData from "../../lib/drivers/fetchData";
 import useKey from "../../lib/hooks/useKey";
 import progressBar from "../../lib/helpers/progressBar";
@@ -24,8 +24,6 @@ const EditLocale: NextPage = () => {
   const router = useRouter();
 
   const locale = useLocale(router.query.l as string, false);
-
-  const localeInfo = useLocaleInfo(router.query.l as string);
 
   const { oldKey } = useKey();
 
@@ -77,7 +75,6 @@ const EditLocale: NextPage = () => {
               Delete locale
             </button>
             <pre>{JSON.stringify(locale, null, 2)}</pre>
-            <pre>{JSON.stringify(localeInfo?.result[0], null, 2)}</pre>
           </ContentContainer>
         </Container>
       </section>

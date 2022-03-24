@@ -17,18 +17,27 @@ import {
   Container,
   ContentContainer
 } from "../components/Containers/Containers";
+import MicroLinks from "../components/MicroLinks/MicroLinks";
+import TextJsonSwitch from "../components/TextJsonSwitch/TextJsonSwitch";
+import JsonView from "../components/JsonView/JsonView";
 
 const smartCommerce: NextPage = () => {
+  // Set default active switch to text
+  const [activeSwitch, setActiveSwitch] = useState<string>("json");
+
   const [selectedField, setSelectedField] = useState<string | null>(null);
   const [selectedPage, setSelectedPage] = useState<string | null>(null);
-  const [selectedEndpoint, setSelectedEndpoint] = useState<string | null>(null);
+  // const [selectedEndpoint, setSelectedEndpoint] = useState<string | null>(null);
+
+  const [active, setActive] = useState<string>("retailers"); // Currently selected active section
 
   const router = useRouter();
 
   const locale = useLocale(router.query.l as string, true);
 
   const result = useSmartCommerce(
-    selectedEndpoint as string,
+    // selectedEndpoint as string,
+    active,
     selectedPage as string,
     selectedField as string
   );
@@ -41,32 +50,63 @@ const smartCommerce: NextPage = () => {
       </Head>
 
       <section className="">
+        <MicroLinks
+          items={[
+            {
+              label: "Retailers",
+              active: active === "retailers",
+              action: () => setActive("retailers")
+            },
+            {
+              label: "Button",
+              active: active === "button",
+              action: () => setActive("button")
+            },
+            {
+              label: "Carousel",
+              active: active === "carousel",
+              action: () => setActive("carousel")
+            }
+          ]}
+        />
         <CurrentSection label="SmartCommerce Inspector" />
+        <TextJsonSwitch
+          activeSwitch={activeSwitch}
+          setActiveSwitch={setActiveSwitch}
+        />
         <Container>
           <ContentContainer>
-            SmartCommerce Inspector
-            <div>Select SmartCommerce SKU field: </div>
-            {locale?.result[0].fields.map(field => (
-              <div key={field} onClick={e => setSelectedField(field)}>
-                {field}
-              </div>
-            ))}
-            <div>Select product: </div>
-            {locale?.result[0].pages?.map(page => (
-              <div key={page.id} onClick={e => setSelectedPage(page.url)}>
-                {page.url}
-              </div>
-            ))}
-            <button onClick={() => setSelectedEndpoint("retailers")}>
-              Retailers
-            </button>
-            <button onClick={() => setSelectedEndpoint("button")}>
-              Button
-            </button>
-            <button onClick={() => setSelectedEndpoint("carousel")}>
-              Carousel
-            </button>
-            <pre>{JSON.stringify(result, null, 2)}</pre>
+            <label htmlFor="mpid-field">
+              Select SmartCommerce MP ID field:{" "}
+            </label>
+            <select
+              name="mpid-field"
+              id="mpid-field"
+              onInput={e => setSelectedField(e.currentTarget.value)}
+            >
+              <option value="">--Please choose an option--</option>
+              {locale?.result[0].fields.map(field => (
+                <option key={field} value={field}>
+                  {field}
+                </option>
+              ))}
+            </select>
+            <br />
+            <label htmlFor="sc-product">Select product: </label>
+            <select
+              name="sc-product"
+              id="sc-product"
+              onInput={e => setSelectedPage(e.currentTarget.value)}
+            >
+              <option value="">--Please choose an option--</option>
+              {locale?.result[0].pages?.map(page => (
+                <option key={page.id} value={page.url}>
+                  {page.url}
+                </option>
+              ))}
+            </select>
+            <br />
+            {activeSwitch === "json" ? <JsonView data={result} /> : null}
           </ContentContainer>
         </Container>
       </section>

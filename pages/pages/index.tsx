@@ -15,6 +15,7 @@ import {
 } from "../../components/Containers/Containers";
 import { handleLinkClick } from "../../lib/helpers/utils";
 import AddEntryButton from "../../components/AddEntryButton/AddEntryButton";
+import SearchEntries from "../../components/SearchEntries/SearchEntries";
 
 const Page: NextPage = () => {
   const router = useRouter();
@@ -82,7 +83,7 @@ const Page: NextPage = () => {
                     <span>Sort: Type, A–Z</span>
                   </div>
                 </div>
-                <div>search</div>
+                <SearchEntries />
               </div>
             </div>
             Pages

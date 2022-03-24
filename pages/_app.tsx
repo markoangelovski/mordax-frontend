@@ -4,8 +4,8 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import NProgress from "nprogress";
 
 import "../styles/globals.css";
-
 import "nprogress/nprogress.css";
+import "highlight.js/styles/github.css";
 
 const queryClient = new QueryClient();
 

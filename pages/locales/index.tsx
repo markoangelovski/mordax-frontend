@@ -4,24 +4,19 @@ import { NextRouter, useRouter } from "next/router";
 
 import type { NextPage } from "next";
 
+import useLocales from "../../lib/hooks/useLocales";
+
 import Layout from "../../components/Layout/Layout";
 import MicroLinks from "../../components/MicroLinks/MicroLinks";
 import CurrentSection from "../../components/CurrentSection/CurrentSection";
-
-import useLocales from "../../lib/hooks/useLocales";
-import { useLocaleInfo } from "../../lib/hooks/useLocale";
+import SearchEntries from "../../components/SearchEntries/SearchEntries";
 import AddEntryButton from "../../components/AddEntryButton/AddEntryButton";
 import {
   Container,
   ContentContainer
 } from "../../components/Containers/Containers";
-import { handleLinkClick } from "../../lib/helpers/utils";
 
-export interface MicroLink {
-  label: string;
-  active: boolean;
-  action: () => void;
-}
+import { handleLinkClick } from "../../lib/helpers/utils";
 
 const Locales: NextPage = () => {
   const router = useRouter();
@@ -84,7 +79,7 @@ const Locales: NextPage = () => {
                     <span>Sort: Brand, A–Z</span>
                   </div>
                 </div>
-                <div>search</div>
+                <SearchEntries />
               </div>
             </div>
             Locales:

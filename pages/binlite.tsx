@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { NextRouter, useRouter } from "next/router";
@@ -15,11 +15,19 @@ import {
   Container,
   ContentContainer
 } from "../components/Containers/Containers";
+import TextJsonSwitch from "../components/TextJsonSwitch/TextJsonSwitch";
+import MicroLinks from "../components/MicroLinks/MicroLinks";
+import { BinLiteProduct } from "../lib/interfaces/binLite";
+import TextView from "../components/TextView/TextView";
+import JsonView from "../components/JsonView/JsonView";
 
 const binLite: NextPage = () => {
+  // Set default active switch to text
+  const [activeSwitch, setActiveSwitch] = useState<string>("json");
+
   const router = useRouter();
 
-  const xmlSitemap = useBinLite(router.query.l as string);
+  const sellers = useBinLite(router.query.l as string);
 
   return (
     <Layout>
@@ -30,10 +38,15 @@ const binLite: NextPage = () => {
 
       <section className="">
         <CurrentSection label="BIN Lite Inspector" />
+        <TextJsonSwitch
+          activeSwitch={activeSwitch}
+          setActiveSwitch={setActiveSwitch}
+        />
         <Container>
           <ContentContainer>
-            BIN Lite Inspector
-            <pre>{JSON.stringify(xmlSitemap, null, 2)}</pre>
+            {/* {activeSwitch === "text" ? TextView(sellers) : null} */}
+            {activeSwitch === "text" ? <div>TODO</div> : null}
+            {activeSwitch === "json" ? <JsonView data={sellers} /> : null}
           </ContentContainer>
         </Container>
       </section>

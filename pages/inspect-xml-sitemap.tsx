@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { NextRouter, useRouter } from "next/router";
@@ -14,8 +14,13 @@ import {
   Container,
   ContentContainer
 } from "../components/Containers/Containers";
+import JsonView from "../components/JsonView/JsonView";
+import TextJsonSwitch from "../components/TextJsonSwitch/TextJsonSwitch";
 
 const inspectXmlSitemap: NextPage = () => {
+  // Set default active switch to text
+  const [activeSwitch, setActiveSwitch] = useState<string>("json");
+
   const router = useRouter();
 
   const xmlSitemap = useXmlSitemap(router.query.l as string);
@@ -29,10 +34,13 @@ const inspectXmlSitemap: NextPage = () => {
 
       <section className="">
         <CurrentSection label="XML Sitemap Inspector" />
+        <TextJsonSwitch
+          activeSwitch={activeSwitch}
+          setActiveSwitch={setActiveSwitch}
+        />
         <Container>
           <ContentContainer>
-            XML Sitemap Inspector
-            <pre>{JSON.stringify(xmlSitemap, null, 2)}</pre>
+            {activeSwitch === "json" ? <JsonView data={xmlSitemap} /> : null}
           </ContentContainer>
         </Container>
       </section>

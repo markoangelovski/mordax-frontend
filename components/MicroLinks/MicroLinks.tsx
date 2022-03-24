@@ -1,5 +1,10 @@
-import { MicroLink } from "../../pages/locales";
 import { Container } from "../Containers/Containers";
+
+interface MicroLink {
+  label: string;
+  active: boolean;
+  action: () => void;
+}
 
 interface PropsAll {
   items: MicroLink[];
