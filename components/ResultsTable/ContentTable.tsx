@@ -38,7 +38,6 @@ const RowItem = ({ label, endpoint }: { label: string; endpoint?: string }) => (
   >
     <div className="flex  overflow-hidden" style={{ maxWidth: "22em" }}>
       <div className="min-w-0 shrink grow-0">
-        {console.log("endpoint", endpoint)}
         {endpoint?.length ? (
           <Link href={endpoint}>
             <a
