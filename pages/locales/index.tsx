@@ -95,16 +95,6 @@ const Locales: NextPage = () => {
               </div>
             </div>
             <ResultsTable data={data} />
-            Locales:
-            <Link href={`/locales/new?l=${router.query.l}`}>+ Add locale</Link>
-            {locales?.result.map((locale, i) => (
-              <div key={i}>
-                <Link href={`/locales/edit?l=${locale.url.value}`}>
-                  {locale.brand.value}
-                </Link>
-                {locale.locale.value}
-              </div>
-            ))}
           </ContentContainer>
         </Container>
       </section>
