@@ -17,6 +17,7 @@ import {
 } from "../../components/Containers/Containers";
 
 import { handleLinkClick } from "../../lib/helpers/utils";
+import ResultsTable from "../../components/ResultsTable/ContentTable";
 
 const Locales: NextPage = () => {
   const router = useRouter();
@@ -27,6 +28,17 @@ const Locales: NextPage = () => {
   const total = locales?.info.total || 0;
 
   const minLocaleCount = locales?.result.length ? 1 : 0;
+
+  const data = locales?.result.map(locale => ({
+    Brand: {
+      label: locale.brand.value,
+      endpoint: `/locales/edit?l=${locale.url.value}`
+    },
+    Locale: locale.locale.value,
+    URL: { label: locale.url.value, endpoint: locale.url.value },
+    Created: new Date(locale.createdAt).toDateString(),
+    Updated: new Date(locale.updatedAt).toDateString()
+  }));
 
   return (
     <Layout>
@@ -82,13 +94,14 @@ const Locales: NextPage = () => {
                 <SearchEntries />
               </div>
             </div>
+            <ResultsTable data={data} />
             Locales:
             <Link href={`/locales/new?l=${router.query.l}`}>+ Add locale</Link>
             {locales?.result.map((locale, i) => (
               <div key={i}>
                 <Link href={`/locales/edit?l=${locale.url.value}`}>
                   {locale.brand.value}
-                </Link>{" "}
+                </Link>
                 {locale.locale.value}
               </div>
             ))}

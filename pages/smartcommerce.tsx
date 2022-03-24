@@ -27,7 +27,6 @@ const smartCommerce: NextPage = () => {
 
   const [selectedField, setSelectedField] = useState<string | null>(null);
   const [selectedPage, setSelectedPage] = useState<string | null>(null);
-  // const [selectedEndpoint, setSelectedEndpoint] = useState<string | null>(null);
 
   const [active, setActive] = useState<string>("retailers"); // Currently selected active section
 
