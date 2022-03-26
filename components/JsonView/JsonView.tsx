@@ -14,15 +14,17 @@ const JsonView = ({ data }: any) => {
   if (!jsonString) return null;
 
   return (
-    <div className="flex max-w-full overflow-auto">
-      <div className="flex flex-col py-4 text-right text-slate-400">
+    <div className="flex max-w-full ">
+      <div className="flex flex-col py-4 pr-4 text-right text-slate-400">
         {Array.from({ length: rows }, (_, i) => (
           <span key={i}>{i + 1}</span>
         ))}
       </div>
-      <pre>
-        <code>{jsonString}</code>
-      </pre>
+      <div className="overflow-auto">
+        <pre>
+          <code>{jsonString}</code>
+        </pre>
+      </div>
     </div>
   );
 };

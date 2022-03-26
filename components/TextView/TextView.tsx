@@ -24,7 +24,10 @@ const TextView = ({ data }: any) => {
   tree(data || {}); // Empty object to be used as a placeholder/check while the data is fetched
 
   return (
-    <div className="-ml-4 py-4" dangerouslySetInnerHTML={{ __html: html }} />
+    <div
+      className="-ml-4 overflow-auto py-4"
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
   );
 };
 
