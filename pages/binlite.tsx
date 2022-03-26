@@ -23,7 +23,7 @@ import JsonView from "../components/JsonView/JsonView";
 
 const binLite: NextPage = () => {
   // Set default active switch to text
-  const [activeSwitch, setActiveSwitch] = useState<string>("json");
+  const [activeSwitch, setActiveSwitch] = useState<string>("text");
 
   const router = useRouter();
 
@@ -44,8 +44,7 @@ const binLite: NextPage = () => {
         />
         <Container>
           <ContentContainer>
-            {/* {activeSwitch === "text" ? TextView(sellers) : null} */}
-            {activeSwitch === "text" ? <div>TODO</div> : null}
+            {activeSwitch === "text" ? <TextView data={sellers} /> : null}
             {activeSwitch === "json" ? <JsonView data={sellers} /> : null}
           </ContentContainer>
         </Container>

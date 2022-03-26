@@ -28,7 +28,7 @@ const useSmartCommerce = (
       ),
     {
       enabled: !!endpoint && !!oldKey && !!page && !!mpIdFieldName,
-      refetchOnWindowFocus: false,
+      refetchOnWindowFocus: false
     }
   );
 

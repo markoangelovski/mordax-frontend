@@ -16,10 +16,11 @@ import {
 } from "../components/Containers/Containers";
 import JsonView from "../components/JsonView/JsonView";
 import TextJsonSwitch from "../components/TextJsonSwitch/TextJsonSwitch";
+import TextView from "../components/TextView/TextView";
 
 const inspectXmlSitemap: NextPage = () => {
   // Set default active switch to text
-  const [activeSwitch, setActiveSwitch] = useState<string>("json");
+  const [activeSwitch, setActiveSwitch] = useState<string>("text");
 
   const router = useRouter();
 
@@ -40,6 +41,7 @@ const inspectXmlSitemap: NextPage = () => {
         />
         <Container>
           <ContentContainer>
+            {activeSwitch === "text" ? <TextView data={xmlSitemap} /> : null}
             {activeSwitch === "json" ? <JsonView data={xmlSitemap} /> : null}
           </ContentContainer>
         </Container>

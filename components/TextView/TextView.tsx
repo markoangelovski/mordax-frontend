@@ -1,42 +1,31 @@
-import React, { FunctionComponent } from "react";
+const TextView = ({ data }: any) => {
+  let html = "";
 
-const TextView = (data: any) => {
-  const el = React.createElement;
-
-  const append = (parent: any, child: React.ReactNode) => {
-    return el(parent, null, child);
-  };
-
-  //   const parent = el("div", null, null);
-  const parent = () => <div></div>;
-
-  function tree(parent: any, data: any) {
+  function tree(data: any) {
+    // Function from https://stackoverflow.com/questions/6692538/generate-unordered-list-from-json-data
     if (typeof data == "object") {
-      // document.write("<ul>");
-      append(parent, el("ul", null, null));
+      html += "<ul class='list-disc' style='margin:auto; padding:revert;' >";
       for (var i in data) {
-        //   document.write("<li>" + i);
-        append(parent, el("li", null, i));
-        tree(parent, data[i]);
+        html += `<li class='hljs-attr'>${i}: `;
+        tree(data[i]);
+        html += "</li>";
       }
-      // document.write("</ul>");
+      html += "</ul>";
     } else {
-      // document.write(" => " + data);
-      append(parent, el("", null, data));
+      html += `<span class='${
+        typeof data === "string"
+          ? "hljs-string"
+          : typeof data === "number"
+          ? "hljs-number"
+          : "hljs-keyword"
+      }'>${data}</span>`;
     }
-    console.log("parent", parent);
-    return parent;
   }
+  tree(data || {}); // Empty object to be used as a placeholder/check while the data is fetched
 
-  return tree(parent, data);
+  return (
+    <div className="-ml-4 py-4" dangerouslySetInnerHTML={{ __html: html }} />
+  );
 };
-// const TextView = (data: any) => {
-//   let welcome = el("ul", { style: { color: "red" } }, [
-//     el("li", { style: { color: "red" } }, `Welcome to react world`),
-//     el("li", { style: { color: "red" } }, `Welcome to react world`)
-//   ]);
-
-//   return welcome;
-// };
 
 export default TextView;

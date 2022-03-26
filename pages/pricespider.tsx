@@ -25,10 +25,11 @@ import {
 } from "../components/Containers/Containers";
 import TextJsonSwitch from "../components/TextJsonSwitch/TextJsonSwitch";
 import JsonView from "../components/JsonView/JsonView";
+import TextView from "../components/TextView/TextView";
 
 const priceSpider: NextPage = () => {
   // Set default active switch to text
-  const [activeSwitch, setActiveSwitch] = useState<string>("json");
+  const [activeSwitch, setActiveSwitch] = useState<string>("text");
 
   const [selectedField, setSelectedField] = useState<string | null>(null);
   const [selectedLang, setSelectedLang] = useState<string | null>(null);
@@ -96,13 +97,6 @@ const priceSpider: NextPage = () => {
         />
         <Container>
           <ContentContainer>
-            {/* <div>Select PriceSpider SKU field: </div>
-            {fields?.map(field => (
-              <div key={field} onClick={e => setSelectedField(field)}>
-                {field}
-              </div>
-            ))} */}
-
             <label htmlFor="ps-sku">Select PriceSpider SKU field: </label>
             <select
               name="ps-sku"
@@ -117,12 +111,6 @@ const priceSpider: NextPage = () => {
               ))}
             </select>
             <br />
-            {/* <div>Select language: </div>
-            {psLanguages?.map(lang => (
-              <div key={lang} onClick={e => setSelectedLang(lang)}>
-                {lang}
-              </div>
-            ))} */}
 
             <label htmlFor="ps-language">Select language: </label>
             <select
@@ -138,12 +126,6 @@ const priceSpider: NextPage = () => {
               ))}
             </select>
             <br />
-            {/* <div>Select country: </div>
-            {psCountries?.map(country => (
-              <div key={country} onClick={e => setSelectedCountry(country)}>
-                {country}
-              </div>
-            ))} */}
 
             <label htmlFor="ps-country">Select country: </label>
             <select
@@ -174,19 +156,6 @@ const priceSpider: NextPage = () => {
               ))}
             </select>
             <br />
-            {/* <div>Select instance: </div>
-            {psInstances?.map(instance => (
-              <div key={instance} onClick={e => setSelectedInstance(instance)}>
-                {instance}
-              </div>
-            ))} */}
-
-            {/* <div>Select product: </div>
-            {pages?.map(page => (
-              <div key={page.id} onClick={e => setSelectedPage(page.url)}>
-                {page.url}
-              </div>
-            ))} */}
 
             <label htmlFor="ps-product">Select product: </label>
             <select
@@ -202,16 +171,26 @@ const priceSpider: NextPage = () => {
               ))}
             </select>
 
-            {active === "config" &&
-              (activeSwitch === "json" ? <JsonView data={config} /> : null)}
+            {active === "config" && activeSwitch === "text" ? (
+              <TextView data={config} />
+            ) : null}
+            {active === "config" && activeSwitch === "json" ? (
+              <JsonView data={config} />
+            ) : null}
 
-            {active === "cidConfig" &&
-              (activeSwitch === "json" ? <JsonView data={cidConfig} /> : null)}
+            {active === "cidConfig" && activeSwitch === "text" ? (
+              <TextView data={cidConfig} />
+            ) : null}
+            {active === "cidConfig" && activeSwitch === "json" ? (
+              <JsonView data={cidConfig} />
+            ) : null}
 
-            {active === "dataSkusMap" &&
-              (activeSwitch === "json" ? (
-                <JsonView data={dataSkusMap} />
-              ) : null)}
+            {active === "dataSkusMap" && activeSwitch === "text" ? (
+              <TextView data={dataSkusMap} />
+            ) : null}
+            {active === "dataSkusMap" && activeSwitch === "json" ? (
+              <JsonView data={dataSkusMap} />
+            ) : null}
           </ContentContainer>
         </Container>
       </section>

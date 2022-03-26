@@ -20,14 +20,15 @@ import {
 import MicroLinks from "../components/MicroLinks/MicroLinks";
 import TextJsonSwitch from "../components/TextJsonSwitch/TextJsonSwitch";
 import JsonView from "../components/JsonView/JsonView";
+import TextView from "../components/TextView/TextView";
 
 const smartCommerce: NextPage = () => {
   // Set default active switch to text
-  const [activeSwitch, setActiveSwitch] = useState<string>("json");
+  const [activeSwitch, setActiveSwitch] = useState<string>("text");
 
   const [selectedField, setSelectedField] = useState<string | null>(null);
   const [selectedPage, setSelectedPage] = useState<string | null>(null);
-
+  console.log("selectedField: ", selectedField);
   const [active, setActive] = useState<string>("retailers"); // Currently selected active section
 
   const router = useRouter();
@@ -105,6 +106,7 @@ const smartCommerce: NextPage = () => {
               ))}
             </select>
             <br />
+            {activeSwitch === "text" ? <TextView data={result} /> : null}
             {activeSwitch === "json" ? <JsonView data={result} /> : null}
           </ContentContainer>
         </Container>
