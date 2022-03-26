@@ -21,6 +21,7 @@ import {
 } from "../../components/Containers/Containers";
 import { handleLinkClick } from "../../lib/helpers/utils";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
+import Details from "../../components/Details/Details";
 
 const EditPage: NextPage = () => {
   const router = useRouter();
@@ -77,6 +78,7 @@ const EditPage: NextPage = () => {
                 { label: router.query.p as string }
               ]}
             />
+            <Details />
             Edit page
             <br />
             <button

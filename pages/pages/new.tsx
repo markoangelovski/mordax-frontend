@@ -26,6 +26,7 @@ import {
 } from "../../components/Containers/Containers";
 import { handleLinkClick } from "../../lib/helpers/utils";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
+import Details from "../../components/Details/Details";
 
 const NewPage: NextPage = () => {
   const [currentField, setCurrentField] = useState<string>("");
@@ -127,7 +128,7 @@ const NewPage: NextPage = () => {
                 { label: "Add page" }
               ]}
             />
-            <h2>Details</h2>
+            <Details />
             <form className="" onSubmit={formik.handleSubmit}>
               <span>Locale url</span>
               <input

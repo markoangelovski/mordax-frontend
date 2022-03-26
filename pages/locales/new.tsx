@@ -29,6 +29,7 @@ import {
 } from "../../components/Containers/Containers";
 import { handleLinkClick } from "../../lib/helpers/utils";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
+import Details from "../../components/Details/Details";
 
 const NewPage: NextPage = () => {
   const [current3rdParty, setCurrent3rdParty] = useState<string>("");
@@ -186,6 +187,7 @@ const NewPage: NextPage = () => {
                 { label: "Add locale" }
               ]}
             />
+            <Details />
             <h2>Details</h2>
             <form className="" onSubmit={formik.handleSubmit} ref={templateRef}>
               <span>Brand*</span>

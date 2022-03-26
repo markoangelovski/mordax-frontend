@@ -20,6 +20,7 @@ import {
 } from "../../components/Containers/Containers";
 import { handleLinkClick } from "../../lib/helpers/utils";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
+import Details from "../../components/Details/Details";
 
 const EditLocale: NextPage = () => {
   const router = useRouter();
@@ -63,6 +64,7 @@ const EditLocale: NextPage = () => {
                 { label: router.query.l as string }
               ]}
             />
+            <Details />
             Edit locale
             <br />
             <button
