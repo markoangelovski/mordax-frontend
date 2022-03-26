@@ -20,6 +20,7 @@ import {
   ContentContainer
 } from "../../components/Containers/Containers";
 import { handleLinkClick } from "../../lib/helpers/utils";
+import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 
 const EditPage: NextPage = () => {
   const router = useRouter();
@@ -70,6 +71,12 @@ const EditPage: NextPage = () => {
         <CurrentSection label="Pages" />
         <Container>
           <ContentContainer>
+            <Breadcrumbs
+              breadcrumbs={[
+                { label: "Pages", endpoint: `/pages?l=${router.query.l}` },
+                { label: router.query.p as string }
+              ]}
+            />
             Edit page
             <br />
             <button

@@ -73,7 +73,7 @@ const Page: NextPage = () => {
     return {
       URL: {
         label: page.url,
-        endpoint: `/pages/edit?l=${page.url}&p=${page.id}`
+        endpoint: `/pages/edit?l=${router.query.l}&p=${page.id}`
       },
       Type: page.type,
       "In XML Sitemap": page.inXmlSitemap,

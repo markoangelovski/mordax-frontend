@@ -25,6 +25,7 @@ import {
   ContentContainer
 } from "../../components/Containers/Containers";
 import { handleLinkClick } from "../../lib/helpers/utils";
+import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 
 const NewPage: NextPage = () => {
   const [currentField, setCurrentField] = useState<string>("");
@@ -120,6 +121,12 @@ const NewPage: NextPage = () => {
         <CurrentSection label="Pages" />
         <Container>
           <ContentContainer>
+            <Breadcrumbs
+              breadcrumbs={[
+                { label: "Pages", endpoint: `/pages?l=${router.query.l}` },
+                { label: "Add page" }
+              ]}
+            />
             <h2>Details</h2>
             <form className="" onSubmit={formik.handleSubmit}>
               <span>Locale url</span>

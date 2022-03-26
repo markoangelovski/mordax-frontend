@@ -28,6 +28,7 @@ import {
   ContentContainer
 } from "../../components/Containers/Containers";
 import { handleLinkClick } from "../../lib/helpers/utils";
+import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 
 const NewPage: NextPage = () => {
   const [current3rdParty, setCurrent3rdParty] = useState<string>("");
@@ -179,6 +180,12 @@ const NewPage: NextPage = () => {
         <CurrentSection label="Locales" />
         <Container>
           <ContentContainer>
+            <Breadcrumbs
+              breadcrumbs={[
+                { label: "Locales", endpoint: `/locales?l=${router.query.l}` },
+                { label: "Add locale" }
+              ]}
+            />
             <h2>Details</h2>
             <form className="" onSubmit={formik.handleSubmit} ref={templateRef}>
               <span>Brand*</span>

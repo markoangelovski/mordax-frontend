@@ -19,6 +19,7 @@ import {
   ContentContainer
 } from "../../components/Containers/Containers";
 import { handleLinkClick } from "../../lib/helpers/utils";
+import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 
 const EditLocale: NextPage = () => {
   const router = useRouter();
@@ -56,6 +57,12 @@ const EditLocale: NextPage = () => {
         <CurrentSection label="Locales" />
         <Container>
           <ContentContainer>
+            <Breadcrumbs
+              breadcrumbs={[
+                { label: "Locales", endpoint: `/locales?l=${router.query.l}` },
+                { label: router.query.l as string }
+              ]}
+            />
             Edit locale
             <br />
             <button
