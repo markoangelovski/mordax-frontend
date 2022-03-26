@@ -27,6 +27,14 @@ export interface Locale {
     psCountries: string[];
     psLanguages: string[];
   };
+  BINLite: {
+    BINLiteKey: value;
+  };
+  SC: {
+    scButtonKey: value;
+    scCarouselKey: value;
+    scEcEndpointKey: value;
+  };
   createdAt: string;
   updatedAt: string;
   pages?: Page[];

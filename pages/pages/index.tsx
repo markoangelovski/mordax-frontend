@@ -16,6 +16,9 @@ import {
 import { handleLinkClick } from "../../lib/helpers/utils";
 import AddEntryButton from "../../components/AddEntryButton/AddEntryButton";
 import SearchEntries from "../../components/SearchEntries/SearchEntries";
+import ResultsTable from "../../components/ResultsTable/ContentTable";
+
+type Payload = { [key: string]: string | boolean };
 
 const Page: NextPage = () => {
   const router = useRouter();
@@ -27,6 +30,61 @@ const Page: NextPage = () => {
   const total = locale?.info.total || 0;
 
   const minEntriesCount = locale?.result.length ? 1 : 0;
+
+  const data = locale?.result[0].pages?.map(page => {
+    const pageDataPayload: Payload = {};
+    locale.result[0].fields.forEach(key => {
+      pageDataPayload[key] = page.data?.[key]?.value;
+    });
+
+    const psPayload: Payload = {};
+    if (locale.result[0].PS) {
+      psPayload["PriceSpider OK"] = page.PS?.ok;
+      psPayload["PriceSpider matches"] = page.PS?.matches
+        .map(match => match.retailerName)
+        .join(", ");
+      psPayload["Refresh sellers"] = page.PS && "ok";
+      psPayload["Last scan"] =
+        page.PS && new Date(page.PS?.lastScan).toDateString();
+    }
+
+    const binLitePayload: Payload = {};
+    if (locale.result[0].BINLite) {
+      binLitePayload["BIN Lite OK"] = page.BINLite?.ok;
+      binLitePayload["BIN Lite matches"] = page.BINLite?.matches
+        .map(match => match.retailerName)
+        .join(", ");
+      binLitePayload["Refresh sellers"] = page.BINLite && "ok";
+      binLitePayload["Last scan"] =
+        page.BINLite && new Date(page.BINLite?.lastScan).toDateString();
+    }
+
+    const scPayload: Payload = {};
+    if (locale.result[0].SC) {
+      scPayload["SmartCommerce OK"] = page.SC?.ok;
+      scPayload["SmartCommerce matches"] = page.SC?.matches
+        .map(match => match.retailerName)
+        .join(", ");
+      scPayload["Refresh sellers"] = page.SC && "ok";
+      scPayload["Last scan"] =
+        page.SC && new Date(page.SC?.lastScan).toDateString();
+    }
+
+    return {
+      URL: {
+        label: page.url,
+        endpoint: `/pages/edit?l=${page.url}&p=${page.id}`
+      },
+      Type: page.type,
+      "In XML Sitemap": page.inXmlSitemap,
+      Active: page.active,
+      SKU: page.SKU,
+      ...pageDataPayload,
+      ...psPayload,
+      ...binLitePayload,
+      ...scPayload
+    };
+  });
 
   return (
     <Layout>
@@ -86,15 +144,7 @@ const Page: NextPage = () => {
                 <SearchEntries />
               </div>
             </div>
-            Pages
-            <Link href={`/pages/new?l=${router.query.l}`}>+ Add a page</Link>
-            {locale?.result[0].pages?.map(page => (
-              <div key={page.id}>
-                <Link href={`/pages/edit?l=${router.query.l}&p=${page.id}`}>
-                  {page.url}
-                </Link>
-              </div>
-            ))}
+            <ResultsTable data={data} />
           </ContentContainer>
         </Container>
       </section>
