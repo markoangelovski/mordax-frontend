@@ -13,7 +13,7 @@ const Button = ({ label, className, type, disabled, handler }: Props) => {
     <button
       type={type || "button"}
       onClick={handler}
-      className={`${className} rounded border px-4 py-3 text-sm font-semibold tracking-wide`}
+      className={`${className} rounded border text-sm font-semibold tracking-wide`}
       disabled={disabled}
     >
       {label}

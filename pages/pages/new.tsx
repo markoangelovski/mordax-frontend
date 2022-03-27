@@ -43,12 +43,11 @@ const NewPage: NextPage = () => {
 
   const router = useRouter();
 
-  const locale = useLocale(router.query.l as string, true);
+  const locale = useLocale(router.query.l as string, false);
 
   const { mutate, isLoading, isIdle, isSuccess } = useMutation(
     (endpoint: string) => fetchData(endpoint, "POST")
   );
-  const queryClient = useQueryClient();
 
   const formik = useFormik({
     initialValues: {
@@ -87,6 +86,7 @@ const NewPage: NextPage = () => {
     }
   });
 
+  const isAddActive = currentField.length && !!currentFieldValue.length;
   const isSaveActive = !!formik.values.pageUrl;
 
   const makeDataPayload = (data: object[]) =>
@@ -205,23 +205,28 @@ const NewPage: NextPage = () => {
                   />
                 </InputsRow>
               ))}
-
               <InputsRow className="mr-64 justify-end pr-5">
                 <Button
-                  className="text-sky-700 hover:border-sky-900 hover:text-sky-900"
+                  className={`px-4 py-3 ${
+                    isAddActive
+                      ? "text-sky-700 hover:border-sky-900 hover:text-sky-900"
+                      : "bg-gray-100 text-gray-400"
+                  }`}
                   label="Add"
                   handler={handleAddField}
                 />
               </InputsRow>
               <InputsRow className="mr-64 justify-end pr-5">
                 <Button
-                  className="mr-2 text-sky-700 hover:border-sky-900 hover:text-sky-900"
+                  className="mr-2 px-4 py-3 text-sky-700 hover:border-sky-900 hover:text-sky-900"
                   label="Cancel"
                   handler={handleCancelForm}
                 />
                 <Button
-                  className={`text-white ${
-                    isSaveActive ? "bg-sky-700 hover:bg-sky-900" : "bg-gray-500"
+                  className={`px-4 py-3 ${
+                    isSaveActive
+                      ? "bg-sky-700 text-sky-700 hover:bg-sky-900"
+                      : "bg-gray-100 text-gray-400"
                   }`}
                   label="Save"
                   type="submit"

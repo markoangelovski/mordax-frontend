@@ -36,49 +36,55 @@ export const Input = ({
             {label}
           </label>
         ) : null}
-        <div
-          className={`mt-1 mr-4 flex h-10  items-center rounded border ${
-            disabled ? "border-gray-300 bg-gray-200" : ""
-          }`}
-        >
-          <input
-            className="pl-3 focus:outline-none disabled:bg-gray-200"
-            type="text"
-            placeholder={placeholder}
-            maxLength={150}
-            value={value}
-            disabled={disabled}
-            onChange={onChange}
-            autoComplete="off"
-            id={id}
-            name={name}
-            required={required}
-          />
-        </div>
+        {value || value?.length === 0 ? (
+          <div
+            className={`mt-1 mr-4 flex h-10 items-center overflow-hidden rounded border ${
+              disabled ? "border-gray-300 bg-gray-200" : ""
+            }`}
+          >
+            <input
+              className="grow pl-3 focus:outline-none disabled:bg-gray-200"
+              type="text"
+              placeholder={placeholder}
+              maxLength={150}
+              value={value}
+              disabled={disabled}
+              onChange={onChange}
+              autoComplete="off"
+              id={id}
+              name={name}
+              required={required}
+            />
+          </div>
+        ) : null}
       </div>
     );
   } else {
     return (
       <div className={`${className} last:mr-0`}>
-        <label className="text-xs font-semibold uppercase text-slate-500">
-          {label}
-        </label>
-        <div
-          className={`mt-1 mr-4 flex h-10  items-center rounded border ${
-            disabled ? "border-gray-300 bg-gray-200" : ""
-          }`}
-        >
-          <input
-            className="w-full pl-3 focus:outline-none disabled:bg-gray-200"
-            type="text"
-            placeholder={placeholder}
-            maxLength={150}
-            defaultValue={defaultValue}
-            disabled={disabled}
-            onChange={onChange}
-            autoComplete="off"
-          />
-        </div>
+        {label ? (
+          <label className="text-xs font-semibold uppercase text-slate-500">
+            {label}
+          </label>
+        ) : null}
+        {defaultValue || defaultValue?.length === 0 ? (
+          <div
+            className={`mt-1 mr-4 flex h-10 items-center overflow-hidden rounded border ${
+              disabled ? "border-gray-300 bg-gray-200" : ""
+            }`}
+          >
+            <input
+              className="grow pl-3 focus:outline-none disabled:bg-gray-200"
+              type="text"
+              placeholder={placeholder}
+              maxLength={150}
+              defaultValue={defaultValue}
+              disabled={disabled}
+              onChange={onChange}
+              autoComplete="off"
+            />
+          </div>
+        ) : null}
       </div>
     );
   }
@@ -86,6 +92,7 @@ export const Input = ({
 
 interface SelectInputProps {
   label: string;
+  placeholder?: string;
   className: string;
   currentField: string;
   setCurrentField: Function;
@@ -95,6 +102,7 @@ interface SelectInputProps {
 export const SelectInput = ({
   className,
   label,
+  placeholder,
   data,
   currentField,
   setCurrentField
@@ -111,7 +119,15 @@ export const SelectInput = ({
           className="flex flex-1 items-center justify-between pl-3"
           onClick={() => setIsOpen(prev => !prev)}
         >
-          <span>{currentField ? currentField : "Select field..."}</span>
+          <span>
+            {currentField ? (
+              currentField
+            ) : placeholder ? (
+              <span className="text-sm">{placeholder}</span>
+            ) : (
+              "Select field..."
+            )}
+          </span>
           <div className="border-l border-gray-300 p-2">
             {isOpen ? (
               <Arrow className="mx-2 h-3 w-3 rotate-180" />
@@ -127,9 +143,7 @@ export const SelectInput = ({
             className="fixed inset-0  bg-black opacity-20"
             onClick={() => setIsOpen(false)}
           ></div>
-          <div
-            className={`${className} absolute mr-4 overflow-hidden rounded border bg-white shadow-xl`}
-          >
+          <div className="absolute mr-4 overflow-hidden rounded border bg-white shadow-xl">
             {data.map((item, i) => (
               <span
                 key={i}

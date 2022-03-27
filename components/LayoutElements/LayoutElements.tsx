@@ -4,5 +4,5 @@ interface Props {
 }
 
 export const InputsRow = ({ className, children }: Props) => {
-  return <div className={`mt-2 flex ${className}`}>{children}</div>;
+  return <div className={`mt-2 flex ${className || ""}`}>{children}</div>;
 };

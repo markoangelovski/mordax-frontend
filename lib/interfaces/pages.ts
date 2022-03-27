@@ -84,7 +84,7 @@ export interface Page {
   SKU?: string;
   inXmlSitemap?: boolean;
   active?: boolean;
-  data: { [key: string]: { value: string } };
+  data: { [key: string]: { value: string; createdAt: string } };
   PS: {
     ok: boolean;
     lastScan: string;
