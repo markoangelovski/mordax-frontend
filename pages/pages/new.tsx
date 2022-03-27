@@ -213,6 +213,7 @@ const NewPage: NextPage = () => {
                       : "bg-gray-100 text-gray-400"
                   }`}
                   label="Add"
+                  disabled={!isAddActive}
                   handler={handleAddField}
                 />
               </InputsRow>
