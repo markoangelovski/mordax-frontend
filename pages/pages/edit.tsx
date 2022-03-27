@@ -125,7 +125,7 @@ const EditPage: NextPage = () => {
               <Input
                 label="SKU"
                 placeholder="Page SKU"
-                value={page?.SKU}
+                value={page?.SKU || ""}
                 disabled={false}
                 className="w-3/12"
               />
