@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -27,6 +27,9 @@ import {
 import { handleLinkClick } from "../../lib/helpers/utils";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 import Details from "../../components/Details/Details";
+import { InputsRow } from "../../components/LayoutElements/LayoutElements";
+import { Input, SelectInput } from "../../components/Inputs/Inputs";
+import Button from "../../components/Button/Button";
 
 const NewPage: NextPage = () => {
   const [currentField, setCurrentField] = useState<string>("");
@@ -45,6 +48,7 @@ const NewPage: NextPage = () => {
   const { mutate, isLoading, isIdle, isSuccess } = useMutation(
     (endpoint: string) => fetchData(endpoint, "POST")
   );
+  const queryClient = useQueryClient();
 
   const formik = useFormik({
     initialValues: {
@@ -66,16 +70,15 @@ const NewPage: NextPage = () => {
         {
           onSettled: (data: Result<Page>, error) => {
             if (data instanceof Error || error)
-              return setErrorMessage(
-                "Error occurred while fetching data. Please try again later."
-              );
+              return setErrorMessage("Error occurred. Please try again later.");
             if (data.hasErrors) return setErrorMessage("Invalid access key.");
 
+            // TODO: Prikaži rezultat responsea u Modal
             setResponse(data);
 
-            // return router.push(
-            //   `/pages/edit?l=${router.query.l}&p=${data.result[0].id}`
-            // );
+            return router.push(
+              `/pages/edit?l=${router.query.l}&p=${data.result[0].id}`
+            );
           }
         }
       );
@@ -83,6 +86,8 @@ const NewPage: NextPage = () => {
       progressBar(isLoading, isLoading, isSuccess);
     }
   });
+
+  const isSaveActive = !!formik.values.pageUrl;
 
   const makeDataPayload = (data: object[]) =>
     data.reduce(
@@ -93,6 +98,14 @@ const NewPage: NextPage = () => {
   const handleAddField = () => {
     if (!currentField || !currentFieldValue) return;
     setFields(fields => [...fields, { [currentField]: currentFieldValue }]);
+    setCurrentField("");
+    setCurrentFieldValue("");
+  };
+
+  const handleCancelForm = () => {
+    formik.values.type = "";
+    formik.values.pageUrl = "";
+    setFields([]);
     setCurrentField("");
     setCurrentFieldValue("");
   };
@@ -130,61 +143,91 @@ const NewPage: NextPage = () => {
             />
             <Details />
             <form className="" onSubmit={formik.handleSubmit}>
-              <span>Locale url</span>
-              <input
-                className=""
-                defaultValue={locale?.result[0].url.value}
-                type="text"
-                name="localeUrl"
-                id="localeUrl"
-                disabled
-              />
-
-              <span>URL*</span>
-              <input
-                className=""
-                placeholder="Page URL"
-                value={formik.values.pageUrl}
-                onChange={formik.handleChange} // TODO: Napravi validaciju da page URL pripada locale url. LocaleURL.test(pageUrl)
-                type="url"
-                name="pageUrl"
-                id="pageUrl"
-                required
-              />
-
-              <span>Type</span>
-              <input
-                className=""
-                placeholder="product, article, etc."
-                value={formik.values.type}
-                onChange={formik.handleChange}
-                type="text"
-                name="type"
-                id="type"
-              />
-
-              <span>Field</span>
-              {locale?.result[0].fields.map(field => (
-                <div key={field} onClick={() => setCurrentField(field)}>
-                  {field}
-                </div>
+              <InputsRow>
+                <Input
+                  label="Locale url"
+                  defaultValue={router.query.l as string}
+                  disabled={true}
+                  className="w-3/12"
+                />
+                <Input
+                  label="URL*"
+                  placeholder="Page URL"
+                  value={formik.values.pageUrl}
+                  onChange={formik.handleChange}
+                  disabled={false}
+                  className="w-3/12"
+                  id="pageUrl"
+                  name="pageUrl"
+                  required={true}
+                />
+                <Input
+                  label="Type"
+                  placeholder="product, article, etc."
+                  value={formik.values.type}
+                  onChange={formik.handleChange}
+                  disabled={false}
+                  className="w-3/12"
+                  id="type"
+                  name="type"
+                />
+              </InputsRow>
+              <InputsRow>
+                <SelectInput
+                  currentField={currentField}
+                  setCurrentField={setCurrentField}
+                  label="Field"
+                  className="w-3/12"
+                  data={locale?.result[0].fields || []}
+                />
+                <Input
+                  label="Value"
+                  placeholder="Enter value"
+                  value={currentFieldValue}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setCurrentFieldValue(e.currentTarget.value)
+                  }
+                  disabled={false}
+                  className="w-6/12"
+                />
+              </InputsRow>
+              {fields.map((field, i) => (
+                <InputsRow key={i}>
+                  <Input
+                    defaultValue={Object.keys(field)[0]}
+                    disabled={true}
+                    className="w-3/12"
+                  />
+                  <Input
+                    defaultValue={Object.values(field)[0]}
+                    disabled={true}
+                    className="w-6/12"
+                  />
+                </InputsRow>
               ))}
 
-              <span>Value</span>
-              <input
-                className=""
-                placeholder="Enter value"
-                value={currentFieldValue}
-                onChange={e => setCurrentFieldValue(e.target.value)}
-                type="text"
-              />
-
-              <button type="button" onClick={handleAddField}>
-                Add
-              </button>
-
-              <button>Cancel</button>
-              <input type="submit" value="Save" />
+              <InputsRow className="mr-64 justify-end pr-5">
+                <Button
+                  className="text-sky-700 hover:border-sky-900 hover:text-sky-900"
+                  label="Add"
+                  handler={handleAddField}
+                />
+              </InputsRow>
+              <InputsRow className="mr-64 justify-end pr-5">
+                <Button
+                  className="mr-2 text-sky-700 hover:border-sky-900 hover:text-sky-900"
+                  label="Cancel"
+                  handler={handleCancelForm}
+                />
+                <Button
+                  className={`text-white ${
+                    isSaveActive ? "bg-sky-700 hover:bg-sky-900" : "bg-gray-500"
+                  }`}
+                  label="Save"
+                  type="submit"
+                  disabled={!isSaveActive}
+                />
+              </InputsRow>
             </form>
             {response ? <Modal /> : null}
           </ContentContainer>

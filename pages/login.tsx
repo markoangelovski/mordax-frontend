@@ -42,9 +42,7 @@ const Login: NextPage = () => {
       mutate(`/keys/key-info?key=${values.key}&checkKey=${values.key}`, {
         onSettled: (data, error) => {
           if (data instanceof Error || error)
-            return setErrorMessage(
-              "Error occurred while fetching data. Please try again later."
-            );
+            return setErrorMessage("Error occurred. Please try again later.");
           if (data.hasErrors) return setErrorMessage("Invalid access key.");
           setKey(values.key);
           return router.push("/home");
@@ -95,7 +93,7 @@ const Login: NextPage = () => {
             />
 
             <span className="relative">
-              {!formik.errors.key ? (
+              {!formik.errors.key && !errorMessage ? (
                 <span className="absolute text-sm text-black/25">
                   Enter access key
                 </span>

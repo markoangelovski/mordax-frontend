@@ -22,6 +22,8 @@ import {
 import { handleLinkClick } from "../../lib/helpers/utils";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 import Details from "../../components/Details/Details";
+import { InputsRow } from "../../components/LayoutElements/LayoutElements";
+import { Input } from "../../components/Inputs/Inputs";
 
 const EditPage: NextPage = () => {
   const router = useRouter();
@@ -79,7 +81,53 @@ const EditPage: NextPage = () => {
               ]}
             />
             <Details />
-            Edit page
+            <InputsRow>
+              <Input
+                label="Brand"
+                defaultValue={router.query.l as string}
+                disabled={true}
+                className="w-3/12"
+              />
+              <Input
+                label="URL"
+                placeholder="Page URL"
+                defaultValue={page?.url}
+                disabled={true}
+                className="w-9/12"
+              />
+            </InputsRow>
+            <InputsRow>
+              <Input
+                label="In XML Sitemap"
+                defaultValue={`${page?.inXmlSitemap || ""}`}
+                disabled={true}
+                className="w-3/12"
+              />
+              <Input
+                label="SKU"
+                placeholder="Page SKU"
+                value={page?.SKU}
+                disabled={false}
+                className="w-3/12"
+              />
+              <Input
+                label="Created"
+                defaultValue={
+                  page?.createdAt && new Date(page?.createdAt).toDateString()
+                }
+                disabled={true}
+                className="w-3/12"
+              />
+              <Input
+                label="Created"
+                defaultValue={
+                  page?.updatedAt && new Date(page?.updatedAt).toDateString()
+                }
+                disabled={true}
+                className="w-3/12"
+              />
+            </InputsRow>
+            Edit page Edit page
             <br />
             <button
               onClick={() => {

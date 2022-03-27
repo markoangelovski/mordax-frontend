@@ -69,7 +69,6 @@ const LocalesDropdown: React.FC = () => {
         <button
           onClick={() => setIsOpen(open => !open)}
           className="pointer m-0 flex h-full w-full items-center justify-center"
-          // style={{ left: "-8px", top: "-3px" }}
         >
           {locales && (
             <span>
@@ -93,13 +92,7 @@ const LocalesDropdown: React.FC = () => {
               className="fixed inset-0 z-50 bg-black opacity-20"
               onClick={() => setIsOpen(false)}
             ></div>
-            <aside
-              className="absolute right-0 top-2 z-50	min-w-max rounded-lg bg-white pt-1 shadow-xl will-change-transform"
-              // style={{
-              //   transform: "translate3d(0px, 16px, 0px)",
-              //   transition: "opacity 0.3s ease-in-out",
-              // }}
-            >
+            <aside className="absolute right-0 top-2 z-50	min-w-max rounded-lg bg-white pt-1 shadow-xl">
               <div className="relative">
                 <div className="border-b py-3 px-4">
                   <div className="flex h-10 items-center justify-between rounded border shadow-inner">

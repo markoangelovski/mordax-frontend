@@ -101,4 +101,6 @@ export interface Page {
     lastScan: string;
     matches: ScMatch[];
   };
+  createdAt: string;
+  updatedAt: string;
 }
