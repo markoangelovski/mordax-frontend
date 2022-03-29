@@ -43,7 +43,7 @@ const NewPage: NextPage = () => {
 
   const router = useRouter();
 
-  const locale = useLocale(router.query.l as string, false);
+  const locale = useLocale(router.query.l as string);
 
   const { mutate, isLoading, isIdle, isSuccess } = useMutation(
     (endpoint: string) => fetchData(endpoint, "POST")
@@ -205,9 +205,9 @@ const NewPage: NextPage = () => {
                   />
                 </InputsRow>
               ))}
-              <InputsRow className="mr-64 justify-end pr-5">
+              <InputsRow className="mr-[25%] justify-end pr-4">
                 <Button
-                  className={`px-4 py-3 ${
+                  className={`min-w-[82px] px-4 py-3 ${
                     isAddActive
                       ? "text-sky-700 hover:border-sky-900 hover:text-sky-900"
                       : "bg-gray-100 text-gray-400"
@@ -217,14 +217,14 @@ const NewPage: NextPage = () => {
                   handler={handleAddField}
                 />
               </InputsRow>
-              <InputsRow className="mr-64 justify-end pr-5">
+              <InputsRow className="mr-[25%] justify-end pr-4">
                 <Button
                   className="mr-2 px-4 py-3 text-sky-700 hover:border-sky-900 hover:text-sky-900"
                   label="Cancel"
                   handler={handleCancelForm}
                 />
                 <Button
-                  className={`px-4 py-3 ${
+                  className={`min-w-[82px] px-4 py-3 ${
                     isSaveActive
                       ? "bg-sky-700 text-sky-700 hover:bg-sky-900"
                       : "bg-gray-100 text-gray-400"

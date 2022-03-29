@@ -17,28 +17,32 @@ import { handleLinkClick } from "../../lib/helpers/utils";
 import AddEntryButton from "../../components/AddEntryButton/AddEntryButton";
 import SearchEntries from "../../components/SearchEntries/SearchEntries";
 import ResultsTable from "../../components/ResultsTable/ContentTable";
+import { usePages } from "../../lib/hooks/usePage";
 
 type Payload = { [key: string]: string | boolean };
 
 const Page: NextPage = () => {
   const router = useRouter();
 
-  const locale = useLocale(router.query.l as string, true);
+  const locale = useLocale(router.query.l as string);
+  const pagesData = usePages(router.query.l as string);
+  const pages = pagesData?.result;
 
-  const skip = locale?.info.skip || 0;
-  const fetchedEntries = locale?.info.entries || 0;
-  const total = locale?.info.total || 0;
+  const skip = pagesData?.info.skip || 0;
+  const fetchedEntries = pagesData?.info.entries || 0;
+  const total = pagesData?.info.total || 0;
 
   const minEntriesCount = locale?.result.length ? 1 : 0;
 
-  const data = locale?.result[0].pages?.map(page => {
+  // const data = locale?.result[0].pages?.map(page => {
+  const data = pages?.map(page => {
     const pageDataPayload: Payload = {};
-    locale.result[0].fields.forEach(key => {
+    locale?.result[0].fields.forEach(key => {
       pageDataPayload[key] = page.data?.[key]?.value;
     });
 
     const psPayload: Payload = {};
-    if (locale.result[0].PS) {
+    if (locale?.result[0].PS) {
       psPayload["PriceSpider OK"] = page.PS?.ok;
       psPayload["PriceSpider matches"] = page.PS?.matches
         .map(match => match.retailerName)
@@ -49,7 +53,7 @@ const Page: NextPage = () => {
     }
 
     const binLitePayload: Payload = {};
-    if (locale.result[0].BINLite) {
+    if (locale?.result[0].BINLite) {
       binLitePayload["BIN Lite OK"] = page.BINLite?.ok;
       binLitePayload["BIN Lite matches"] = page.BINLite?.matches
         .map(match => match.retailerName)
@@ -60,7 +64,7 @@ const Page: NextPage = () => {
     }
 
     const scPayload: Payload = {};
-    if (locale.result[0].SC) {
+    if (locale?.result[0].SC) {
       scPayload["SmartCommerce OK"] = page.SC?.ok;
       scPayload["SmartCommerce matches"] = page.SC?.matches
         .map(match => match.retailerName)

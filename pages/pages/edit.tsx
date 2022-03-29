@@ -8,7 +8,7 @@ import type { NextPage } from "next";
 
 import Layout from "../../components/Layout/Layout";
 
-import usePage from "../../lib/hooks/usePage";
+import { usePage } from "../../lib/hooks/usePage";
 import fetchData from "../../lib/drivers/fetchData";
 import useKey from "../../lib/hooks/useKey";
 import progressBar from "../../lib/helpers/progressBar";
@@ -40,7 +40,7 @@ const EditPage: NextPage = () => {
 
   const { oldKey } = useKey();
 
-  const locale = useLocale(router.query.l as string, false);
+  const locale = useLocale(router.query.l as string);
 
   const page = usePage(router.query.p as string);
 
@@ -179,7 +179,7 @@ const EditPage: NextPage = () => {
                 />
               </InputsRow>
             ))}
-            <InputsRow className="mr-64 justify-end pr-5">
+            <InputsRow className="mr-[25%] justify-end pr-4">
               <Button
                 className="h-10 px-4 text-sky-700 hover:border-sky-900 hover:text-sky-900"
                 label="Add"
