@@ -25,7 +25,7 @@ import Details from "../../components/Details/Details";
 const EditLocale: NextPage = () => {
   const router = useRouter();
 
-  const locale = useLocale(router.query.l as string, false);
+  const locale = useLocale(router.query.l as string);
 
   const { oldKey } = useKey();
 

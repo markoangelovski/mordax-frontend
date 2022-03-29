@@ -7,7 +7,7 @@ import type { NextPage } from "next";
 
 import Layout from "../components/Layout/Layout";
 
-import usePage from "../lib/hooks/usePage";
+import { usePage } from "../lib/hooks/usePage";
 import useXmlSitemap from "../lib/hooks/useXmlSitemap";
 import CurrentSection from "../components/CurrentSection/CurrentSection";
 import {

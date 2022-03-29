@@ -7,7 +7,7 @@ import type { NextPage } from "next";
 
 import Layout from "../components/Layout/Layout";
 
-import usePage from "../lib/hooks/usePage";
+import { usePage } from "../lib/hooks/usePage";
 import useXmlSitemap from "../lib/hooks/useXmlSitemap";
 import useBinLite from "../lib/hooks/useBinLite";
 import useLocale from "../lib/hooks/useLocale";
@@ -28,7 +28,7 @@ const smartCommerce: NextPage = () => {
 
   const [selectedField, setSelectedField] = useState<string | null>(null);
   const [selectedPage, setSelectedPage] = useState<string | null>(null);
-  console.log("selectedField: ", selectedField);
+
   const [active, setActive] = useState<string>("retailers"); // Currently selected active section
 
   const router = useRouter();
