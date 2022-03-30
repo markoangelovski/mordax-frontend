@@ -63,7 +63,7 @@ type PsMatch = {
 
 type BinLiteMatch = {
   retailerName: string;
-  price: string;
+  buyNowUrl: string;
 };
 
 type ScMatch = {

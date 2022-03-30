@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { urlRgx } from "../../lib/misc/regex";
 import { CheckMark } from "./ContenTable.icons";
@@ -36,10 +37,10 @@ const RowItem = ({ label, endpoint }: { label: string; endpoint?: string }) => {
       <div
         className={`flex overflow-hidden ${
           endpoint && urlRgx.test(endpoint) ? "max-w-xs" : ""
-        }  ${typeof label === "boolean" && "justify-center"}`}
+        } ${typeof label === "boolean" ? "justify-center" : ""}`}
       >
         <div className="min-w-0 shrink grow-0">
-          {endpoint?.length ? (
+          {endpoint?.length ? ( // Displays a label with an endpoint as a link
             <Link href={endpoint}>
               <a
                 title={label}
@@ -50,7 +51,16 @@ const RowItem = ({ label, endpoint }: { label: string; endpoint?: string }) => {
                 {label}
               </a>
             </Link>
+          ) : /.svg/gi.test(label) ? ( // To display logos from SmartCommerce
+            <div className="h-[36px] w-[172px]">
+              <Image src={label} alt="Seller Logo" width={172} height={36} />
+            </div>
+          ) : /data:image\/png\;base64/gi.test(label) ? ( // To display logos from BIN Lite
+            <div className="h-[36px] w-[108px]">
+              <Image src={label} alt="Seller Logo" width={108} height={36} />{" "}
+            </div>
           ) : (
+            // Displays normal label or CheckMark icon for boolean values
             <span className="whitespace-nowrap">
               {typeof label === "boolean" ? <CheckMark bool={label} /> : label}
             </span>
@@ -67,7 +77,7 @@ const ResultsTable = ({ data }: any) => {
     <div className="max-w-full">
       <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className="w-f">
+          <thead className="">
             <tr className="">
               {titles?.map((title: string, i: number) => (
                 <HeadItem key={i} label={title} />

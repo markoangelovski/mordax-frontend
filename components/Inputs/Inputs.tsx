@@ -140,10 +140,10 @@ export const SelectInput = ({
       {isOpen ? (
         <div>
           <div
-            className="fixed inset-0  bg-black opacity-20"
+            className="fixed inset-0 z-50 bg-black opacity-20"
             onClick={() => setIsOpen(false)}
           ></div>
-          <div className="absolute mr-4 overflow-hidden rounded border bg-white shadow-xl">
+          <div className="absolute z-50 mr-4 min-w-[200px] overflow-hidden rounded border bg-white shadow-xl">
             {data.map((item, i) => (
               <span
                 key={i}

@@ -26,6 +26,8 @@ import { InputsRow } from "../../components/LayoutElements/LayoutElements";
 import { Input, SelectInput } from "../../components/Inputs/Inputs";
 import useLocale from "../../lib/hooks/useLocale";
 import Button from "../../components/Button/Button";
+import ResultsTable from "../../components/ResultsTable/ContentTable";
+import useBinLite from "../../lib/hooks/useBinLite";
 
 const EditPage: NextPage = () => {
   const [currentField, setCurrentField] = useState<string>("");
@@ -43,6 +45,10 @@ const EditPage: NextPage = () => {
   const locale = useLocale(router.query.l as string);
 
   const page = usePage(router.query.p as string);
+
+  const binLiteSellers =
+    locale?.result[0].BINLite?.BINLiteKey &&
+    useBinLite(router.query.l as string);
 
   const { mutate, isLoading, isIdle, isSuccess } = useMutation(
     (endpoint: string) => fetchData(endpoint, "DELETE")
@@ -116,12 +122,14 @@ const EditPage: NextPage = () => {
               />
             </InputsRow>
             <InputsRow>
-              <Input
-                label="In XML Sitemap"
-                defaultValue={`${page?.inXmlSitemap || ""}`}
-                disabled={true}
-                className="w-3/12"
-              />
+              {page?.inXmlSitemap ? (
+                <Input
+                  label="In XML Sitemap"
+                  defaultValue={page?.inXmlSitemap ? "true" : "false"}
+                  disabled={true}
+                  className="w-3/12"
+                />
+              ) : null}
               <Input
                 label="SKU"
                 placeholder="Page SKU"
@@ -211,7 +219,7 @@ const EditPage: NextPage = () => {
                 <InputsRow>
                   <Input
                     label="PriceSpider OK"
-                    defaultValue={`${page?.PS.ok || ""}`}
+                    defaultValue={page?.PS.ok ? "true" : "false"}
                     disabled={true}
                     className="w-3/12"
                   />
@@ -224,36 +232,6 @@ const EditPage: NextPage = () => {
                     className="w-3/12"
                   />
                 </InputsRow>
-                <InputsRow>
-                  <Input label="Retailer name" className="w-3/12" />
-                  <Input label="Price" className="w-3/12" />
-                  <Input label="PMID" className="w-3/12" />
-                  <Input label="SID" className="w-3/12" />
-                </InputsRow>
-                {page.PS.matches.map((match, i) => (
-                  <InputsRow key={i}>
-                    <Input
-                      defaultValue={match.retailerName}
-                      disabled={true}
-                      className="w-3/12"
-                    />
-                    <Input
-                      defaultValue={match.price}
-                      disabled={true}
-                      className="w-3/12"
-                    />
-                    <Input
-                      defaultValue={match.pmid}
-                      disabled={true}
-                      className="w-3/12"
-                    />
-                    <Input
-                      defaultValue={match.sid}
-                      disabled={true}
-                      className="w-3/12"
-                    />
-                  </InputsRow>
-                ))}
                 <InputsRow>
                   <SelectInput
                     currentField={currentPsCountry}
@@ -302,6 +280,151 @@ const EditPage: NextPage = () => {
                     />
                   </div>
                 </InputsRow>
+                <div className="mt-5 mr-4">
+                  <ResultsTable
+                    data={page.PS.matches.map(match => ({
+                      Name: match.retailerName,
+                      Price: match.price,
+                      PMID: match.pmid,
+                      SID: match.sid
+                    }))}
+                  />
+                </div>
+              </>
+            ) : null}
+            {page?.SC ? (
+              <>
+                <InputsRow>
+                  <Input
+                    label="SmartCommerce OK"
+                    defaultValue={page?.SC.ok ? "true" : "false"}
+                    disabled={true}
+                    className="w-3/12"
+                  />
+                  <Input
+                    label="Last Scan"
+                    defaultValue={new Date(
+                      page?.SC.lastScan || ""
+                    ).toDateString()}
+                    disabled={true}
+                    className="w-3/12"
+                  />
+                </InputsRow>
+                <InputsRow>
+                  <SelectInput
+                    currentField={currentPsSkuField}
+                    setCurrentField={setCurrentPsSkuField}
+                    label="SmartCommerce MP ID Field"
+                    placeholder="SC MP ID Field..."
+                    className="w-2/12"
+                    data={locale?.result[0].fields || []}
+                  />
+                  <div className="flex w-3/12 flex-col">
+                    <Button
+                      className="mr-4 mt-7 h-10 grow text-sky-700 hover:border-sky-900 hover:text-sky-900"
+                      label="Refresh seller matches"
+                      // handler={handleCancelForm}
+                    />
+                    <div className="relative">
+                      <span className="absolute text-sm text-green-600/50">
+                        Sellers refreshed successfully.
+                      </span>
+                      <span className="absolute text-sm text-red-600/50">
+                        Error occurred while refreshing sellers.
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex w-3/12">
+                    <Button
+                      className="mr-4 mt-7 h-10 grow text-sky-700 hover:border-sky-900 hover:text-sky-900"
+                      label="Inspect seller details"
+                      // handler={handleCancelForm}
+                    />
+                  </div>
+                </InputsRow>
+                <div className="mt-5 mr-4">
+                  <ResultsTable
+                    data={page.SC.matches.map(match => ({
+                      Name: match.retailerName,
+                      URL: {
+                        label: match.url,
+                        endpoint: match.url
+                      },
+                      "Product Name": match.productName,
+                      Price: match.price,
+                      Logo: match.logo,
+                      "Mini Logo": match.miniLogo
+                    }))}
+                  />
+                </div>
+              </>
+            ) : null}
+            {page?.BINLite ? (
+              <>
+                <InputsRow>
+                  <Input
+                    label="BIN Lite OK"
+                    defaultValue={page?.BINLite.ok ? "true" : "false"}
+                    disabled={true}
+                    className="w-3/12"
+                  />
+                  <Input
+                    label="Last Scan"
+                    defaultValue={new Date(
+                      page?.BINLite.lastScan || ""
+                    ).toDateString()}
+                    disabled={true}
+                    className="w-3/12"
+                  />
+                </InputsRow>
+                <InputsRow>
+                  <SelectInput
+                    currentField={currentPsSkuField}
+                    setCurrentField={setCurrentPsSkuField}
+                    label="BIN Lite SKU Field"
+                    placeholder="BNL SKU Field..."
+                    className="w-2/12"
+                    data={locale?.result[0].fields || []}
+                  />
+                  <div className="flex w-3/12 flex-col">
+                    <Button
+                      className="mr-4 mt-7 h-10 grow text-sky-700 hover:border-sky-900 hover:text-sky-900"
+                      label="Refresh seller matches"
+                      // handler={handleCancelForm}
+                    />
+                    <div className="relative">
+                      <span className="absolute text-sm text-green-600/50">
+                        Sellers refreshed successfully.
+                      </span>
+                      <span className="absolute text-sm text-red-600/50">
+                        Error occurred while refreshing sellers.
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex w-3/12">
+                    <Button
+                      className="mr-4 mt-7 h-10 grow text-sky-700 hover:border-sky-900 hover:text-sky-900"
+                      label="Inspect seller details"
+                      // handler={handleCancelForm}
+                    />
+                  </div>
+                </InputsRow>
+                <div className="mt-5 mr-4">
+                  <ResultsTable
+                    data={page.BINLite.matches.map(match => ({
+                      Name: match.retailerName,
+                      URL: {
+                        label: match.buyNowUrl,
+                        endpoint: match.buyNowUrl
+                      },
+                      Logo:
+                        "data:image/png;base64," +
+                        binLiteSellers?.find(
+                          seller => seller.RetailerName === match.retailerName
+                        )?.Retailerlogo
+                    }))}
+                  />
+                </div>
               </>
             ) : null}
             <InputsRow className="justify-end">

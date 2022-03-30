@@ -5,6 +5,8 @@ import { useMutation } from "react-query";
 
 import type { NextPage } from "next";
 
+import * as urls from "../../config";
+
 import Layout from "../../components/Layout/Layout";
 
 import useLocale from "../../lib/hooks/useLocale";
@@ -83,6 +85,15 @@ const EditLocale: NextPage = () => {
             >
               Delete locale
             </button>
+            <a
+              href={
+                urls.api +
+                `/locales/single/download?key=${oldKey}&url=${router.query.l}`
+              }
+              download
+            >
+              Download locale details
+            </a>
             <pre>{JSON.stringify(locale, null, 2)}</pre>
           </ContentContainer>
         </Container>
