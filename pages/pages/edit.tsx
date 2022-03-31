@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { NextRouter, useRouter } from "next/router";
-import { useMutation } from "react-query";
+import { UseMutateFunction, useMutation } from "react-query";
 
 import type { NextPage } from "next";
 
@@ -194,9 +194,11 @@ const EditPage: NextPage = () => {
                 handler={handleAddField}
               />
             </InputsRow>
-            <InputsRow className="justify-end">
-              <Input label="Created" className="w-3/12" />
-            </InputsRow>
+            {page?.data ? (
+              <InputsRow className="justify-end">
+                <Input label="Created" className="w-3/12" />
+              </InputsRow>
+            ) : null}
             {Object.keys(page?.data || {}).map((item, i) => (
               <InputsRow key={i}>
                 <Input defaultValue={item} disabled={true} className="w-3/12" />
