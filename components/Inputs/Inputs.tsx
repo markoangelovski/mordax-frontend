@@ -1,4 +1,4 @@
-import { ChangeEventHandler, useState } from "react";
+import { ChangeEventHandler, KeyboardEventHandler, useState } from "react";
 
 import { Arrow } from "../LocalesDropdown/LocalesDropdown.icons";
 
@@ -13,6 +13,7 @@ interface InputProps {
   id?: string;
   required?: boolean;
   onChange?: ChangeEventHandler<HTMLInputElement>;
+  onKeyDown?: KeyboardEventHandler<HTMLInputElement>;
 }
 
 export const Input = ({
@@ -22,10 +23,11 @@ export const Input = ({
   defaultValue,
   value,
   disabled,
-  onChange,
   name,
   id,
-  required
+  required,
+  onChange,
+  onKeyDown
 }: InputProps) => {
   if (value || value?.length === 0) {
     // value?.length === 0 for initial values from props that are set to "" by default
@@ -54,6 +56,7 @@ export const Input = ({
               id={id}
               name={name}
               required={required}
+              onKeyDown={onKeyDown}
             />
           </div>
         ) : null}

@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { NextRouter, useRouter } from "next/router";
-import { UseMutateFunction, useMutation } from "react-query";
+import { UseMutateFunction, useMutation, useQueryClient } from "react-query";
 
 import type { NextPage } from "next";
 
@@ -39,6 +39,12 @@ const EditPage: NextPage = () => {
   const [currentPsInstance, setCurrentPsInstance] = useState<string>("");
   const [currentPsSkuField, setCurrentPsSkuField] = useState<string>("");
 
+  const [currentScMpidField, setCurrentScMpidField] = useState<string>("");
+
+  const [currentBnlSkuField, setCurrentBnlSkuField] = useState<string>("");
+
+  const [refreshSellersMsg, setRefreshSellersMsg] = useState<string>("");
+
   const [active, setActive] = useState<boolean>(false);
 
   const router = useRouter();
@@ -54,9 +60,21 @@ const EditPage: NextPage = () => {
     !!locale?.result[0].BINLite?.BINLiteKey
   );
 
-  const { mutate, isLoading, isSuccess } = useMutation((endpoint: string) =>
-    fetchData(endpoint, "DELETE")
-  );
+  // Rerfresh sellers hook
+  const {
+    mutate: refreshSellers,
+    isLoading: isRsLoading,
+    isSuccess: isRsSuccess
+  } = useMutation((endpoint: string) => fetchData(endpoint, "GET"));
+
+  // Delete page hook
+  const {
+    mutate: deletePage,
+    isLoading: isDpLoading,
+    isSuccess: isDpSuccess
+  } = useMutation((endpoint: string) => fetchData(endpoint, "DELETE"));
+
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -195,8 +213,9 @@ const EditPage: NextPage = () => {
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setCurrentFieldValue(e.currentTarget.value)
                 }
-                disabled={false}
+                disabled={!currentField}
                 className="w-6/12"
+                onKeyDown={e => e.key === "Enter" && handleAddField()}
               />
               {page?.active ? (
                 <div className="mt-6 flex w-3/12 justify-evenly pr-4">
@@ -262,9 +281,16 @@ const EditPage: NextPage = () => {
             ))}
             <InputsRow className="mr-[25%] justify-end pr-4">
               <Button
-                className="h-10 px-4 text-sky-700 hover:border-sky-900 hover:text-sky-900"
+                className={`h-10 px-4 ${
+                  currentField.length && currentFieldValue.length
+                    ? "text-sky-700 hover:border-sky-900 hover:text-sky-900"
+                    : "bg-gray-100 text-gray-400"
+                }`}
                 label="Add"
                 handler={handleAddField}
+                disabled={
+                  currentField.length && currentFieldValue.length ? false : true
+                }
               />
             </InputsRow>
             {page?.data ? (
@@ -334,24 +360,58 @@ const EditPage: NextPage = () => {
                   />
                   <div className="flex w-3/12 flex-col">
                     <Button
-                      className="mr-4 mt-7 h-10 grow text-sky-700 hover:border-sky-900 hover:text-sky-900"
+                      className={`mr-4 mt-7 h-10 grow ${
+                        currentPsSkuField.length &&
+                        currentPsCountry.length &&
+                        currentPsInstance.length
+                          ? "text-sky-700 hover:border-sky-900 hover:text-sky-900"
+                          : "bg-gray-100 text-gray-400"
+                      }`}
                       label="Refresh seller matches"
-                      // handler={handleCancelForm}
+                      handler={() => {
+                        refreshSellers(
+                          `/ps/product-data/single?key=${oldKey}&id=${page?.id}&psSkuFieldName=${currentPsSkuField}&countryCode=${currentPsCountry}&psInstance=${currentPsInstance}`,
+                          {
+                            onSettled: (data, error) => {
+                              if (data instanceof Error || error)
+                                return setRefreshSellersMsg("false");
+                              setRefreshSellersMsg("true");
+
+                              queryClient.setQueryData(
+                                ["page", router.query.p],
+                                data
+                              );
+                            }
+                          }
+                        );
+
+                        // progressBar(isRsLoading, isRsLoading, isRsSuccess);
+                      }}
+                      disabled={
+                        !currentPsSkuField.length &&
+                        !currentPsCountry.length &&
+                        !currentPsInstance.length
+                      }
+                      showSpinner={isRsLoading}
                     />
                     <div className="relative">
-                      <span className="absolute text-sm text-green-600/50">
-                        Sellers refreshed successfully.
-                      </span>
-                      <span className="absolute text-sm text-red-600/50">
-                        Error occurred while refreshing sellers.
-                      </span>
+                      {refreshSellersMsg === "true" ? (
+                        <span className="absolute text-sm text-green-600/50">
+                          Sellers refreshed successfully.
+                        </span>
+                      ) : null}
+                      {refreshSellersMsg === "false" ? (
+                        <span className="absolute text-sm text-red-600/50">
+                          Error occurred while refreshing sellers.
+                        </span>
+                      ) : null}
                     </div>
                   </div>
                   <div className="flex w-3/12">
                     <Button
                       className="mr-4 mt-7 h-10 grow text-sky-700 hover:border-sky-900 hover:text-sky-900"
                       label="Inspect seller details"
-                      // handler={handleCancelForm}
+                      handler={() => handleLinkClick(router, `/pricespider`)}
                     />
                   </div>
                 </InputsRow>
@@ -378,17 +438,15 @@ const EditPage: NextPage = () => {
                   />
                   <Input
                     label="Last Scan"
-                    defaultValue={new Date(
-                      page?.SC.lastScan || ""
-                    ).toDateString()}
+                    defaultValue={new Date(page.SC.lastScan).toDateString()}
                     disabled={true}
                     className="w-3/12"
                   />
                 </InputsRow>
                 <InputsRow>
                   <SelectInput
-                    currentField={currentPsSkuField}
-                    setCurrentField={setCurrentPsSkuField}
+                    currentField={currentScMpidField}
+                    setCurrentField={setCurrentScMpidField}
                     label="SmartCommerce MP ID Field"
                     placeholder="SC MP ID Field..."
                     className="w-2/12"
@@ -396,24 +454,52 @@ const EditPage: NextPage = () => {
                   />
                   <div className="flex w-3/12 flex-col">
                     <Button
-                      className="mr-4 mt-7 h-10 grow text-sky-700 hover:border-sky-900 hover:text-sky-900"
+                      className={`mr-4 mt-7 h-10 grow ${
+                        currentScMpidField.length
+                          ? "text-sky-700 hover:border-sky-900 hover:text-sky-900"
+                          : "bg-gray-100 text-gray-400"
+                      }`}
                       label="Refresh seller matches"
-                      // handler={handleCancelForm}
+                      handler={() => {
+                        refreshSellers(
+                          `/sc/product-data/single?key=${oldKey}&id=${page?.id}&mpIdFieldName=${currentScMpidField}`,
+                          {
+                            onSettled: (data, error) => {
+                              if (data instanceof Error || error)
+                                return setRefreshSellersMsg("false");
+                              setRefreshSellersMsg("true");
+
+                              queryClient.setQueryData(
+                                ["page", router.query.p],
+                                data
+                              );
+                            }
+                          }
+                        );
+
+                        // progressBar(isRsLoading, isRsLoading, isRsSuccess);
+                      }}
+                      disabled={!currentScMpidField.length}
+                      showSpinner={isRsLoading}
                     />
                     <div className="relative">
-                      <span className="absolute text-sm text-green-600/50">
-                        Sellers refreshed successfully.
-                      </span>
-                      <span className="absolute text-sm text-red-600/50">
-                        Error occurred while refreshing sellers.
-                      </span>
+                      {refreshSellersMsg === "true" ? (
+                        <span className="absolute text-sm text-green-600/50">
+                          Sellers refreshed successfully.
+                        </span>
+                      ) : null}
+                      {refreshSellersMsg === "false" ? (
+                        <span className="absolute text-sm text-red-600/50">
+                          Error occurred while refreshing sellers.
+                        </span>
+                      ) : null}
                     </div>
                   </div>
                   <div className="flex w-3/12">
                     <Button
                       className="mr-4 mt-7 h-10 grow text-sky-700 hover:border-sky-900 hover:text-sky-900"
                       label="Inspect seller details"
-                      // handler={handleCancelForm}
+                      handler={() => handleLinkClick(router, `/smartcommerce`)}
                     />
                   </div>
                 </InputsRow>
@@ -454,8 +540,8 @@ const EditPage: NextPage = () => {
                 </InputsRow>
                 <InputsRow>
                   <SelectInput
-                    currentField={currentPsSkuField}
-                    setCurrentField={setCurrentPsSkuField}
+                    currentField={currentBnlSkuField}
+                    setCurrentField={setCurrentBnlSkuField}
                     label="BIN Lite SKU Field"
                     placeholder="BNL SKU Field..."
                     className="w-2/12"
@@ -463,24 +549,52 @@ const EditPage: NextPage = () => {
                   />
                   <div className="flex w-3/12 flex-col">
                     <Button
-                      className="mr-4 mt-7 h-10 grow text-sky-700 hover:border-sky-900 hover:text-sky-900"
+                      className={`mr-4 mt-7 h-10 grow ${
+                        currentBnlSkuField.length
+                          ? "text-sky-700 hover:border-sky-900 hover:text-sky-900"
+                          : "bg-gray-100 text-gray-400"
+                      }`}
                       label="Refresh seller matches"
-                      // handler={handleCancelForm}
+                      handler={() => {
+                        refreshSellers(
+                          `/binlite/product-data/single?key=${oldKey}&id=${page?.id}&binliteIdFieldName=${currentBnlSkuField}`,
+                          {
+                            onSettled: (data, error) => {
+                              if (data instanceof Error || error)
+                                return setRefreshSellersMsg("false");
+                              setRefreshSellersMsg("true");
+
+                              queryClient.setQueryData(
+                                ["page", router.query.p],
+                                data
+                              );
+                            }
+                          }
+                        );
+
+                        // progressBar(isRsLoading, isRsLoading, isRsSuccess);
+                      }}
+                      disabled={!currentBnlSkuField.length}
+                      showSpinner={isRsLoading}
                     />
                     <div className="relative">
-                      <span className="absolute text-sm text-green-600/50">
-                        Sellers refreshed successfully.
-                      </span>
-                      <span className="absolute text-sm text-red-600/50">
-                        Error occurred while refreshing sellers.
-                      </span>
+                      {refreshSellersMsg === "true" ? (
+                        <span className="absolute text-sm text-green-600/50">
+                          Sellers refreshed successfully.
+                        </span>
+                      ) : null}
+                      {refreshSellersMsg === "false" ? (
+                        <span className="absolute text-sm text-red-600/50">
+                          Error occurred while refreshing sellers.
+                        </span>
+                      ) : null}
                     </div>
                   </div>
                   <div className="flex w-3/12">
                     <Button
                       className="mr-4 mt-7 h-10 grow text-sky-700 hover:border-sky-900 hover:text-sky-900"
                       label="Inspect seller details"
-                      // handler={handleCancelForm}
+                      handler={() => handleLinkClick(router, `/binlite`)}
                     />
                   </div>
                 </InputsRow>
@@ -507,14 +621,14 @@ const EditPage: NextPage = () => {
                 className="mr-4 mt-4 h-10 px-4 text-red-500 hover:border-red-700 hover:text-red-700"
                 label="Delete page"
                 handler={() => {
-                  mutate(`/pages?key=${oldKey}&id=${page?.id}`, {
+                  deletePage(`/pages?key=${oldKey}&id=${page?.id}`, {
                     onSettled: data => {
                       console.log("data", data);
                       // TODO: add a message that page is deleted.
                     }
                   });
 
-                  progressBar(isLoading, isLoading, isSuccess);
+                  progressBar(isDpLoading, isDpLoading, isDpSuccess);
                 }}
               />
               <Button
@@ -532,14 +646,14 @@ const EditPage: NextPage = () => {
             <br />
             <button
               onClick={() => {
-                mutate(`/pages?key=${oldKey}&id=${page?.id}`, {
+                deletePage(`/pages?key=${oldKey}&id=${page?.id}`, {
                   onSettled: data => {
                     console.log("data", data);
                     // TODO: add a message that page is deleted.
                   }
                 });
 
-                progressBar(isLoading, isLoading, isSuccess);
+                progressBar(isDpLoading, isDpLoading, isDpSuccess);
               }}
             >
               Delete page
