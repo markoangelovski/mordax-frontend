@@ -39,6 +39,8 @@ const EditPage: NextPage = () => {
   const [currentPsInstance, setCurrentPsInstance] = useState<string>("");
   const [currentPsSkuField, setCurrentPsSkuField] = useState<string>("");
 
+  const [active, setActive] = useState<boolean>(false);
+
   const router = useRouter();
 
   const { oldKey } = useKey();
@@ -68,6 +70,10 @@ const EditPage: NextPage = () => {
       });
     }
   }, [router.query.p]);
+
+  useEffect(() => {
+    setActive(page?.active || false);
+  }, [page]);
 
   const handleAddField = () => {
     if (!currentField || !currentFieldValue) return;
@@ -192,6 +198,42 @@ const EditPage: NextPage = () => {
                 disabled={false}
                 className="w-6/12"
               />
+              {page?.active ? (
+                <div className="mt-6 flex w-3/12 justify-evenly pr-4">
+                  <button
+                    onClick={() => setActive(true)}
+                    className="flex items-center focus:outline-0"
+                  >
+                    <div
+                      className={`mr-2 inline-block rounded-full ${
+                        active
+                          ? "h-4 w-4 border-2 border-white bg-sky-700"
+                          : "h-4 w-4 border border-slate-500"
+                      }`}
+                      style={{
+                        boxShadow: `${active ? "0 0 0 2px #0c7994" : "none"}`
+                      }}
+                    ></div>
+                    <span>Active</span>
+                  </button>
+                  <button
+                    onClick={() => setActive(false)}
+                    className="flex items-center focus:outline-0"
+                  >
+                    <div
+                      className={`mr-2 inline-block rounded-full ${
+                        !active
+                          ? "h-4 w-4 border-2 border-white bg-sky-700"
+                          : "h-4 w-4 border border-slate-500"
+                      }`}
+                      style={{
+                        boxShadow: `${!active ? "0 0 0 2px #0c7994" : "none"}`
+                      }}
+                    ></div>
+                    <span>Inactive</span>
+                  </button>
+                </div>
+              ) : null}
             </InputsRow>
             {fields.map(field => (
               <InputsRow key={JSON.stringify(field)}>
@@ -206,6 +248,7 @@ const EditPage: NextPage = () => {
                   className="w-6/12"
                 />
                 <DeleteEntryIcon
+                  className="mt-1"
                   onClick={() => {
                     setFields(currentFields =>
                       currentFields.filter(
