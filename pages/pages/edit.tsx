@@ -28,11 +28,12 @@ import useLocale from "../../lib/hooks/useLocale";
 import Button from "../../components/Button/Button";
 import ResultsTable from "../../components/ResultsTable/ContentTable";
 import useBinLite from "../../lib/hooks/useBinLite";
+import { DeleteEntryIcon } from "../../components/Inputs/Inputs.icons";
 
 const EditPage: NextPage = () => {
   const [currentField, setCurrentField] = useState<string>("");
   const [currentFieldValue, setCurrentFieldValue] = useState<string>("");
-  const [fields, setFields] = useState<object[]>([]);
+  const [fields, setFields] = useState<{ [key: string]: string }[]>([]);
 
   const [currentPsCountry, setCurrentPsCountry] = useState<string>("");
   const [currentPsInstance, setCurrentPsInstance] = useState<string>("");
@@ -51,8 +52,8 @@ const EditPage: NextPage = () => {
     !!locale?.result[0].BINLite?.BINLiteKey
   );
 
-  const { mutate, isLoading, isIdle, isSuccess } = useMutation(
-    (endpoint: string) => fetchData(endpoint, "DELETE")
+  const { mutate, isLoading, isSuccess } = useMutation((endpoint: string) =>
+    fetchData(endpoint, "DELETE")
   );
 
   useEffect(() => {
@@ -70,7 +71,25 @@ const EditPage: NextPage = () => {
 
   const handleAddField = () => {
     if (!currentField || !currentFieldValue) return;
-    setFields(fields => [...fields, { [currentField]: currentFieldValue }]);
+
+    let fieldExists = false;
+    fields.forEach(cfield => {
+      if (Object.keys(cfield)[0] === currentField) fieldExists = true;
+    });
+
+    setFields(cfields => {
+      if (fieldExists) {
+        return cfields.map(mfield => {
+          if (Object.keys(mfield)[0] === currentField) {
+            mfield[currentField] = currentFieldValue;
+          }
+          return mfield;
+        });
+      } else {
+        return [...cfields, { [currentField]: currentFieldValue }];
+      }
+    });
+
     setCurrentField("");
     setCurrentFieldValue("");
   };
@@ -174,8 +193,8 @@ const EditPage: NextPage = () => {
                 className="w-6/12"
               />
             </InputsRow>
-            {fields.map((field, i) => (
-              <InputsRow key={i}>
+            {fields.map(field => (
+              <InputsRow key={JSON.stringify(field)}>
                 <Input
                   defaultValue={Object.keys(field)[0]}
                   disabled={true}
@@ -185,6 +204,16 @@ const EditPage: NextPage = () => {
                   defaultValue={Object.values(field)[0]}
                   disabled={true}
                   className="w-6/12"
+                />
+                <DeleteEntryIcon
+                  onClick={() => {
+                    setFields(currentFields =>
+                      currentFields.filter(
+                        ffield =>
+                          JSON.stringify(ffield) !== JSON.stringify(field)
+                      )
+                    );
+                  }}
                 />
               </InputsRow>
             ))}
