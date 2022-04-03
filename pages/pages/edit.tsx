@@ -46,9 +46,10 @@ const EditPage: NextPage = () => {
 
   const page = usePage(router.query.p as string);
 
-  const binLiteSellers =
-    locale?.result[0].BINLite?.BINLiteKey &&
-    useBinLite(router.query.l as string);
+  const binLiteSellers = useBinLite(
+    router.query.l as string,
+    !!locale?.result[0].BINLite?.BINLiteKey
+  );
 
   const { mutate, isLoading, isIdle, isSuccess } = useMutation(
     (endpoint: string) => fetchData(endpoint, "DELETE")
