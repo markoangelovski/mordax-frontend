@@ -35,7 +35,7 @@ const User: React.FC = () => {
             //   transition: "opacity 0.3s ease-in-out",
             // }}
           >
-            <div className="relative">
+            <div className="relative min-w-[200px]">
               <span className="text-black-400 my-2 flex h-10 items-center px-5 ">
                 {user?.issuedFor}
               </span>

@@ -24,7 +24,7 @@ import {
   Container,
   ContentContainer
 } from "../../components/Containers/Containers";
-import { handleLinkClick } from "../../lib/helpers/utils";
+import { handleLinkClick, makeDataPayload } from "../../lib/helpers/utils";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 import Details from "../../components/Details/Details";
 import { InputsRow } from "../../components/LayoutElements/LayoutElements";
@@ -89,11 +89,11 @@ const NewPage: NextPage = () => {
   const isAddActive = currentField.length && !!currentFieldValue.length;
   const isSaveActive = !!formik.values.pageUrl;
 
-  const makeDataPayload = (data: object[]) =>
-    data.reduce(
-      (acc, curr) => acc + `${Object.keys(curr)[0]}:${Object.values(curr)[0]};`,
-      ""
-    );
+  // const makeDataPayload = (data: object[]) =>
+  //   data.reduce(
+  //     (acc, curr) => acc + `${Object.keys(curr)[0]}:${Object.values(curr)[0]};`,
+  //     ""
+  //   );
 
   const handleAddField = () => {
     if (!currentField || !currentFieldValue) return;
@@ -219,14 +219,18 @@ const NewPage: NextPage = () => {
               </InputsRow>
               <InputsRow className="mr-[25%] justify-end pr-4">
                 <Button
-                  className="mr-2 px-4 py-3 text-sky-700 hover:border-sky-900 hover:text-sky-900"
+                  className={`mr-2 px-4 py-3 ${
+                    isSaveActive
+                      ? "text-sky-700 hover:border-sky-900 hover:text-sky-900"
+                      : "bg-gray-100 text-gray-400"
+                  }`}
                   label="Cancel"
                   handler={handleCancelForm}
                 />
                 <Button
                   className={`min-w-[82px] px-4 py-3 ${
                     isSaveActive
-                      ? "bg-sky-700 text-sky-700 hover:bg-sky-900"
+                      ? "bg-sky-700 text-white hover:bg-sky-900"
                       : "bg-gray-100 text-gray-400"
                   }`}
                   label="Save"
