@@ -95,7 +95,7 @@ const Login: NextPage = () => {
             <span className="relative">
               {!formik.errors.key && !errorMessage ? (
                 <span className="absolute text-sm text-black/25">
-                  Enter access key
+                  {!isLoading ? "Enter access key" : "Loading..."}
                 </span>
               ) : null}
 

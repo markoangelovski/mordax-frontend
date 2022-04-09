@@ -9,7 +9,7 @@ export const InputSkeleton = ({ className }: { className: string }) => {
 
 export const TableSkeleton = ({ numRows }: { numRows: number }) => {
   return (
-    <div className="mt-5 mr-4 animate-pulse">
+    <div className="mt-5 animate-pulse">
       {Array.from({ length: numRows }, (_, i) => (
         <div key={i} className="h-12 odd:bg-slate-500/[.13]"></div>
       ))}

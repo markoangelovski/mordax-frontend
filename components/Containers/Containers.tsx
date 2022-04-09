@@ -17,5 +17,5 @@ export const Container = ({ children, className }: Props) => {
 };
 
 export const ContentContainer: React.FC = ({ children }) => {
-  return <div className="mx-6 mb-40 mt-6">{children}</div>;
+  return <div className="mx-6 mt-6">{children}</div>;
 };

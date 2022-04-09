@@ -7,9 +7,13 @@ import {
   Container,
   ContentContainer
 } from "../components/Containers/Containers";
+import useUser from "../lib/hooks/useUser";
 
 const Home: NextPage = () => {
   const router = useRouter();
+
+  const user = useUser();
+  if (!user) return null;
 
   return (
     <Layout>

@@ -7,7 +7,7 @@ import Header from "../Header/Header";
 const Layout: React.FC = ({ children }) => {
   return (
     <>
-      <main className="min-h-screen">
+      <main className="mb-40 min-h-screen">
         <Header />
         {children}
       </main>
