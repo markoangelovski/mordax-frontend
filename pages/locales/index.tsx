@@ -18,6 +18,7 @@ import {
 
 import { handleLinkClick } from "../../lib/helpers/utils";
 import ResultsTable from "../../components/ResultsTable/ContentTable";
+import { TableSkeleton } from "../../components/Skeletons/Skeletons";
 
 const Locales: NextPage = () => {
   const router = useRouter();
@@ -94,7 +95,11 @@ const Locales: NextPage = () => {
                 <SearchEntries />
               </div>
             </div>
-            <ResultsTable data={data} />
+            {data ? (
+              <ResultsTable data={data} />
+            ) : (
+              <TableSkeleton numRows={25} />
+            )}
           </ContentContainer>
         </Container>
       </section>
