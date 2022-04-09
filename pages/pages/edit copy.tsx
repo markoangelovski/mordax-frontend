@@ -243,201 +243,175 @@ const EditPage: NextPage = () => {
                   <InputSkeleton className="w-9/12" />
                 )}
               </InputsRow>
-              {page ? (
-                <>
-                  <InputsRow>
-                    {page?.inXmlSitemap ? (
-                      <Input
-                        label="In XML Sitemap"
-                        defaultValue={page?.inXmlSitemap ? "true" : "false"}
-                        disabled={true}
-                        className="w-3/12"
-                      />
-                    ) : null}
-                    <Input
-                      id="sku"
-                      name="sku"
-                      label="SKU"
-                      placeholder="Page SKU"
-                      value={formik.values.sku}
-                      onChange={formik.handleChange}
-                      disabled={false}
-                      className="w-3/12"
-                    />
-                    <Input
-                      id="type"
-                      name="type"
-                      label="Type"
-                      placeholder="Page type"
-                      value={formik.values.type}
-                      onChange={formik.handleChange}
-                      disabled={false}
-                      className="w-2/12"
-                    />
-                    <Input
-                      label="Created"
-                      defaultValue={
-                        page?.createdAt &&
-                        new Date(page?.createdAt).toDateString()
-                      }
-                      disabled={true}
-                      className="w-2/12"
-                    />
-                    <Input
-                      label="Modified"
-                      defaultValue={
-                        page?.updatedAt &&
-                        new Date(page?.updatedAt).toDateString()
-                      }
-                      disabled={true}
-                      className="w-2/12"
-                    />
-                  </InputsRow>
-                  <InputsRow>
-                    <SelectInput
-                      currentField={currentField}
-                      setCurrentField={setCurrentField}
-                      label="Field"
-                      className="w-3/12"
-                      data={locale?.result[0].fields || []}
-                    />
-                    <Input
-                      label="Value"
-                      placeholder="Enter value"
-                      value={currentFieldValue}
-                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                        setCurrentFieldValue(e.currentTarget.value)
-                      }
-                      disabled={!currentField}
-                      className="w-6/12"
-                      onKeyDown={e => e.key === "Enter" && handleAddField()}
-                    />
-                    <div className="mt-6 flex w-3/12 justify-evenly pr-4">
-                      <button
-                        type="button"
-                        onClick={() => setActive(true)}
-                        className="flex items-center focus:outline-0"
-                      >
-                        <div
-                          className={`mr-2 inline-block h-4 w-4 rounded-full ${
-                            active
-                              ? "border-2 border-white bg-sky-700"
-                              : "border border-slate-500"
-                          }`}
-                          style={{
-                            boxShadow: `${
-                              active ? "0 0 0 2px #0c7994" : "none"
-                            }`
-                          }}
-                        ></div>
-                        <span>Active</span>
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setActive(false)}
-                        className="flex items-center focus:outline-0"
-                      >
-                        <div
-                          className={`mr-2 inline-block h-4 w-4 rounded-full ${
-                            !active
-                              ? "border-2 border-white bg-sky-700"
-                              : "border border-slate-500"
-                          }`}
-                          style={{
-                            boxShadow: `${
-                              !active ? "0 0 0 2px #0c7994" : "none"
-                            }`
-                          }}
-                        ></div>
-                        <span>Inactive</span>
-                      </button>
-                    </div>
-                  </InputsRow>
-                  {fields.map(field => (
-                    <InputsRow key={JSON.stringify(field)}>
-                      <Input
-                        defaultValue={Object.keys(field)[0]}
-                        disabled={true}
-                        className="w-3/12"
-                      />
-                      <Input
-                        defaultValue={Object.values(field)[0]}
-                        disabled={true}
-                        className="w-6/12"
-                      />
-                      <DeleteEntryIcon
-                        className="mt-1"
-                        onClick={() => {
-                          setFields(currentFields =>
-                            currentFields.filter(
-                              ffield =>
-                                JSON.stringify(ffield) !== JSON.stringify(field)
-                            )
-                          );
-                        }}
-                      />
-                    </InputsRow>
-                  ))}
-                  <InputsRow className="mr-[25%] justify-end pr-4">
-                    <Button
-                      className={`h-10 px-4 ${
-                        currentField.length && currentFieldValue.length
-                          ? "text-sky-700 hover:border-sky-900 hover:text-sky-900"
-                          : "bg-gray-100 text-gray-400"
+              <InputsRow>
+                {page?.inXmlSitemap ? (
+                  <Input
+                    label="In XML Sitemap"
+                    defaultValue={page?.inXmlSitemap ? "true" : "false"}
+                    disabled={true}
+                    className="w-3/12"
+                  />
+                ) : null}
+                <Input
+                  id="sku"
+                  name="sku"
+                  label="SKU"
+                  placeholder="Page SKU"
+                  value={formik.values.sku}
+                  onChange={formik.handleChange}
+                  disabled={false}
+                  className="w-3/12"
+                />
+                <Input
+                  id="type"
+                  name="type"
+                  label="Type"
+                  placeholder="Page type"
+                  value={formik.values.type}
+                  onChange={formik.handleChange}
+                  disabled={false}
+                  className="w-2/12"
+                />
+                <Input
+                  label="Created"
+                  defaultValue={
+                    page?.createdAt && new Date(page?.createdAt).toDateString()
+                  }
+                  disabled={true}
+                  className="w-2/12"
+                />
+                <Input
+                  label="Modified"
+                  defaultValue={
+                    page?.updatedAt && new Date(page?.updatedAt).toDateString()
+                  }
+                  disabled={true}
+                  className="w-2/12"
+                />
+              </InputsRow>
+              <InputsRow>
+                <SelectInput
+                  currentField={currentField}
+                  setCurrentField={setCurrentField}
+                  label="Field"
+                  className="w-3/12"
+                  data={locale?.result[0].fields || []}
+                />
+                <Input
+                  label="Value"
+                  placeholder="Enter value"
+                  value={currentFieldValue}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setCurrentFieldValue(e.currentTarget.value)
+                  }
+                  disabled={!currentField}
+                  className="w-6/12"
+                  onKeyDown={e => e.key === "Enter" && handleAddField()}
+                />
+                <div className="mt-6 flex w-3/12 justify-evenly pr-4">
+                  <button
+                    type="button"
+                    onClick={() => setActive(true)}
+                    className="flex items-center focus:outline-0"
+                  >
+                    <div
+                      className={`mr-2 inline-block h-4 w-4 rounded-full ${
+                        active
+                          ? "border-2 border-white bg-sky-700"
+                          : "border border-slate-500"
                       }`}
-                      label="Add"
-                      handler={handleAddField}
-                      disabled={
-                        currentField.length && currentFieldValue.length
-                          ? false
-                          : true
-                      }
-                    />
-                  </InputsRow>
-                  {page?.data && Object.keys(page?.data).length ? (
-                    <InputsRow className="justify-end">
-                      <Input label="Created" className="w-3/12" />
-                    </InputsRow>
-                  ) : null}
-                  {Object.keys(page?.data || {}).map((item, i) => (
-                    <InputsRow key={i}>
-                      <Input
-                        defaultValue={item}
-                        disabled={true}
-                        className="w-3/12"
-                      />
-                      <Input
-                        defaultValue={page?.data[item].value}
-                        disabled={true}
-                        className="w-6/12"
-                      />
-                      <Input
-                        defaultValue={new Date(
-                          page?.data[item].createdAt || ""
-                        ).toDateString()}
-                        disabled={true}
-                        className="w-3/12"
-                      />
-                    </InputsRow>
-                  ))}
-                </>
-              ) : (
-                <>
-                  <InputsRow>
-                    <InputSkeleton className="w-3/12" />
-                    <InputSkeleton className="w-3/12" />
-                    <InputSkeleton className="w-3/12" />
-                    <InputSkeleton className="w-3/12" />
-                  </InputsRow>
-                  <InputsRow>
-                    <InputSkeleton className="w-3/12" />
-                    <InputSkeleton className="w-3/12" />
-                    <InputSkeleton className="w-3/12" />
-                    <InputSkeleton className="w-3/12" />
-                  </InputsRow>
-                </>
-              )}
-
+                      style={{
+                        boxShadow: `${active ? "0 0 0 2px #0c7994" : "none"}`
+                      }}
+                    ></div>
+                    <span>Active</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActive(false)}
+                    className="flex items-center focus:outline-0"
+                  >
+                    <div
+                      className={`mr-2 inline-block h-4 w-4 rounded-full ${
+                        !active
+                          ? "border-2 border-white bg-sky-700"
+                          : "border border-slate-500"
+                      }`}
+                      style={{
+                        boxShadow: `${!active ? "0 0 0 2px #0c7994" : "none"}`
+                      }}
+                    ></div>
+                    <span>Inactive</span>
+                  </button>
+                </div>
+              </InputsRow>
+              {fields.map(field => (
+                <InputsRow key={JSON.stringify(field)}>
+                  <Input
+                    defaultValue={Object.keys(field)[0]}
+                    disabled={true}
+                    className="w-3/12"
+                  />
+                  <Input
+                    defaultValue={Object.values(field)[0]}
+                    disabled={true}
+                    className="w-6/12"
+                  />
+                  <DeleteEntryIcon
+                    className="mt-1"
+                    onClick={() => {
+                      setFields(currentFields =>
+                        currentFields.filter(
+                          ffield =>
+                            JSON.stringify(ffield) !== JSON.stringify(field)
+                        )
+                      );
+                    }}
+                  />
+                </InputsRow>
+              ))}
+              <InputsRow className="mr-[25%] justify-end pr-4">
+                <Button
+                  className={`h-10 px-4 ${
+                    currentField.length && currentFieldValue.length
+                      ? "text-sky-700 hover:border-sky-900 hover:text-sky-900"
+                      : "bg-gray-100 text-gray-400"
+                  }`}
+                  label="Add"
+                  handler={handleAddField}
+                  disabled={
+                    currentField.length && currentFieldValue.length
+                      ? false
+                      : true
+                  }
+                />
+              </InputsRow>
+              {page?.data && Object.keys(page?.data).length ? (
+                <InputsRow className="justify-end">
+                  <Input label="Created" className="w-3/12" />
+                </InputsRow>
+              ) : null}
+              {Object.keys(page?.data || {}).map((item, i) => (
+                <InputsRow key={i}>
+                  <Input
+                    defaultValue={item}
+                    disabled={true}
+                    className="w-3/12"
+                  />
+                  <Input
+                    defaultValue={page?.data[item].value}
+                    disabled={true}
+                    className="w-6/12"
+                  />
+                  <Input
+                    defaultValue={new Date(
+                      page?.data[item].createdAt || ""
+                    ).toDateString()}
+                    disabled={true}
+                    className="w-3/12"
+                  />
+                </InputsRow>
+              ))}
               {page?.PS ? (
                 <>
                   <InputsRow>
