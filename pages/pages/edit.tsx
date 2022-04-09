@@ -33,7 +33,10 @@ import useBinLite from "../../lib/hooks/useBinLite";
 import { DeleteEntryIcon } from "../../components/Inputs/Inputs.icons";
 import { Result } from "../../lib/interfaces/interfaces";
 import { Page } from "../../lib/interfaces/pages";
-import { InputSkeleton } from "../../components/Skeletons/Skeletons";
+import {
+  InputSkeleton,
+  TableSkeleton
+} from "../../components/Skeletons/Skeletons";
 
 const EditPage: NextPage = () => {
   const [currentField, setCurrentField] = useState<string>("");
@@ -435,6 +438,18 @@ const EditPage: NextPage = () => {
                     <InputSkeleton className="w-3/12" />
                     <InputSkeleton className="w-3/12" />
                   </InputsRow>
+                  <InputsRow>
+                    <InputSkeleton className="w-3/12" />
+                    <InputSkeleton className="w-3/12" />
+                    <InputSkeleton className="w-3/12" />
+                    <InputSkeleton className="w-3/12" />
+                  </InputsRow>
+                  <InputsRow>
+                    <InputSkeleton className="w-3/12" />
+                    <InputSkeleton className="w-3/12" />
+                    <InputSkeleton className="w-3/12" />
+                    <InputSkeleton className="w-3/12" />
+                  </InputsRow>
                 </>
               )}
 
@@ -724,20 +739,25 @@ const EditPage: NextPage = () => {
                     </div>
                   </InputsRow>
                   <div className="mt-5 mr-4">
-                    <ResultsTable
-                      data={page.BINLite.matches.map(match => ({
-                        Name: match.retailerName,
-                        URL: {
-                          label: match.buyNowUrl,
-                          endpoint: match.buyNowUrl
-                        },
-                        Logo:
-                          "data:image/png;base64," +
-                          binLiteSellers?.find(
-                            seller => seller.RetailerName === match.retailerName
-                          )?.Retailerlogo
-                      }))}
-                    />
+                    {binLiteSellers ? (
+                      <ResultsTable
+                        data={page.BINLite.matches.map(match => ({
+                          Name: match.retailerName,
+                          URL: {
+                            label: match.buyNowUrl,
+                            endpoint: match.buyNowUrl
+                          },
+                          Logo:
+                            "data:image/png;base64," +
+                            binLiteSellers?.find(
+                              seller =>
+                                seller.RetailerName === match.retailerName
+                            )?.Retailerlogo
+                        }))}
+                      />
+                    ) : (
+                      <TableSkeleton numRows={5} />
+                    )}
                   </div>
                 </>
               ) : null}

@@ -18,6 +18,7 @@ import AddEntryButton from "../../components/AddEntryButton/AddEntryButton";
 import SearchEntries from "../../components/SearchEntries/SearchEntries";
 import ResultsTable from "../../components/ResultsTable/ContentTable";
 import { usePages } from "../../lib/hooks/usePage";
+import { TableSkeleton } from "../../components/Skeletons/Skeletons";
 
 type Payload = { [key: string]: string | boolean };
 
@@ -34,7 +35,6 @@ const Page: NextPage = () => {
 
   const minEntriesCount = locale?.result.length ? 1 : 0;
 
-  // const data = locale?.result[0].pages?.map(page => {
   const data = pages?.map(page => {
     const pageDataPayload: Payload = {};
     locale?.result[0].fields.forEach(key => {
@@ -148,7 +148,11 @@ const Page: NextPage = () => {
                 <SearchEntries />
               </div>
             </div>
-            <ResultsTable data={data} />
+            {data ? (
+              <ResultsTable data={data} />
+            ) : (
+              <TableSkeleton numRows={25} />
+            )}
           </ContentContainer>
         </Container>
       </section>
