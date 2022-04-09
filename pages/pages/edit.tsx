@@ -221,20 +221,28 @@ const EditPage: NextPage = () => {
             <Details />
             <form className="" onSubmit={formik.handleSubmit}>
               <InputsRow>
-                <Input
-                  label="Brand"
-                  defaultValue={router.query.l as string}
-                  disabled={true}
-                  className="w-3/12"
-                />
-                {page ? null : <InputSkeleton className="w-9/12" />}
-                <Input
-                  label="URL"
-                  placeholder="Page URL"
-                  defaultValue={page?.url}
-                  disabled={true}
-                  className="w-9/12"
-                />
+                {router.query.l ? (
+                  <Input
+                    label="Brand"
+                    defaultValue={router.query.l as string}
+                    disabled={true}
+                    className="w-3/12"
+                  />
+                ) : (
+                  <InputSkeleton className="w-3/12" />
+                )}
+
+                {page ? (
+                  <Input
+                    label="URL"
+                    placeholder="Page URL"
+                    defaultValue={page?.url}
+                    disabled={true}
+                    className="w-9/12"
+                  />
+                ) : (
+                  <InputSkeleton className="w-9/12" />
+                )}
               </InputsRow>
               <InputsRow>
                 {page?.inXmlSitemap ? (
