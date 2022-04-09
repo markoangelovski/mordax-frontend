@@ -33,6 +33,7 @@ import useBinLite from "../../lib/hooks/useBinLite";
 import { DeleteEntryIcon } from "../../components/Inputs/Inputs.icons";
 import { Result } from "../../lib/interfaces/interfaces";
 import { Page } from "../../lib/interfaces/pages";
+import { InputSkeleton } from "../../components/Skeletons/Skeletons";
 
 const EditPage: NextPage = () => {
   const [currentField, setCurrentField] = useState<string>("");
@@ -226,6 +227,7 @@ const EditPage: NextPage = () => {
                   disabled={true}
                   className="w-3/12"
                 />
+                {page ? null : <InputSkeleton className="w-9/12" />}
                 <Input
                   label="URL"
                   placeholder="Page URL"
@@ -725,7 +727,6 @@ const EditPage: NextPage = () => {
                   }}
                 />
                 <Button
-                  // className="mr-4 mt-4 h-10 px-4 text-sky-700 hover:border-sky-900 hover:text-sky-900"
                   className={`mr-4 mt-4 h-10 px-4 ${
                     isSaveActive
                       ? "text-sky-700 hover:border-sky-900 hover:text-sky-900"
@@ -736,7 +737,6 @@ const EditPage: NextPage = () => {
                   handler={handleCancelForm}
                 />
                 <Button
-                  // className="mr-4 mt-4 h-10 px-4 text-sky-700 hover:border-sky-900 hover:text-sky-900"
                   className={`mr-4 mt-4 h-10 px-4 ${
                     isSaveActive
                       ? "bg-sky-700 text-white hover:bg-sky-900"
