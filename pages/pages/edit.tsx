@@ -145,8 +145,8 @@ const EditPage: NextPage = () => {
       type: page?.type
     },
     validationSchema: Yup.object({
-      sku: Yup.string(),
-      type: Yup.string()
+      sku: Yup.string().max(256, "Maximum 256 characters!"),
+      type: Yup.string().max(256, "Maximum 256 characters!")
     }),
     onSubmit: values => {
       setErrorMessage("");

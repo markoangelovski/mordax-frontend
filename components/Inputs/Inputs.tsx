@@ -32,7 +32,7 @@ export const Input = ({
   if (value || value?.length === 0) {
     // value?.length === 0 for initial values from props that are set to "" by default
     return (
-      <div className={`${className} last:mr-0`}>
+      <div className={`${className ? className : ""} last:mr-0`}>
         {label ? (
           <label className="text-xs font-semibold uppercase text-slate-500">
             {label}
