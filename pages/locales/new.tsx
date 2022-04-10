@@ -27,13 +27,15 @@ import {
   Container,
   ContentContainer
 } from "../../components/Containers/Containers";
-import { handleLinkClick } from "../../lib/helpers/utils";
+import { handleLinkClick, handleLinkClick2 } from "../../lib/helpers/utils";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 import Details from "../../components/Details/Details";
 import { InputsRow } from "../../components/LayoutElements/LayoutElements";
 import { Input } from "../../components/Inputs/Inputs";
 import Button from "../../components/Button/Button";
 import { DeleteEntryIcon } from "../../components/Inputs/Inputs.icons";
+import FileUpload from "../../components/FileUpload/FileUpload";
+import { Locale } from "../../lib/interfaces/locales";
 
 const NewPage: NextPage = () => {
   const [current3rdParty, setCurrent3rdParty] = useState<string>("");
@@ -49,6 +51,8 @@ const NewPage: NextPage = () => {
 
   const router = useRouter();
 
+  const queryClient = useQueryClient();
+
   // const locale = useLocale(router.query.l as string, true);
 
   interface Payload {
@@ -56,8 +60,13 @@ const NewPage: NextPage = () => {
     body: BodyInit | undefined;
   }
 
-  const { mutate, isLoading, isIdle, isSuccess } = useMutation(
-    ({ endpoint, body }: Payload) => fetchData(endpoint, "POST", body)
+  const {
+    mutate: postLocale,
+    isLoading,
+    isIdle,
+    isSuccess
+  } = useMutation(({ endpoint, body }: Payload) =>
+    fetchData(endpoint, "POST", body)
   );
 
   const formik = useFormik({
@@ -81,7 +90,9 @@ const NewPage: NextPage = () => {
       locale: Yup.string()
         .required("Locale is required.")
         .max(256, "Maximum 256 characters!"),
-      url: Yup.string().url().required("Locale URL is required."),
+      url: Yup.string()
+        .url("URL needs to be in proper format.")
+        .required("Locale URL is required."),
       newUrl: Yup.string().url(),
       capitol: Yup.string().max(256, "Maximum 256 characters!"),
       scButtonKey: Yup.string().max(256, "Maximum 256 characters!"),
@@ -105,10 +116,10 @@ const NewPage: NextPage = () => {
       }
 
       setErrorMessage("");
-      mutate(
+      postLocale(
         { endpoint: `/locales?` + queryParams.toString(), body },
         {
-          onSettled: (data: Result<Page>, error) => {
+          onSettled: (data: Result<Locale>, error) => {
             console.log("data", data);
             if (data instanceof Error || error)
               return setErrorMessage(
@@ -116,7 +127,12 @@ const NewPage: NextPage = () => {
               );
             if (data.hasErrors) return setErrorMessage("Invalid access key.");
 
+            // handleLinkClick2(
+            //   router,
+            //   `locales/edit?l=${data.result[0].url.value}`
+            // );
             // TODO: refetch locales query
+            // queryClient.invalidateQueries('locales')
 
             // return router.push(
             //   `/locales/edit?l=${router.query.l}`
@@ -124,10 +140,9 @@ const NewPage: NextPage = () => {
           }
         }
       );
-
-      progressBar(isLoading, isLoading, isSuccess);
     }
   });
+  progressBar(isLoading, false, isSuccess);
 
   interface Field {
     fieldName: string;
@@ -169,8 +184,26 @@ const NewPage: NextPage = () => {
   };
 
   // NProgress.start();
-  console.log("field", field);
-  console.log("thirdParties", thirdParties);
+  const isSaveActive =
+    !!formik.values.brand && !!formik.values.locale && !!formik.values.url;
+
+  const handleCancelForm = () => {
+    formik.values.brand = "";
+    formik.values.locale = "";
+    formik.values.hrefLang = "";
+    formik.values.url = "";
+    formik.values.newUrl = "";
+    formik.values.capitol = "";
+    formik.values.scButtonKey = "";
+    formik.values.scCarouselKey = "";
+    formik.values.scEcEndpointKey = "";
+    formik.values.BINLiteKey = "";
+    formik.values.psKey = "";
+    setFields([]);
+    setCurrentField("");
+    setCurrent3rdParty("");
+  };
+
   return (
     <Layout>
       <Head>
@@ -203,42 +236,53 @@ const NewPage: NextPage = () => {
               ]}
             />
             <Details />
-            <h2>Details</h2>
             <form className="" onSubmit={formik.handleSubmit} ref={templateRef}>
               <InputsRow>
-                <Input
-                  label="Brand"
-                  placeholder="Enter Brand name"
-                  value={formik.values.brand}
-                  onChange={formik.handleChange}
-                  disabled={false}
-                  className="w-3/12"
-                  id="brand"
-                  name="brand"
-                  required={true}
-                />
-                <Input
-                  label="Locale* (ex. en-us)"
-                  placeholder="Enter locale"
-                  value={formik.values.locale}
-                  onChange={formik.handleChange}
-                  disabled={false}
-                  className="w-3/12"
-                  id="locale"
-                  name="locale"
-                  required={true}
-                />
-                <Input
-                  label="URL*"
-                  placeholder="https://www.website.com/en-us"
-                  value={formik.values.url}
-                  onChange={formik.handleChange}
-                  disabled={false}
-                  className="w-3/12"
-                  id="url"
-                  name="url"
-                  required={true}
-                />
+                <div className="w-3/12">
+                  <Input
+                    label="Brand"
+                    placeholder="Enter Brand name"
+                    value={formik.values.brand}
+                    onChange={formik.handleChange}
+                    disabled={false}
+                    id="brand"
+                    name="brand"
+                    required={true}
+                  />
+                  <span className="text-sm text-red-600/50">
+                    {formik.errors.brand}
+                  </span>
+                </div>
+                <div className="w-3/12">
+                  <Input
+                    label="Locale* (ex. en-us)"
+                    placeholder="Enter locale"
+                    value={formik.values.locale}
+                    onChange={formik.handleChange}
+                    disabled={false}
+                    id="locale"
+                    name="locale"
+                    required={true}
+                  />
+                  <span className="text-sm text-red-600/50">
+                    {formik.errors.locale}
+                  </span>
+                </div>
+                <div className="w-3/12">
+                  <Input
+                    label="URL*"
+                    placeholder="https://www.website.com/en-us"
+                    value={formik.values.url}
+                    onChange={formik.handleChange}
+                    disabled={false}
+                    id="url"
+                    name="url"
+                    required={true}
+                  />
+                  <span className="text-sm text-red-600/50">
+                    {formik.errors.url}
+                  </span>
+                </div>
               </InputsRow>
               <InputsRow>
                 <div className="w-3/12">
@@ -403,7 +447,30 @@ const NewPage: NextPage = () => {
                   required={false}
                 />
               </InputsRow>
-              <span>Brand*</span>
+              <FileUpload />
+              <InputsRow className="mr-[25%] justify-end pr-4">
+                <Button
+                  className={`mr-2 px-4 py-3 ${
+                    isSaveActive
+                      ? "text-sky-700 hover:border-sky-900 hover:text-sky-900"
+                      : "bg-gray-100 text-gray-400"
+                  }`}
+                  label="Cancel"
+                  disabled={!isSaveActive}
+                  handler={handleCancelForm}
+                />
+                <Button
+                  className={`min-w-[82px] px-4 py-3 ${
+                    isSaveActive
+                      ? "bg-sky-700 text-white hover:bg-sky-900"
+                      : "bg-gray-100 text-gray-400"
+                  }`}
+                  label="Save"
+                  type="submit"
+                  disabled={!isSaveActive}
+                />
+              </InputsRow>
+              {/* <span>Brand*</span>
               <input
                 className=""
                 value={formik.values.brand}
@@ -571,10 +638,11 @@ const NewPage: NextPage = () => {
                 Download example file
               </a>
 
-              <input type="file" name="template" id="template" />
+              <input type="file" name="template" id="template" /> 
 
               <button>Cancel</button>
               <input type="submit" value="Save" />
+              */}
             </form>
           </ContentContainer>
         </Container>

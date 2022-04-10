@@ -225,6 +225,7 @@ const NewPage: NextPage = () => {
                       : "bg-gray-100 text-gray-400"
                   }`}
                   label="Cancel"
+                  disabled={!isSaveActive}
                   handler={handleCancelForm}
                 />
                 <Button

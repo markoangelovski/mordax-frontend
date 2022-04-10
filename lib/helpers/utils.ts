@@ -5,6 +5,11 @@ export const handleLinkClick = (router: NextRouter, endpoint: string) =>
     shallow: true
   });
 
+export const handleLinkClick2 = (router: NextRouter, endpoint: string) =>
+  router.push(`/${endpoint}`, undefined, {
+    shallow: true
+  });
+
 // Creates data payload for new and edit page.
 export const makeDataPayload = (data: object[]) =>
   data.reduce(
