@@ -16,3 +16,13 @@ export const makeDataPayload = (data: object[]) =>
     (acc, curr) => acc + `${Object.keys(curr)[0]}:${Object.values(curr)[0]};`,
     ""
   );
+
+export const toStdCase = (string: string) =>
+  string
+    .split("")
+    .map((letter, i) => {
+      if (i === 0) return letter.toUpperCase();
+      if (/^[A-Z]*$/.test(letter)) return " " + letter.toLowerCase();
+      return letter;
+    })
+    .join("");

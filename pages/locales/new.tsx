@@ -63,7 +63,6 @@ const NewPage: NextPage = () => {
   const {
     mutate: postLocale,
     isLoading,
-    isIdle,
     isSuccess
   } = useMutation(({ endpoint, body }: Payload) =>
     fetchData(endpoint, "POST", body)

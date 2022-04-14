@@ -1,21 +1,23 @@
 import { value } from "./interfaces";
 import { Page } from "./pages";
 
+export interface Stats {
+  [pages: string]: number;
+  entries: number;
+  pagesNotInSitemap: number;
+  products: number;
+  variants: number;
+  entriesWithSellers: number;
+  articles: number;
+  ALPs: number;
+  otherPages: number;
+}
+
 export interface Locale {
   brand: value;
   locale: value;
   url: value;
-  stats: {
-    pages: number;
-    entries: number;
-    pagesNotInSitemap: number;
-    products: number;
-    variants: number;
-    entriesWithSellers: number;
-    articles: number;
-    ALPs: number;
-    otherPages: number;
-  };
+  stats: Stats;
   fields: string[];
   thirdParties: string[];
   xmlSitemap: string;
