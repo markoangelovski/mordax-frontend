@@ -449,14 +449,16 @@ const EditPage: NextPage = () => {
                       disabled={true}
                       className="w-3/12"
                     />
-                    <Input
-                      label="Last Scan"
-                      defaultValue={new Date(
-                        page?.PS?.lastScan || ""
-                      ).toDateString()}
-                      disabled={true}
-                      className="w-3/12"
-                    />
+                    {page?.PS?.lastScan ? (
+                      <Input
+                        label="Last Scan"
+                        defaultValue={new Date(
+                          page?.PS?.lastScan
+                        ).toDateString()}
+                        disabled={true}
+                        className="w-3/12"
+                      />
+                    ) : null}
                   </InputsRow>
                   <InputsRow>
                     <SelectInput
