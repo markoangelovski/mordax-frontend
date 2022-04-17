@@ -440,19 +440,19 @@ const EditPage: NextPage = () => {
                   </InputsRow>
                 </>
               )}
-              {page?.PS ? (
+              {locale?.result[0].PS ? (
                 <>
                   <InputsRow>
                     <Input
                       label="PriceSpider OK"
-                      defaultValue={page?.PS.ok ? "true" : "false"}
+                      defaultValue={page?.PS?.ok ? "true" : "false"}
                       disabled={true}
                       className="w-3/12"
                     />
                     <Input
                       label="Last Scan"
                       defaultValue={new Date(
-                        page?.PS.lastScan || ""
+                        page?.PS?.lastScan || ""
                       ).toDateString()}
                       disabled={true}
                       className="w-3/12"
@@ -542,7 +542,7 @@ const EditPage: NextPage = () => {
                   </InputsRow>
                   <div className="mt-5 mr-4">
                     <ResultsTable
-                      data={page.PS.matches.map(match => ({
+                      data={page?.PS?.matches.map(match => ({
                         Name: match.retailerName,
                         Price: match.price,
                         PMID: match.pmid,
@@ -552,7 +552,7 @@ const EditPage: NextPage = () => {
                   </div>
                 </>
               ) : null}
-              {page?.SC ? (
+              {locale?.result[0].SC ? (
                 <>
                   <InputsRow>
                     <Input
@@ -561,12 +561,16 @@ const EditPage: NextPage = () => {
                       disabled={true}
                       className="w-3/12"
                     />
-                    <Input
-                      label="Last Scan"
-                      defaultValue={new Date(page.SC.lastScan).toDateString()}
-                      disabled={true}
-                      className="w-3/12"
-                    />
+                    {page?.SC.lastScan ? (
+                      <Input
+                        label="Last Scan"
+                        defaultValue={new Date(
+                          page?.SC.lastScan
+                        ).toDateString()}
+                        disabled={true}
+                        className="w-3/12"
+                      />
+                    ) : null}
                   </InputsRow>
                   <InputsRow>
                     <SelectInput
@@ -632,7 +636,7 @@ const EditPage: NextPage = () => {
                   </InputsRow>
                   <div className="mt-5 mr-4">
                     <ResultsTable
-                      data={page.SC.matches.map(match => ({
+                      data={page?.SC.matches.map(match => ({
                         Name: match.retailerName,
                         URL: {
                           label: match.url,
@@ -647,7 +651,7 @@ const EditPage: NextPage = () => {
                   </div>
                 </>
               ) : null}
-              {page?.BINLite ? (
+              {locale?.result[0].BINLite ? (
                 <>
                   <InputsRow>
                     <Input
@@ -656,14 +660,16 @@ const EditPage: NextPage = () => {
                       disabled={true}
                       className="w-3/12"
                     />
-                    <Input
-                      label="Last Scan"
-                      defaultValue={new Date(
-                        page?.BINLite.lastScan || ""
-                      ).toDateString()}
-                      disabled={true}
-                      className="w-3/12"
-                    />
+                    {page?.BINLite.lastScan ? (
+                      <Input
+                        label="Last Scan"
+                        defaultValue={new Date(
+                          page?.BINLite.lastScan
+                        ).toDateString()}
+                        disabled={true}
+                        className="w-3/12"
+                      />
+                    ) : null}
                   </InputsRow>
                   <InputsRow>
                     <SelectInput
@@ -728,7 +734,7 @@ const EditPage: NextPage = () => {
                   <div className="mt-5 mr-4">
                     {binLiteSellers ? (
                       <ResultsTable
-                        data={page.BINLite.matches.map(match => ({
+                        data={page?.BINLite.matches.map(match => ({
                           Name: match.retailerName,
                           URL: {
                             label: match.buyNowUrl,

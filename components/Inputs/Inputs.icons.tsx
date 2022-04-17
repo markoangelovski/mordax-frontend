@@ -7,7 +7,7 @@ export const DeleteEntryIcon = ({
   className?: string;
   onClick: MouseEventHandler<HTMLButtonElement>;
 }) => (
-  <button onClick={onClick} className={className}>
+  <button onClick={onClick} className={className} type="button">
     <svg
       className="h-6 w-6"
       xmlns="http://www.w3.org/2000/svg"

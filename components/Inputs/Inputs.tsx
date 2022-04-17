@@ -41,11 +41,11 @@ export const Input = ({
         {value || value?.length === 0 ? (
           <div
             className={`mt-1 mr-4 flex h-10 items-center overflow-hidden rounded border ${
-              disabled ? "border-gray-300 bg-gray-200" : ""
+              disabled ? "border-gray-300 bg-gray-100" : ""
             }`}
           >
             <input
-              className="grow pl-3 focus:outline-none disabled:bg-gray-200"
+              className="grow pl-3 focus:outline-none disabled:bg-gray-100"
               type="text"
               placeholder={placeholder}
               maxLength={150}
@@ -73,11 +73,11 @@ export const Input = ({
         {defaultValue || defaultValue?.length === 0 ? (
           <div
             className={`mt-1 mr-4 flex h-10 items-center overflow-hidden rounded border ${
-              disabled ? "border-gray-300 bg-gray-200" : ""
+              disabled ? "border-gray-300 bg-gray-100" : ""
             }`}
           >
             <input
-              className="grow pl-3 focus:outline-none disabled:bg-gray-200"
+              className="grow pl-3 focus:outline-none disabled:bg-gray-100"
               type="text"
               placeholder={placeholder}
               maxLength={150}
@@ -100,6 +100,7 @@ interface SelectInputProps {
   currentField: string;
   setCurrentField: Function;
   data: string[];
+  disabled?: boolean;
 }
 
 export const SelectInput = ({
@@ -108,9 +109,38 @@ export const SelectInput = ({
   placeholder,
   data,
   currentField,
-  setCurrentField
+  setCurrentField,
+  disabled
 }: SelectInputProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  if (disabled)
+    return (
+      <div className={`${className}`}>
+        <span className="text-xs font-semibold uppercase text-slate-500">
+          {label}
+        </span>
+        <div className="mt-1 mr-4 flex h-10 items-center rounded border border-gray-300 bg-gray-100 text-gray-400">
+          <span className="flex flex-1 items-center justify-between pl-3">
+            <span>
+              <span className="text-sm">{placeholder}</span>
+            </span>
+            <div className="border-l border-gray-300 p-2">
+              <svg
+                className="mx-2 h-3 w-3"
+                viewBox="0 0 100 100"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill="#9CA3AF"
+                  d="m11.8 19 38.2 38.5242718 38.2-38.5242718 11.8 11.8381877-50 50.1618123-50-50.1618123z"
+                ></path>
+              </svg>
+            </div>
+          </span>
+        </div>
+      </div>
+    );
+
   return (
     <div className={`${className}`}>
       <span className="text-xs font-semibold uppercase text-slate-500">

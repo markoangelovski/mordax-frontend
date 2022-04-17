@@ -41,3 +41,14 @@ export interface Locale {
   updatedAt: string;
   pages?: Page[];
 }
+
+export interface Metadata {
+  metaUrl: string;
+  metaTitle: string;
+  metaDescription: string;
+  metaImage: string;
+  favicon: string;
+  GTM: object;
+  createdAt: string;
+  updatedAt: string;
+}

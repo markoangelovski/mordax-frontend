@@ -6,7 +6,7 @@ const TextView = ({ data }: any) => {
     if (typeof data == "object") {
       html += "<ul class='list-disc' style='margin:auto; padding:revert;' >";
       for (var i in data) {
-        html += `<li class='hljs-attr'>${i}: `;
+        html += `<li class='hljs-attr whitespace-nowrap'>${i}: `;
         tree(data[i]);
         html += "</li>";
       }

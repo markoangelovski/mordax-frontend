@@ -133,9 +133,7 @@ const NewPage: NextPage = () => {
             // TODO: refetch locales query
             // queryClient.invalidateQueries('locales')
 
-            // return router.push(
-            //   `/locales/edit?l=${router.query.l}`
-            // );
+            return router.push(`/locales/edit?l=${router.query.l}`);
           }
         }
       );

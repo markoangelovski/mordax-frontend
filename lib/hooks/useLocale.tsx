@@ -3,7 +3,7 @@ import { useQuery } from "react-query";
 import useKey from "./useKey";
 
 import { Result } from "../interfaces/interfaces";
-import { Locale } from "../interfaces/locales";
+import { Locale, Metadata } from "../interfaces/locales";
 
 import fetchData from "../drivers/fetchData";
 import progressBar from "../helpers/progressBar";
@@ -36,3 +36,26 @@ const useLocale = (
 };
 
 export default useLocale;
+
+export const useLocaleMetadata = (
+  locale: string,
+  trigger: boolean
+): Result<Metadata> | undefined => {
+  const { oldKey } = useKey();
+
+  const { data, isLoading, isFetching, isFetched } = useQuery<
+    Result<Metadata>,
+    Error
+  >(
+    ["metadata", locale],
+    () => fetchData(`/locales/metadata?key=${oldKey}&url=${locale}`, "GET"),
+    {
+      enabled: !!oldKey && !!locale && locale !== "undefined" && trigger,
+      refetchOnWindowFocus: false
+    }
+  );
+
+  progressBar(isLoading, isFetching, isFetched);
+
+  return data;
+};
