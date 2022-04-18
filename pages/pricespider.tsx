@@ -7,6 +7,8 @@ import type { NextPage } from "next";
 
 import Layout from "../components/Layout/Layout";
 
+import * as urls from "../config";
+
 import { usePage } from "../lib/hooks/usePage";
 import useXmlSitemap from "../lib/hooks/useXmlSitemap";
 import useBinLite from "../lib/hooks/useBinLite";
@@ -26,6 +28,7 @@ import {
 import TextJsonSwitch from "../components/TextJsonSwitch/TextJsonSwitch";
 import JsonView from "../components/JsonView/JsonView";
 import TextView from "../components/TextView/TextView";
+import Meta from "../components/Meta/Meta";
 
 const priceSpider: NextPage = () => {
   // Set default active switch to text
@@ -62,10 +65,11 @@ const priceSpider: NextPage = () => {
 
   return (
     <Layout>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Meta
+        title="PriceSpider Inspector"
+        description="PriceSpider Inspector"
+        canonical={urls.front + "/pricespider"}
+      />
 
       <section className="">
         <MicroLinks

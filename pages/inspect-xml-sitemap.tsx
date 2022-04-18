@@ -7,6 +7,8 @@ import type { NextPage } from "next";
 
 import Layout from "../components/Layout/Layout";
 
+import * as urls from "../config";
+
 import { usePage } from "../lib/hooks/usePage";
 import useXmlSitemap from "../lib/hooks/useXmlSitemap";
 import CurrentSection from "../components/CurrentSection/CurrentSection";
@@ -17,6 +19,7 @@ import {
 import JsonView from "../components/JsonView/JsonView";
 import TextJsonSwitch from "../components/TextJsonSwitch/TextJsonSwitch";
 import TextView from "../components/TextView/TextView";
+import Meta from "../components/Meta/Meta";
 
 const inspectXmlSitemap: NextPage = () => {
   // Set default active switch to text
@@ -28,10 +31,11 @@ const inspectXmlSitemap: NextPage = () => {
 
   return (
     <Layout>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Meta
+        title="Inspect XML Sitemap"
+        description="Inspect XML Sitemap"
+        canonical={urls.front + "/binlite"}
+      />
 
       <section className="">
         <CurrentSection label="XML Sitemap Inspector" />

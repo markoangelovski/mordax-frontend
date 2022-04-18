@@ -8,6 +8,8 @@ import * as Yup from "yup";
 
 import type { NextPage } from "next";
 
+import * as urls from "../../config";
+
 import Layout from "../../components/Layout/Layout";
 
 import { usePage } from "../../lib/hooks/usePage";
@@ -38,6 +40,7 @@ import {
   TableSkeleton
 } from "../../components/Skeletons/Skeletons";
 import RefreshSellerMatches from "../../components/RefreshSellerMatches/RefreshSellerMatches";
+import Meta from "../../components/Meta/Meta";
 
 const EditPage: NextPage = () => {
   const [currentField, setCurrentField] = useState<string>("");
@@ -193,10 +196,11 @@ const EditPage: NextPage = () => {
 
   return (
     <Layout>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Meta
+        title={page ? `${page?.id}` : "Loading..."}
+        description="Edit page"
+        canonical={urls.front + "/pages/edit"}
+      />
 
       <section className="">
         <MicroLinks

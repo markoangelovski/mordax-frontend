@@ -3,11 +3,15 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 
 import Layout from "../components/Layout/Layout";
+
+import * as urls from "../config";
+
 import {
   Container,
   ContentContainer
 } from "../components/Containers/Containers";
 import useUser from "../lib/hooks/useUser";
+import Meta from "../components/Meta/Meta";
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -17,10 +21,11 @@ const Home: NextPage = () => {
 
   return (
     <Layout>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Meta
+        title="Mordax."
+        description="Welcome to Mordax! Keep all your websites, pages and E-Commerce tools in one place."
+        canonical={urls.front + "/home"}
+      />
 
       <section className="">
         <Container className="border-t border-slate-200">

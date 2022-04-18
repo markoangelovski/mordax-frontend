@@ -40,6 +40,7 @@ import Button from "../../components/Button/Button";
 import FileUpload from "../../components/FileUpload/FileUpload";
 import LocaleMetadata from "../../components/LocaleMetadata/LocaleMetadata";
 import RefreshSellerMatches from "../../components/RefreshSellerMatches/RefreshSellerMatches";
+import Meta from "../../components/Meta/Meta";
 
 const EditLocale: NextPage = () => {
   const [reRender, setReRender] = useState<boolean>(false);
@@ -315,10 +316,15 @@ const EditLocale: NextPage = () => {
 
   return (
     <Layout>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Meta
+        title={
+          locale
+            ? `${locale?.result[0].brand.value} ${locale?.result[0].locale.value}`
+            : "Loading..."
+        }
+        description="Edit locale"
+        canonical={urls.front + "/locales/edit"}
+      />
 
       <section className="">
         <MicroLinks

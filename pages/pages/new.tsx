@@ -9,6 +9,8 @@ import * as Yup from "yup";
 
 import Layout from "../../components/Layout/Layout";
 
+import * as urls from "../../config";
+
 import fetchData from "../../lib/drivers/fetchData";
 
 import useKey from "../../lib/hooks/useKey";
@@ -30,6 +32,7 @@ import Details from "../../components/Details/Details";
 import { InputsRow } from "../../components/LayoutElements/LayoutElements";
 import { Input, SelectInput } from "../../components/Inputs/Inputs";
 import Button from "../../components/Button/Button";
+import Meta from "../../components/Meta/Meta";
 
 const NewPage: NextPage = () => {
   const [currentField, setCurrentField] = useState<string>("");
@@ -112,10 +115,11 @@ const NewPage: NextPage = () => {
 
   return (
     <Layout>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Meta
+        title="New page"
+        description="New page"
+        canonical={urls.front + "/pages/new"}
+      />
 
       <section className="">
         <MicroLinks

@@ -7,6 +7,8 @@ import type { NextPage } from "next";
 
 import Layout from "../components/Layout/Layout";
 
+import * as urls from "../config";
+
 import { usePage } from "../lib/hooks/usePage";
 import useXmlSitemap from "../lib/hooks/useXmlSitemap";
 import useBinLite from "../lib/hooks/useBinLite";
@@ -20,6 +22,7 @@ import MicroLinks from "../components/MicroLinks/MicroLinks";
 import { BinLiteProduct } from "../lib/interfaces/binLite";
 import TextView from "../components/TextView/TextView";
 import JsonView from "../components/JsonView/JsonView";
+import Meta from "../components/Meta/Meta";
 
 const binLite: NextPage = () => {
   // Set default active switch to text
@@ -31,10 +34,11 @@ const binLite: NextPage = () => {
 
   return (
     <Layout>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Meta
+        title="BIN Lite Inspector"
+        description="BIN Lite Inspector"
+        canonical={urls.front + "/binlite"}
+      />
 
       <section className="">
         <CurrentSection label="BIN Lite Inspector" />

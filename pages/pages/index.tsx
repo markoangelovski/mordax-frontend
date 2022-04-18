@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 
 import type { NextPage } from "next";
 
+import * as urls from "../../config";
+
 import Layout from "../../components/Layout/Layout";
 
 import useLocale from "../../lib/hooks/useLocale";
@@ -20,6 +22,7 @@ import ResultsTable from "../../components/ResultsTable/ContentTable";
 import { usePages } from "../../lib/hooks/usePage";
 import { TableSkeleton } from "../../components/Skeletons/Skeletons";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
+import Meta from "../../components/Meta/Meta";
 
 type Payload = { [key: string]: string | boolean };
 
@@ -93,10 +96,15 @@ const Page: NextPage = () => {
 
   return (
     <Layout>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Meta
+        title={
+          locale
+            ? `${locale?.result[0].brand.value} ${locale?.result[0].locale.value} pages`
+            : "Loading..."
+        }
+        description="Locale pages"
+        canonical={urls.front + "/pages"}
+      />
 
       <section className="">
         <MicroLinks

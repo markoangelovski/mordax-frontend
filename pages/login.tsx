@@ -9,12 +9,15 @@ import * as Yup from "yup";
 
 import Layout from "../components/Layout/Layout";
 
+import * as urls from "../config";
+
 import fetchData from "../lib/drivers/fetchData";
 
 import useKey from "../lib/hooks/useKey";
 import useUser from "../lib/hooks/useUser";
 import progressBar from "../lib/helpers/progressBar";
 import { logo } from "../lib/misc/logo";
+import Meta from "../components/Meta/Meta";
 
 const Login: NextPage = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -61,10 +64,11 @@ const Login: NextPage = () => {
   return (
     <Layout>
       <div className="mx-auto flex min-h-screen w-96 items-center">
-        <Head>
-          <title>Create Next App</title>
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
+        <Meta
+          title="Mordax. Login"
+          description="Mordax. Login"
+          canonical={urls.front + "/login"}
+        />
 
         <section className="flex-1">
           <Image

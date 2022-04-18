@@ -36,6 +36,7 @@ import Button from "../../components/Button/Button";
 import { DeleteEntryIcon } from "../../components/Inputs/Inputs.icons";
 import FileUpload from "../../components/FileUpload/FileUpload";
 import { Locale } from "../../lib/interfaces/locales";
+import Meta from "../../components/Meta/Meta";
 
 const NewPage: NextPage = () => {
   const [current3rdParty, setCurrent3rdParty] = useState<string>("");
@@ -203,10 +204,11 @@ const NewPage: NextPage = () => {
 
   return (
     <Layout>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Meta
+        title="New locale"
+        description="New locale"
+        canonical={urls.front + "/locales/new"}
+      />
 
       <section className="">
         <MicroLinks

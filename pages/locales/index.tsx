@@ -2,6 +2,8 @@ import Head from "next/head";
 import Link from "next/link";
 import { NextRouter, useRouter } from "next/router";
 
+import * as urls from "../../config";
+
 import type { NextPage } from "next";
 
 import useLocales from "../../lib/hooks/useLocales";
@@ -20,6 +22,7 @@ import { handleLinkClick } from "../../lib/helpers/utils";
 import ResultsTable from "../../components/ResultsTable/ContentTable";
 import { TableSkeleton } from "../../components/Skeletons/Skeletons";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
+import Meta from "../../components/Meta/Meta";
 
 const Locales: NextPage = () => {
   const router = useRouter();
@@ -44,10 +47,11 @@ const Locales: NextPage = () => {
 
   return (
     <Layout>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Meta
+        title="Locales"
+        description="Available locales"
+        canonical={urls.front + "/locales"}
+      />
 
       <section className="">
         <MicroLinks

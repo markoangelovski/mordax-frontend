@@ -7,6 +7,8 @@ import type { NextPage } from "next";
 
 import Layout from "../components/Layout/Layout";
 
+import * as urls from "../config";
+
 import { usePage } from "../lib/hooks/usePage";
 import useXmlSitemap from "../lib/hooks/useXmlSitemap";
 import useBinLite from "../lib/hooks/useBinLite";
@@ -21,6 +23,7 @@ import MicroLinks from "../components/MicroLinks/MicroLinks";
 import TextJsonSwitch from "../components/TextJsonSwitch/TextJsonSwitch";
 import JsonView from "../components/JsonView/JsonView";
 import TextView from "../components/TextView/TextView";
+import Meta from "../components/Meta/Meta";
 
 const smartCommerce: NextPage = () => {
   // Set default active switch to text
@@ -44,10 +47,11 @@ const smartCommerce: NextPage = () => {
 
   return (
     <Layout>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Meta
+        title="SmartCommerce Inspector"
+        description="SmartCommerce Inspector"
+        canonical={urls.front + "/smartcommerce"}
+      />
 
       <section className="">
         <MicroLinks
