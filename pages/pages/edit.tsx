@@ -217,6 +217,11 @@ const EditPage: NextPage = () => {
           <ContentContainer>
             <Breadcrumbs
               breadcrumbs={[
+                { label: "Locales", endpoint: `/locales?l=${router.query.l}` },
+                {
+                  label: router.query.l as string,
+                  endpoint: `/locales?l=${router.query.l}`
+                },
                 { label: "Pages", endpoint: `/pages?l=${router.query.l}` },
                 { label: router.query.p as string }
               ]}
@@ -796,7 +801,6 @@ const EditPage: NextPage = () => {
                 />
               </InputsRow>
             </form>
-            {/* <pre>{JSON.stringify(page, null, 2)}</pre> */}
           </ContentContainer>
         </Container>
       </section>

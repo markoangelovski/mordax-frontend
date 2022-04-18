@@ -19,6 +19,7 @@ import {
 import { handleLinkClick } from "../../lib/helpers/utils";
 import ResultsTable from "../../components/ResultsTable/ContentTable";
 import { TableSkeleton } from "../../components/Skeletons/Skeletons";
+import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 
 const Locales: NextPage = () => {
   const router = useRouter();
@@ -66,8 +67,9 @@ const Locales: NextPage = () => {
         <CurrentSection label="Locales" />
         <Container>
           <ContentContainer>
+            <Breadcrumbs breadcrumbs={[{ label: "Locales" }]} />
             <div className="mb-6 flex items-center justify-between">
-              <div className="mb-6 flex max-w-2xl items-center text-sm text-gray-400">
+              <div className="mt-6 flex max-w-2xl items-center text-sm text-gray-400">
                 <span>Available locales</span>
               </div>
               <AddEntryButton

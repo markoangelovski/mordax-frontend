@@ -712,11 +712,32 @@ const EditLocale: NextPage = () => {
                   </InputsRow>
                 </>
               ) : (
-                <InputsRow>
-                  <InputSkeleton className="w-3/12" />
-                  <InputSkeleton className="w-3/12" />
-                  <InputSkeleton className="w-3/12" />
-                </InputsRow>
+                <>
+                  <InputsRow>
+                    <InputSkeleton className="w-3/12" />
+                    <InputSkeleton className="w-3/12" />
+                    <InputSkeleton className="w-3/12" />
+                    <InputSkeleton className="w-3/12" />
+                  </InputsRow>
+                  <InputsRow>
+                    <InputSkeleton className="w-3/12" />
+                    <InputSkeleton className="w-3/12" />
+                    <InputSkeleton className="w-3/12" />
+                    <InputSkeleton className="w-3/12" />
+                  </InputsRow>
+                  <InputsRow>
+                    <InputSkeleton className="w-3/12" />
+                    <InputSkeleton className="w-3/12" />
+                    <InputSkeleton className="w-3/12" />
+                    <InputSkeleton className="w-3/12" />
+                  </InputsRow>
+                  <InputsRow>
+                    <InputSkeleton className="w-3/12" />
+                    <InputSkeleton className="w-3/12" />
+                    <InputSkeleton className="w-3/12" />
+                    <InputSkeleton className="w-3/12" />
+                  </InputsRow>
+                </>
               )}
             </form>
           </ContentContainer>

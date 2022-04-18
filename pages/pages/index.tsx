@@ -19,6 +19,7 @@ import SearchEntries from "../../components/SearchEntries/SearchEntries";
 import ResultsTable from "../../components/ResultsTable/ContentTable";
 import { usePages } from "../../lib/hooks/usePage";
 import { TableSkeleton } from "../../components/Skeletons/Skeletons";
+import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 
 type Payload = { [key: string]: string | boolean };
 
@@ -115,8 +116,23 @@ const Page: NextPage = () => {
         <CurrentSection label="Pages" />
         <Container>
           <ContentContainer>
+            <Breadcrumbs
+              breadcrumbs={[
+                {
+                  label: "Locales",
+                  endpoint: `/locales?l=${router.query.l}`
+                },
+                {
+                  label: router.query.l as string,
+                  endpoint: `/locales/edit?l=${router.query.l}`
+                },
+                {
+                  label: "Pages"
+                }
+              ]}
+            />
             <div className="mb-6 flex items-center justify-between">
-              <div className="mb-6 flex max-w-2xl items-center text-sm text-gray-400">
+              <div className="mt-6 flex max-w-2xl items-center text-sm text-gray-400">
                 <span>
                   {locale?.result[0].brand.value}{" "}
                   {locale?.result[0].locale.value} pages
