@@ -31,7 +31,10 @@ import { Input, SelectInput } from "../../components/Inputs/Inputs";
 import { useEffect, useRef, useState } from "react";
 import { Result } from "../../lib/interfaces/interfaces";
 import { Locale } from "../../lib/interfaces/locales";
-import { InputSkeleton } from "../../components/Skeletons/Skeletons";
+import {
+  InputSkeleton,
+  LocaleStatsSkeleton
+} from "../../components/Skeletons/Skeletons";
 import { DeleteEntryIcon } from "../../components/Inputs/Inputs.icons";
 import Button from "../../components/Button/Button";
 import FileUpload from "../../components/FileUpload/FileUpload";
@@ -345,7 +348,7 @@ const EditLocale: NextPage = () => {
             {locale?.result[0].stats ? (
               <LocaleStats stats={locale?.result[0].stats} />
             ) : (
-              <div>Stats skeleton</div>
+              <LocaleStatsSkeleton />
             )}
             <LocaleMetadata />
             <form className="" onSubmit={formik.handleSubmit} ref={templateRef}>
