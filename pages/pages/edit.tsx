@@ -37,6 +37,7 @@ import {
   InputSkeleton,
   TableSkeleton
 } from "../../components/Skeletons/Skeletons";
+import RefreshSellerMatches from "../../components/RefreshSellerMatches/RefreshSellerMatches";
 
 const EditPage: NextPage = () => {
   const [currentField, setCurrentField] = useState<string>("");
@@ -448,12 +449,14 @@ const EditPage: NextPage = () => {
               {locale?.result[0].PS ? (
                 <>
                   <InputsRow>
-                    <Input
-                      label="PriceSpider OK"
-                      defaultValue={page?.PS?.ok ? "true" : "false"}
-                      disabled={true}
-                      className="w-3/12"
-                    />
+                    {page?.PS?.ok ? (
+                      <Input
+                        label="PriceSpider OK"
+                        defaultValue={page?.PS.ok ? "true" : "false"}
+                        disabled={true}
+                        className="w-3/12"
+                      />
+                    ) : null}
                     {page?.PS?.lastScan ? (
                       <Input
                         label="Last Scan"
@@ -490,55 +493,42 @@ const EditPage: NextPage = () => {
                       className="w-2/12"
                       data={locale?.result[0].fields || []}
                     />
-                    <div className="flex w-3/12 flex-col">
-                      <Button
-                        className={`mr-4 mt-7 h-10 grow ${
-                          currentPsSkuField.length &&
-                          currentPsCountry.length &&
-                          currentPsInstance.length
-                            ? "text-sky-700 hover:border-sky-900 hover:text-sky-900"
-                            : "bg-gray-100 text-gray-400"
-                        }`}
-                        label="Refresh seller matches"
-                        handler={() => {
-                          refreshSellers(
-                            `/ps/product-data/single?key=${oldKey}&id=${page?.id}&psSkuFieldName=${currentPsSkuField}&countryCode=${currentPsCountry}&psInstance=${currentPsInstance}`,
-                            {
-                              onSettled: (data, error) => {
-                                if (data instanceof Error || error)
-                                  return setRefreshSellersMsg("false");
-                                setRefreshSellersMsg("true");
+                    <RefreshSellerMatches
+                      className="flex w-3/12 flex-col"
+                      active={
+                        currentPsSkuField.length &&
+                        currentPsCountry.length &&
+                        currentPsInstance.length
+                          ? true
+                          : false
+                      }
+                      refreshSellersMsg={refreshSellersMsg}
+                      isRsLoading={isRsLoading}
+                      handler={() => {
+                        refreshSellers(
+                          `/ps/product-data/single?key=${oldKey}&id=${page?.id}&psSkuFieldName=${currentPsSkuField}&countryCode=${currentPsCountry}&psInstance=${currentPsInstance}`,
+                          {
+                            onSettled: (data, error) => {
+                              if (
+                                data instanceof Error ||
+                                error ||
+                                data.hasErrors
+                              )
+                                return setRefreshSellersMsg("false");
 
-                                queryClient.setQueryData(
-                                  ["page", router.query.p],
-                                  data
-                                );
-                              }
+                              setRefreshSellersMsg("true");
+
+                              queryClient.setQueryData(
+                                ["page", router.query.p],
+                                data
+                              );
                             }
-                          );
+                          }
+                        );
 
-                          // progressBar(isRsLoading, isRsLoading, isRsSuccess);
-                        }}
-                        disabled={
-                          !currentPsSkuField.length &&
-                          !currentPsCountry.length &&
-                          !currentPsInstance.length
-                        }
-                        showSpinner={isRsLoading}
-                      />
-                      <div className="relative">
-                        {refreshSellersMsg === "true" ? (
-                          <span className="absolute text-sm text-green-600/50">
-                            Sellers refreshed successfully.
-                          </span>
-                        ) : null}
-                        {refreshSellersMsg === "false" ? (
-                          <span className="absolute text-sm text-red-600/50">
-                            Error occurred while refreshing sellers.
-                          </span>
-                        ) : null}
-                      </div>
-                    </div>
+                        // progressBar(isRsLoading, isRsLoading, isRsSuccess);
+                      }}
+                    />
                     <div className="flex w-3/12">
                       <Button
                         className="mr-4 mt-7 h-10 grow text-sky-700 hover:border-sky-900 hover:text-sky-900"
@@ -588,49 +578,36 @@ const EditPage: NextPage = () => {
                       className="w-2/12"
                       data={locale?.result[0].fields || []}
                     />
-                    <div className="flex w-3/12 flex-col">
-                      <Button
-                        className={`mr-4 mt-7 h-10 grow ${
-                          currentScMpidField.length
-                            ? "text-sky-700 hover:border-sky-900 hover:text-sky-900"
-                            : "bg-gray-100 text-gray-400"
-                        }`}
-                        label="Refresh seller matches"
-                        handler={() => {
-                          refreshSellers(
-                            `/sc/product-data/single?key=${oldKey}&id=${page?.id}&mpIdFieldName=${currentScMpidField}`,
-                            {
-                              onSettled: (data, error) => {
-                                if (data instanceof Error || error)
-                                  return setRefreshSellersMsg("false");
-                                setRefreshSellersMsg("true");
+                    <RefreshSellerMatches
+                      className="flex w-3/12 flex-col"
+                      active={!!currentScMpidField.length}
+                      refreshSellersMsg={refreshSellersMsg}
+                      isRsLoading={isRsLoading}
+                      handler={() => {
+                        refreshSellers(
+                          `/sc/product-data/single?key=${oldKey}&id=${page?.id}&mpIdFieldName=${currentScMpidField}`,
+                          {
+                            onSettled: (data, error) => {
+                              if (
+                                data instanceof Error ||
+                                error ||
+                                data.hasErrors
+                              )
+                                return setRefreshSellersMsg("false");
 
-                                queryClient.setQueryData(
-                                  ["page", router.query.p],
-                                  data
-                                );
-                              }
+                              setRefreshSellersMsg("true");
+
+                              queryClient.setQueryData(
+                                ["page", router.query.p],
+                                data
+                              );
                             }
-                          );
+                          }
+                        );
 
-                          // progressBar(isRsLoading, isRsLoading, isRsSuccess);
-                        }}
-                        disabled={!currentScMpidField.length}
-                        showSpinner={isRsLoading}
-                      />
-                      <div className="relative">
-                        {refreshSellersMsg === "true" ? (
-                          <span className="absolute text-sm text-green-600/50">
-                            Sellers refreshed successfully.
-                          </span>
-                        ) : null}
-                        {refreshSellersMsg === "false" ? (
-                          <span className="absolute text-sm text-red-600/50">
-                            Error occurred while refreshing sellers.
-                          </span>
-                        ) : null}
-                      </div>
-                    </div>
+                        // progressBar(isRsLoading, isRsLoading, isRsSuccess);
+                      }}
+                    />
                     <div className="flex w-3/12">
                       <Button
                         className="mr-4 mt-7 h-10 grow text-sky-700 hover:border-sky-900 hover:text-sky-900"
@@ -687,49 +664,36 @@ const EditPage: NextPage = () => {
                       className="w-2/12"
                       data={locale?.result[0].fields || []}
                     />
-                    <div className="flex w-3/12 flex-col">
-                      <Button
-                        className={`mr-4 mt-7 h-10 grow ${
-                          currentBnlSkuField.length
-                            ? "text-sky-700 hover:border-sky-900 hover:text-sky-900"
-                            : "bg-gray-100 text-gray-400"
-                        }`}
-                        label="Refresh seller matches"
-                        handler={() => {
-                          refreshSellers(
-                            `/binlite/product-data/single?key=${oldKey}&id=${page?.id}&binliteIdFieldName=${currentBnlSkuField}`,
-                            {
-                              onSettled: (data, error) => {
-                                if (data instanceof Error || error)
-                                  return setRefreshSellersMsg("false");
-                                setRefreshSellersMsg("true");
+                    <RefreshSellerMatches
+                      className="flex w-3/12 flex-col"
+                      active={!!currentBnlSkuField.length}
+                      refreshSellersMsg={refreshSellersMsg}
+                      isRsLoading={isRsLoading}
+                      handler={() => {
+                        refreshSellers(
+                          `/binlite/product-data/single?key=${oldKey}&id=${page?.id}&binliteIdFieldName=${currentBnlSkuField}`,
+                          {
+                            onSettled: (data, error) => {
+                              if (
+                                data instanceof Error ||
+                                error ||
+                                data.hasErrors
+                              )
+                                return setRefreshSellersMsg("false");
 
-                                queryClient.setQueryData(
-                                  ["page", router.query.p],
-                                  data
-                                );
-                              }
+                              setRefreshSellersMsg("true");
+
+                              queryClient.setQueryData(
+                                ["page", router.query.p],
+                                data
+                              );
                             }
-                          );
+                          }
+                        );
 
-                          // progressBar(isRsLoading, isRsLoading, isRsSuccess);
-                        }}
-                        disabled={!currentBnlSkuField.length}
-                        showSpinner={isRsLoading}
-                      />
-                      <div className="relative">
-                        {refreshSellersMsg === "true" ? (
-                          <span className="absolute text-sm text-green-600/50">
-                            Sellers refreshed successfully.
-                          </span>
-                        ) : null}
-                        {refreshSellersMsg === "false" ? (
-                          <span className="absolute text-sm text-red-600/50">
-                            Error occurred while refreshing sellers.
-                          </span>
-                        ) : null}
-                      </div>
-                    </div>
+                        // progressBar(isRsLoading, isRsLoading, isRsSuccess);
+                      }}
+                    />
                     <div className="flex w-3/12">
                       <Button
                         className="mr-4 mt-7 h-10 grow text-sky-700 hover:border-sky-900 hover:text-sky-900"
