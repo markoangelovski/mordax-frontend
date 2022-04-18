@@ -220,7 +220,7 @@ const EditPage: NextPage = () => {
                 { label: "Locales", endpoint: `/locales?l=${router.query.l}` },
                 {
                   label: router.query.l as string,
-                  endpoint: `/locales?l=${router.query.l}`
+                  endpoint: `/locales/edit?l=${router.query.l}`
                 },
                 { label: "Pages", endpoint: `/pages?l=${router.query.l}` },
                 { label: router.query.p as string }
