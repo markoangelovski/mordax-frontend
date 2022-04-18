@@ -453,10 +453,10 @@ const EditPage: NextPage = () => {
               {locale?.result[0].PS ? (
                 <>
                   <InputsRow>
-                    {page?.PS?.ok ? (
+                    {typeof page?.PS?.ok === "boolean" ? (
                       <Input
                         label="PriceSpider OK"
-                        defaultValue={page?.PS.ok ? "true" : "false"}
+                        defaultValue={page.PS.ok ? "true" : "false"}
                         disabled={true}
                         className="w-3/12"
                       />
@@ -556,13 +556,15 @@ const EditPage: NextPage = () => {
               {locale?.result[0].SC ? (
                 <>
                   <InputsRow>
-                    <Input
-                      label="SmartCommerce OK"
-                      defaultValue={page?.SC.ok ? "true" : "false"}
-                      disabled={true}
-                      className="w-3/12"
-                    />
-                    {page?.SC.lastScan ? (
+                    {typeof page?.SC?.ok === "boolean" ? (
+                      <Input
+                        label="SmartCommerce OK"
+                        defaultValue={page.SC.ok ? "true" : "false"}
+                        disabled={true}
+                        className="w-3/12"
+                      />
+                    ) : null}
+                    {page?.SC?.lastScan ? (
                       <Input
                         label="Last Scan"
                         defaultValue={new Date(
@@ -624,7 +626,7 @@ const EditPage: NextPage = () => {
                   </InputsRow>
                   <div className="mt-5 mr-4">
                     <ResultsTable
-                      data={page?.SC.matches.map(match => ({
+                      data={page?.SC?.matches.map(match => ({
                         Name: match.retailerName,
                         URL: {
                           label: match.url,
@@ -642,13 +644,15 @@ const EditPage: NextPage = () => {
               {locale?.result[0].BINLite ? (
                 <>
                   <InputsRow>
-                    <Input
-                      label="BIN Lite OK"
-                      defaultValue={page?.BINLite.ok ? "true" : "false"}
-                      disabled={true}
-                      className="w-3/12"
-                    />
-                    {page?.BINLite.lastScan ? (
+                    {typeof page?.BINLite?.ok === "boolean" ? (
+                      <Input
+                        label="BIN Lite OK"
+                        defaultValue={page.BINLite.ok ? "true" : "false"}
+                        disabled={true}
+                        className="w-3/12"
+                      />
+                    ) : null}
+                    {page?.BINLite?.lastScan ? (
                       <Input
                         label="Last Scan"
                         defaultValue={new Date(
@@ -709,7 +713,7 @@ const EditPage: NextPage = () => {
                   <div className="mt-5 mr-4">
                     {binLiteSellers ? (
                       <ResultsTable
-                        data={page?.BINLite.matches.map(match => ({
+                        data={page?.BINLite?.matches.map(match => ({
                           Name: match.retailerName,
                           URL: {
                             label: match.buyNowUrl,

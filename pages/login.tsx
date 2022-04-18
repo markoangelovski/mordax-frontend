@@ -63,13 +63,13 @@ const Login: NextPage = () => {
 
   return (
     <Layout>
-      <div className="mx-auto flex min-h-screen w-96 items-center">
-        <Meta
-          title="Mordax. Login"
-          description="Mordax. Login"
-          canonical={urls.front + "/login"}
-        />
+      <Meta
+        title="Mordax. Login"
+        description="Mordax. Login"
+        canonical={urls.front + "/login"}
+      />
 
+      <div className="mx-auto flex min-h-screen w-96 items-center">
         <section className="flex-1">
           <Image
             src={logo}
