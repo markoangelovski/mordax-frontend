@@ -241,7 +241,7 @@ const NewPage: NextPage = () => {
                   handler={handleAddField}
                 />
               </InputsRow>
-              <InputsRow className="mr-[25%] justify-end pr-4">
+              <InputsRow className="justify-end pr-4">
                 <Button
                   className={`mr-2 px-4 py-3 ${
                     isSaveActive
