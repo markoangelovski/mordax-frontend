@@ -41,6 +41,7 @@ import {
 } from "../../components/Skeletons/Skeletons";
 import RefreshSellerMatches from "../../components/RefreshSellerMatches/RefreshSellerMatches";
 import Meta from "../../components/Meta/Meta";
+import Active from "../../components/Active/Active";
 
 const EditPage: NextPage = () => {
   const [currentField, setCurrentField] = useState<string>("");
@@ -326,44 +327,16 @@ const EditPage: NextPage = () => {
                       onKeyDown={e => e.key === "Enter" && handleAddField()}
                     />
                     <div className="mt-6 flex w-3/12 justify-evenly pr-4">
-                      <button
-                        type="button"
-                        onClick={() => setActive(true)}
-                        className="flex items-center focus:outline-0"
-                      >
-                        <div
-                          className={`mr-2 inline-block h-4 w-4 rounded-full ${
-                            active
-                              ? "border-2 border-white bg-sky-700"
-                              : "border border-slate-500"
-                          }`}
-                          style={{
-                            boxShadow: `${
-                              active ? "0 0 0 2px #0c7994" : "none"
-                            }`
-                          }}
-                        ></div>
-                        <span>Active</span>
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setActive(false)}
-                        className="flex items-center focus:outline-0"
-                      >
-                        <div
-                          className={`mr-2 inline-block h-4 w-4 rounded-full ${
-                            !active
-                              ? "border-2 border-white bg-sky-700"
-                              : "border border-slate-500"
-                          }`}
-                          style={{
-                            boxShadow: `${
-                              !active ? "0 0 0 2px #0c7994" : "none"
-                            }`
-                          }}
-                        ></div>
-                        <span>Inactive</span>
-                      </button>
+                      <Active
+                        status={active}
+                        handler={() => setActive(true)}
+                        label="Active"
+                      />
+                      <Active
+                        status={!active}
+                        handler={() => setActive(false)}
+                        label="Inactive"
+                      />
                     </div>
                   </InputsRow>
                   {fields.map(field => (

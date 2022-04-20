@@ -33,12 +33,15 @@ import { InputsRow } from "../../components/LayoutElements/LayoutElements";
 import { Input, SelectInput } from "../../components/Inputs/Inputs";
 import Button from "../../components/Button/Button";
 import Meta from "../../components/Meta/Meta";
+import Active from "../../components/Active/Active";
 
 const NewPage: NextPage = () => {
   const [currentField, setCurrentField] = useState<string>("");
   const [currentFieldValue, setCurrentFieldValue] = useState<string>("");
   const [fields, setFields] = useState<object[]>([]);
   const [errorMessage, setErrorMessage] = useState<string>("");
+
+  const [active, setActive] = useState<boolean>(true);
 
   const [response, setResponse] = useState<Result<Page>>();
 
@@ -55,7 +58,8 @@ const NewPage: NextPage = () => {
   const formik = useFormik({
     initialValues: {
       pageUrl: "",
-      type: ""
+      type: "",
+      sku: ""
     },
     validationSchema: Yup.object({
       pageUrl: Yup.string().url().required("Page URL is required."),
@@ -64,11 +68,11 @@ const NewPage: NextPage = () => {
     onSubmit: values => {
       setErrorMessage("");
       mutate(
-        `/pages?key=${oldKey}&localeUrl=${
+        `/pages/single?key=${oldKey}&localeUrl=${
           locale?.result[0]?.url.value
-        }&pageUrl=${values.pageUrl}&type=${values.type}&data=${makeDataPayload(
-          fields
-        )}`,
+        }&pageUrl=${values.pageUrl}&type=${values.type}&sku=${
+          values.sku
+        }&active=${active}&data=${makeDataPayload(fields)}`,
         {
           onSettled: (data: Result<Page>, error) => {
             if (data instanceof Error || error)
@@ -91,12 +95,6 @@ const NewPage: NextPage = () => {
 
   const isAddActive = currentField.length && !!currentFieldValue.length;
   const isSaveActive = !!formik.values.pageUrl;
-
-  // const makeDataPayload = (data: object[]) =>
-  //   data.reduce(
-  //     (acc, curr) => acc + `${Object.keys(curr)[0]}:${Object.values(curr)[0]};`,
-  //     ""
-  //   );
 
   const handleAddField = () => {
     if (!currentField || !currentFieldValue) return;
@@ -175,6 +173,16 @@ const NewPage: NextPage = () => {
                   id="type"
                   name="type"
                 />
+                <Input
+                  label="SKU"
+                  placeholder="Product SKU"
+                  value={formik.values.sku}
+                  onChange={formik.handleChange}
+                  disabled={false}
+                  className="w-3/12"
+                  id="sku"
+                  name="sku"
+                />
               </InputsRow>
               <InputsRow>
                 <SelectInput
@@ -194,6 +202,18 @@ const NewPage: NextPage = () => {
                   disabled={false}
                   className="w-6/12"
                 />
+                <div className="mt-6 flex w-3/12 justify-evenly pr-4">
+                  <Active
+                    status={active}
+                    handler={() => setActive(true)}
+                    label="Active"
+                  />
+                  <Active
+                    status={!active}
+                    handler={() => setActive(false)}
+                    label="Inactive"
+                  />
+                </div>
               </InputsRow>
               {fields.map((field, i) => (
                 <InputsRow key={i}>
