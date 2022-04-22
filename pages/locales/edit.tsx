@@ -61,6 +61,8 @@ const EditLocale: NextPage = () => {
   const [currentPsCountry, setCurrentPsCountry] = useState<string>("");
   const [currentPsInstance, setCurrentPsInstance] = useState<string>("");
 
+  const [scLocale, setScLocale] = useState<string>("");
+
   const [refreshSellersMsg, setRefreshSellersMsg] = useState<string>("");
 
   const templateRef = useRef<HTMLFormElement>(null);
@@ -111,13 +113,16 @@ const EditLocale: NextPage = () => {
     formik.values.url = locale?.result[0].url.value || "";
     formik.values.capitol = locale?.result[0].capitol?.value || "";
 
+    setScLocale(locale?.result[0].SC?.scLocale.value || "");
     formik.values.scButtonKey = locale?.result[0].SC?.scButtonKey.value || "";
     formik.values.scCarouselKey =
       locale?.result[0].SC?.scCarouselKey.value || "";
     formik.values.scEcEndpointKey =
       locale?.result[0].SC?.scEcEndpointKey.value || "";
+
     formik.values.BINLiteKey =
       locale?.result[0].BINLite?.BINLiteKey.value || "";
+
     formik.values.psKey = locale?.result[0].PS
       ? `${locale.result[0].PS.psAccountId.value}-${locale.result[0].PS.psCid.value}`
       : "";
@@ -163,6 +168,7 @@ const EditLocale: NextPage = () => {
     onSubmit: values => {
       const queryParams = new URLSearchParams({
         key: oldKey as string,
+        scLocale,
         ...values,
         thirdParties: [
           ...Array.from(thirdParties.values()),
@@ -263,6 +269,7 @@ const EditLocale: NextPage = () => {
     formik.values.url = locale?.result[0].url.value || "";
     formik.values.newUrl = "";
     formik.values.capitol = locale?.result[0].capitol?.value || "";
+    setScLocale(locale?.result[0].SC?.scLocale.value || "");
     formik.values.scButtonKey = locale?.result[0].SC?.scButtonKey.value || "";
     formik.values.scCarouselKey =
       locale?.result[0].SC?.scCarouselKey.value || "";
@@ -559,6 +566,22 @@ const EditLocale: NextPage = () => {
                     </div>
                   </InputsRow>
                   <InputsRow>
+                    <SelectInput
+                      currentField={scLocale}
+                      setCurrentField={setScLocale}
+                      label="SmartCommerce locale"
+                      placeholder="US or EU"
+                      className="w-3/12"
+                      // data={Array.from(
+                      //   new Set([
+                      //     locale?.result[0].SC?.scLocale.value,
+                      //     "US",
+                      //     "EU"
+                      //   ])
+                      // )}
+                      data={["US", "EU"]}
+                      disabled={!locale.result[0].SC}
+                    />
                     <Input
                       label="SmartCommerce button key"
                       placeholder="2b6fa9fb-a075-4aa3-b5b0-b4d3ae99c0cc"
@@ -592,7 +615,7 @@ const EditLocale: NextPage = () => {
                       name="scEcEndpointKey"
                       required={false}
                     />
-                    <Input
+                    {/* <Input
                       label="BIN Lite key"
                       placeholder="1f374124-0e33-4fa1-b4c5-899b009d4fd1"
                       value={formik.values.BINLiteKey}
@@ -602,7 +625,7 @@ const EditLocale: NextPage = () => {
                       id="BINLiteKey"
                       name="BINLiteKey"
                       required={false}
-                    />
+                    /> */}
                   </InputsRow>
                   <InputsRow>
                     <Input
@@ -621,7 +644,7 @@ const EditLocale: NextPage = () => {
                       setCurrentField={setCurrentPsCountry}
                       label="PriceSpider Country"
                       placeholder="PS country..."
-                      className="w-2/12"
+                      className="w-3/12"
                       data={locale?.result[0].PS?.psCountries || []}
                       disabled={!locale.result[0].PS}
                     />
@@ -630,7 +653,7 @@ const EditLocale: NextPage = () => {
                       setCurrentField={setCurrentPsInstance}
                       label="PriceSpider Instance"
                       placeholder="PS instance..."
-                      className="w-2/12"
+                      className="w-3/12"
                       data={locale?.result[0].PS?.psInstances || []}
                       disabled={!locale.result[0].PS}
                     />
@@ -639,8 +662,41 @@ const EditLocale: NextPage = () => {
                       setCurrentField={setCurrentSellerSkuField}
                       label="Seller SKU Field"
                       placeholder="Seller SKU Field..."
-                      className="w-2/12"
+                      className="w-3/12"
                       data={locale?.result[0].fields || []}
+                    />
+                    {/* <RefreshSellerMatches
+                      className="flex w-3/12 flex-col"
+                      active={getIsActive()}
+                      refreshSellersMsg={refreshSellersMsg}
+                      isRsLoading={isRsLoading}
+                      handler={() => {
+                        refreshSellers(getEndpoint(), {
+                          onSettled: (data, error) => {
+                            if (
+                              data instanceof Error ||
+                              error ||
+                              data.hasErrors
+                            )
+                              return setRefreshSellersMsg("false");
+
+                            setRefreshSellersMsg("true");
+                          }
+                        });
+                      }}
+                    /> */}
+                  </InputsRow>
+                  <InputsRow>
+                    <Input
+                      label="BIN Lite key"
+                      placeholder="1f374124-0e33-4fa1-b4c5-899b009d4fd1"
+                      value={formik.values.BINLiteKey}
+                      onChange={formik.handleChange}
+                      disabled={false}
+                      className="w-3/12"
+                      id="BINLiteKey"
+                      name="BINLiteKey"
+                      required={false}
                     />
                     <RefreshSellerMatches
                       className="flex w-3/12 flex-col"

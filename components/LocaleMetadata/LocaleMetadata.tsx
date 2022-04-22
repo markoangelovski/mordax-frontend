@@ -33,7 +33,7 @@ const LocaleMetadata: React.FC = () => {
         </span>
       ) : null}
 
-      {isOpen ? (
+      {isOpen && !meta?.hasErrors ? (
         meta ? (
           <div className="mt-2 flex">
             <div>
@@ -69,12 +69,12 @@ const LocaleMetadata: React.FC = () => {
                     <span>
                       Created:{" "}
                       {meta &&
-                        new Date(meta?.result[0].createdAt).toDateString()}
+                        new Date(meta?.result[0]?.createdAt).toDateString()}
                     </span>
                     <span className="mr-4">
                       Updated:{" "}
                       {meta &&
-                        new Date(meta?.result[0].updatedAt).toDateString()}
+                        new Date(meta?.result[0]?.updatedAt).toDateString()}
                     </span>
                   </div>
                 </div>

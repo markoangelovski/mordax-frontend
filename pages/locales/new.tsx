@@ -31,7 +31,7 @@ import { handleLinkClick, handleLinkClick2 } from "../../lib/helpers/utils";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 import Details from "../../components/Details/Details";
 import { InputsRow } from "../../components/LayoutElements/LayoutElements";
-import { Input } from "../../components/Inputs/Inputs";
+import { Input, SelectInput } from "../../components/Inputs/Inputs";
 import Button from "../../components/Button/Button";
 import { DeleteEntryIcon } from "../../components/Inputs/Inputs.icons";
 import FileUpload from "../../components/FileUpload/FileUpload";
@@ -43,6 +43,8 @@ const NewPage: NextPage = () => {
   const [thirdParties, setThirdParties] = useState<string[]>([]);
   const [currentField, setCurrentField] = useState<string>("");
   const [fields, setFields] = useState<string[]>([]);
+
+  const [scLocale, setScLocale] = useState<string>("");
 
   const templateRef = useRef<HTMLFormElement>(null);
 
@@ -105,6 +107,7 @@ const NewPage: NextPage = () => {
     onSubmit: values => {
       const queryParams = new URLSearchParams({
         key: oldKey as string,
+        scLocale,
         ...values,
         thirdParties: thirdParties.join(),
         fields: fields.join()
@@ -181,7 +184,6 @@ const NewPage: NextPage = () => {
     }
   };
 
-  // NProgress.start();
   const isSaveActive =
     !!formik.values.brand && !!formik.values.locale && !!formik.values.url;
 
@@ -200,6 +202,7 @@ const NewPage: NextPage = () => {
     setFields([]);
     setCurrentField("");
     setCurrent3rdParty("");
+    setScLocale("");
   };
 
   return (
@@ -339,14 +342,14 @@ const NewPage: NextPage = () => {
                   ))}
                 </div>
                 <Input
-                  label="Capitol"
-                  placeholder="Washington"
-                  value={formik.values.capitol}
+                  label="HrefLang"
+                  placeholder="en-ca"
+                  value={formik.values.hrefLang}
                   onChange={formik.handleChange}
                   disabled={false}
                   className="w-3/12"
-                  id="capitol"
-                  name="capitol"
+                  id="hrefLang"
+                  name="hrefLang"
                   required={false}
                 />
               </InputsRow>
@@ -377,6 +380,15 @@ const NewPage: NextPage = () => {
                 </div>
               </InputsRow>
               <InputsRow>
+                <SelectInput
+                  currentField={scLocale}
+                  setCurrentField={setScLocale}
+                  label="SmartCommerce locale"
+                  placeholder="US or EU"
+                  className="w-2/12"
+                  data={["US", "EU"]}
+                  disabled={false}
+                />
                 <Input
                   label="SmartCommerce button key"
                   placeholder="2b6fa9fb-a075-4aa3-b5b0-b4d3ae99c0cc"
@@ -424,6 +436,17 @@ const NewPage: NextPage = () => {
                   required={false}
                 />
                 <Input
+                  label="Capitol"
+                  placeholder="Washington"
+                  value={formik.values.capitol}
+                  onChange={formik.handleChange}
+                  disabled={false}
+                  className="w-3/12"
+                  id="capitol"
+                  name="capitol"
+                  required={false}
+                />
+                <Input
                   label="BIN Lite key"
                   placeholder="1f374124-0e33-4fa1-b4c5-899b009d4fd1"
                   value={formik.values.BINLiteKey}
@@ -432,17 +455,6 @@ const NewPage: NextPage = () => {
                   className="w-3/12"
                   id="BINLiteKey"
                   name="BINLiteKey"
-                  required={false}
-                />
-                <Input
-                  label="HrefLang"
-                  placeholder="en-ca"
-                  value={formik.values.hrefLang}
-                  onChange={formik.handleChange}
-                  disabled={false}
-                  className="w-3/12"
-                  id="hrefLang"
-                  name="hrefLang"
                   required={false}
                 />
               </InputsRow>
@@ -469,179 +481,6 @@ const NewPage: NextPage = () => {
                   disabled={!isSaveActive}
                 />
               </InputsRow>
-              {/* <span>Brand*</span>
-              <input
-                className=""
-                value={formik.values.brand}
-                onChange={formik.handleChange}
-                type="text"
-                name="brand"
-                id="brand"
-                required
-              />
-              <br />
-
-              <span>Locale*</span>
-              <input
-                className=""
-                value={formik.values.locale}
-                onChange={formik.handleChange}
-                type="text"
-                name="locale"
-                id="locale"
-                required
-              />
-              <br />
-
-              <span>URL*</span>
-              <input
-                className=""
-                placeholder="Page URL"
-                value={formik.values.url}
-                onChange={formik.handleChange}
-                type="url"
-                name="url"
-                id="url"
-                required
-              />
-              <br />
-
-              <span>Third parties</span>
-              <input
-                className=""
-                placeholder="Enter 3rd party name"
-                value={current3rdParty}
-                onChange={e => setCurrent3rdParty(e.target.value)}
-                type="text"
-                name="type"
-                id="type"
-              />
-              <button
-                type="button"
-                onClick={() => field.name("thirdParties").add()}
-              >
-                Add
-              </button>
-              {thirdParties}
-              <br />
-
-              <span>Custom fields</span>
-              <input
-                className=""
-                placeholder="Enter field name"
-                value={currentField}
-                onChange={e => setCurrentField(e.target.value)}
-                type="text"
-                name="type"
-                id="type"
-              />
-              <button type="button" onClick={() => field.name("fields").add()}>
-                Add
-              </button>
-              {fields}
-              <br />
-
-              <span>Capitol</span>
-              <input
-                className=""
-                placeholder="Washington"
-                value={formik.values.capitol}
-                onChange={formik.handleChange}
-                type="text"
-                name="capitol"
-                id="capitol"
-              />
-              <br />
-
-              <span>SmartCommerce button key</span>
-              <input
-                className=""
-                placeholder="2b6fa9fb-a075-4aa3-b5b0-b4d3ae99c0cc"
-                value={formik.values.scButtonKey}
-                onChange={formik.handleChange}
-                type="text"
-                name="scButtonKey"
-                id="scButtonKey"
-              />
-              <br />
-
-              <span>SmartCommerce carousel key</span>
-              <input
-                className=""
-                placeholder="c8bacf32-9250-4bcd-8a85-1de98e859a26"
-                value={formik.values.scCarouselKey}
-                onChange={formik.handleChange}
-                type="text"
-                name="scCarouselKey"
-                id="scCarouselKey"
-              />
-              <br />
-
-              <span>SmartCommerce EC endpoint key</span>
-              <input
-                className=""
-                placeholder="4c4d8dc0-f852-4362-8131-4b55f6d559df"
-                value={formik.values.scEcEndpointKey}
-                onChange={formik.handleChange}
-                type="text"
-                name="scEcEndpointKey"
-                id="scEcEndpointKey"
-              />
-              <br />
-
-              <span>PriceSpider key</span>
-              <input
-                className=""
-                placeholder="1766-123456789012345678901234"
-                value={formik.values.psKey}
-                onChange={formik.handleChange}
-                type="text"
-                name="psKey"
-                id="psKey"
-              />
-              <br />
-
-              <span>BIN Lite key</span>
-              <input
-                className=""
-                placeholder="1f374124-0e33-4fa1-b4c5-899b009d4fd1"
-                value={formik.values.BINLiteKey}
-                onChange={formik.handleChange}
-                type="text"
-                name="BINLiteKey"
-                id="BINLiteKey"
-              />
-              <br />
-
-              <span>Hreflang</span>
-              <input
-                className=""
-                placeholder="en-ca"
-                value={formik.values.hrefLang}
-                onChange={formik.handleChange}
-                type="text"
-                name="hrefLang"
-                id="hrefLang"
-              />
-              <br />
-
-              <p>Select a file containing page details.</p>
-
-              <strong>Requirements:</strong>
-              <ul>
-                <li>.xlsx format</li>
-                <li>5 MB maximum</li>
-              </ul>
-
-              <a href={urls.api + `/locales/template?key=${oldKey}`} download>
-                Download example file
-              </a>
-
-              <input type="file" name="template" id="template" /> 
-
-              <button>Cancel</button>
-              <input type="submit" value="Save" />
-              */}
             </form>
           </ContentContainer>
         </Container>

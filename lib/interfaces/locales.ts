@@ -33,6 +33,7 @@ export interface Locale {
     BINLiteKey: value;
   };
   SC: {
+    scLocale: value;
     scButtonKey: value;
     scCarouselKey: value;
     scEcEndpointKey: value;

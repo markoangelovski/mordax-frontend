@@ -30,6 +30,9 @@ const useLocale = (
     }
   );
 
+  // When any errors occurr with the selected locale, refresh the URL to /locales in order to reload to first default locale.
+  // if (data?.hasErrors) window.location.href = "/locales";
+
   progressBar(isLoading, isFetching, isFetched);
 
   return data;
