@@ -7,12 +7,15 @@ import { Locale, Metadata } from "../interfaces/locales";
 
 import fetchData from "../drivers/fetchData";
 import progressBar from "../helpers/progressBar";
+import { useRouter } from "next/router";
 
 const useLocale = (
   locale: string,
   pages?: boolean
 ): Result<Locale> | undefined => {
   const { oldKey } = useKey();
+
+  const router = useRouter();
 
   const { data, isLoading, isFetching, isFetched } = useQuery<
     Result<Locale>,
@@ -31,7 +34,11 @@ const useLocale = (
   );
 
   // When any errors occurr with the selected locale, refresh the URL to /locales in order to reload to first default locale.
-  // if (data?.hasErrors) window.location.href = "/locales";
+  // if (data?.hasErrors) return (window.location.href = "/locales");
+  if (data?.hasErrors)
+    router.push("/locales", undefined, {
+      shallow: true
+    });
 
   progressBar(isLoading, isFetching, isFetched);
 

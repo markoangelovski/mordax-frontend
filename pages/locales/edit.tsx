@@ -108,23 +108,23 @@ const EditLocale: NextPage = () => {
   useEffect(() => {
     locale && setReRender(!reRender); // TODO: Stavljen ovdje jer se formik nije re-renderao kad se locale fetcha i nije prikazao polja od localea u formi. Kad se dodaju skeletoni možda ovo neće bit potrebno, probaj.
     // Formik will not re-render when the page is fetched, hence these values are set in useEffect hook.
-    formik.values.brand = locale?.result[0].brand.value || "";
-    formik.values.locale = locale?.result[0].locale.value || "";
-    formik.values.url = locale?.result[0].url.value || "";
-    formik.values.capitol = locale?.result[0].capitol?.value || "";
+    formik.values.brand = locale?.result[0]?.brand.value || "";
+    formik.values.locale = locale?.result[0]?.locale.value || "";
+    formik.values.url = locale?.result[0]?.url.value || "";
+    formik.values.capitol = locale?.result[0]?.capitol?.value || "";
 
-    setScLocale(locale?.result[0].SC?.scLocale.value || "");
-    formik.values.scButtonKey = locale?.result[0].SC?.scButtonKey.value || "";
+    setScLocale(locale?.result[0]?.SC?.scLocale.value || "");
+    formik.values.scButtonKey = locale?.result[0]?.SC?.scButtonKey.value || "";
     formik.values.scCarouselKey =
-      locale?.result[0].SC?.scCarouselKey.value || "";
+      locale?.result[0]?.SC?.scCarouselKey.value || "";
     formik.values.scEcEndpointKey =
-      locale?.result[0].SC?.scEcEndpointKey.value || "";
+      locale?.result[0]?.SC?.scEcEndpointKey.value || "";
 
     formik.values.BINLiteKey =
-      locale?.result[0].BINLite?.BINLiteKey.value || "";
+      locale?.result[0]?.BINLite?.BINLiteKey.value || "";
 
-    formik.values.psKey = locale?.result[0].PS
-      ? `${locale.result[0].PS.psAccountId.value}-${locale.result[0].PS.psCid.value}`
+    formik.values.psKey = locale?.result[0]?.PS
+      ? `${locale.result[0]?.PS.psAccountId.value}-${locale.result[0]?.PS.psCid.value}`
       : "";
 
     // Clear all state when switching between locales in the /locales/edit page
@@ -241,8 +241,8 @@ const EditLocale: NextPage = () => {
 
       if (this.fieldName === "existingThirdParties") {
         setThirdPartiesToDelete(parties => parties.add(`-${item}`));
-        locale?.result[0].thirdParties.splice(
-          locale?.result[0].thirdParties.indexOf(item),
+        locale?.result[0]?.thirdParties.splice(
+          locale?.result[0]?.thirdParties.indexOf(item),
           1
         );
         setReRender(!reRender);
@@ -250,8 +250,8 @@ const EditLocale: NextPage = () => {
 
       if (this.fieldName === "existingFields") {
         setFieldsToDelete(fields => fields.add(`-${item}`));
-        locale?.result[0].fields.splice(
-          locale?.result[0].fields.indexOf(item),
+        locale?.result[0]?.fields.splice(
+          locale?.result[0]?.fields.indexOf(item),
           1
         );
         setReRender(!reRender);
@@ -263,22 +263,22 @@ const EditLocale: NextPage = () => {
     !!formik.values.brand && !!formik.values.locale && !!formik.values.url;
 
   const handleCancelForm = () => {
-    formik.values.brand = locale?.result[0].brand.value || "";
-    formik.values.locale = locale?.result[0].locale.value || "";
+    formik.values.brand = locale?.result[0]?.brand.value || "";
+    formik.values.locale = locale?.result[0]?.locale.value || "";
     formik.values.hrefLang = "";
-    formik.values.url = locale?.result[0].url.value || "";
+    formik.values.url = locale?.result[0]?.url.value || "";
     formik.values.newUrl = "";
-    formik.values.capitol = locale?.result[0].capitol?.value || "";
-    setScLocale(locale?.result[0].SC?.scLocale.value || "");
-    formik.values.scButtonKey = locale?.result[0].SC?.scButtonKey.value || "";
+    formik.values.capitol = locale?.result[0]?.capitol?.value || "";
+    setScLocale(locale?.result[0]?.SC?.scLocale.value || "");
+    formik.values.scButtonKey = locale?.result[0]?.SC?.scButtonKey.value || "";
     formik.values.scCarouselKey =
-      locale?.result[0].SC?.scCarouselKey.value || "";
+      locale?.result[0]?.SC?.scCarouselKey.value || "";
     formik.values.scEcEndpointKey =
-      locale?.result[0].SC?.scEcEndpointKey.value || "";
+      locale?.result[0]?.SC?.scEcEndpointKey.value || "";
     formik.values.BINLiteKey =
-      locale?.result[0].BINLite?.BINLiteKey.value || "";
-    formik.values.psKey = locale?.result[0].PS
-      ? `${locale.result[0].PS.psAccountId.value}-${locale.result[0].PS.psCid.value}`
+      locale?.result[0]?.BINLite?.BINLiteKey.value || "";
+    formik.values.psKey = locale?.result[0]?.PS
+      ? `${locale.result[0]?.PS.psAccountId.value}-${locale.result[0]?.PS.psCid.value}`
       : "";
     setThirdParties(new Set());
     setFields(new Set());
@@ -294,14 +294,14 @@ const EditLocale: NextPage = () => {
 
   // Gets the active status for Refresh seller matches button
   const getIsActive = () => {
-    if (locale?.result[0].PS)
+    if (locale?.result[0]?.PS)
       return currentSellerSkuField.length &&
         currentPsCountry.length &&
         currentPsInstance.length
         ? true
         : false;
 
-    if (locale?.result[0].BINLite || locale?.result[0].SC)
+    if (locale?.result[0]?.BINLite || locale?.result[0]?.SC)
       return currentSellerSkuField.length ? true : false;
 
     return false;
@@ -309,13 +309,13 @@ const EditLocale: NextPage = () => {
 
   // Gets the endpoint for Refresh seller matches button
   const getEndpoint = () => {
-    if (locale?.result[0].PS)
+    if (locale?.result[0]?.PS)
       return `/ps/product-data?key=${oldKey}&url=${router.query.l}&psSkuFieldName=${currentSellerSkuField}&countryCode=${currentPsCountry}&psInstance=${currentPsInstance}`;
 
-    if (locale?.result[0].BINLite)
+    if (locale?.result[0]?.BINLite)
       return `/binlite/product-data?key=${oldKey}&url=${router.query.l}&binliteIdFieldName=${currentSellerSkuField}`;
 
-    if (locale?.result[0].SC)
+    if (locale?.result[0]?.SC)
       return `/sc/product-data?key=${oldKey}&url=${router.query.l}&mpIdFieldName=${currentSellerSkuField}`;
 
     return "";
@@ -326,7 +326,7 @@ const EditLocale: NextPage = () => {
       <Meta
         title={
           locale
-            ? `${locale?.result[0].brand.value} ${locale?.result[0].locale.value}`
+            ? `${locale?.result[0]?.brand.value} ${locale?.result[0]?.locale.value}`
             : "Loading..."
         }
         description="Edit locale"
@@ -358,8 +358,8 @@ const EditLocale: NextPage = () => {
               ]}
             />
             <Details />
-            {locale?.result[0].stats ? (
-              <LocaleStats stats={locale?.result[0].stats} />
+            {locale?.result[0]?.stats ? (
+              <LocaleStats stats={locale?.result[0]?.stats} />
             ) : (
               <LocaleStatsSkeleton />
             )}
@@ -458,7 +458,7 @@ const EditLocale: NextPage = () => {
                           />
                         </InputsRow>
                       ))}
-                      {locale.result[0].thirdParties.map((party, i) => (
+                      {locale.result[0]?.thirdParties.map((party, i) => (
                         <InputsRow key={i + party} className="pr-4">
                           <Input
                             defaultValue={party}
@@ -500,7 +500,7 @@ const EditLocale: NextPage = () => {
                           />
                         </InputsRow>
                       ))}
-                      {locale.result[0].fields.map(cfield => (
+                      {locale.result[0]?.fields.map(cfield => (
                         <InputsRow key={cfield} className="pr-4">
                           <Input
                             defaultValue={cfield}
@@ -572,15 +572,8 @@ const EditLocale: NextPage = () => {
                       label="SmartCommerce locale"
                       placeholder="US or EU"
                       className="w-3/12"
-                      // data={Array.from(
-                      //   new Set([
-                      //     locale?.result[0].SC?.scLocale.value,
-                      //     "US",
-                      //     "EU"
-                      //   ])
-                      // )}
                       data={["US", "EU"]}
-                      disabled={!locale.result[0].SC}
+                      disabled={!locale.result[0]?.SC}
                     />
                     <Input
                       label="SmartCommerce button key"
@@ -615,17 +608,6 @@ const EditLocale: NextPage = () => {
                       name="scEcEndpointKey"
                       required={false}
                     />
-                    {/* <Input
-                      label="BIN Lite key"
-                      placeholder="1f374124-0e33-4fa1-b4c5-899b009d4fd1"
-                      value={formik.values.BINLiteKey}
-                      onChange={formik.handleChange}
-                      disabled={false}
-                      className="w-3/12"
-                      id="BINLiteKey"
-                      name="BINLiteKey"
-                      required={false}
-                    /> */}
                   </InputsRow>
                   <InputsRow>
                     <Input
@@ -645,8 +627,8 @@ const EditLocale: NextPage = () => {
                       label="PriceSpider Country"
                       placeholder="PS country..."
                       className="w-3/12"
-                      data={locale?.result[0].PS?.psCountries || []}
-                      disabled={!locale.result[0].PS}
+                      data={locale?.result[0]?.PS?.psCountries || []}
+                      disabled={!locale.result[0]?.PS}
                     />
                     <SelectInput
                       currentField={currentPsInstance}
@@ -654,8 +636,8 @@ const EditLocale: NextPage = () => {
                       label="PriceSpider Instance"
                       placeholder="PS instance..."
                       className="w-3/12"
-                      data={locale?.result[0].PS?.psInstances || []}
-                      disabled={!locale.result[0].PS}
+                      data={locale?.result[0]?.PS?.psInstances || []}
+                      disabled={!locale.result[0]?.PS}
                     />
                     <SelectInput
                       currentField={currentSellerSkuField}
@@ -663,7 +645,7 @@ const EditLocale: NextPage = () => {
                       label="Seller SKU Field"
                       placeholder="Seller SKU Field..."
                       className="w-3/12"
-                      data={locale?.result[0].fields || []}
+                      data={locale?.result[0]?.fields || []}
                     />
                     {/* <RefreshSellerMatches
                       className="flex w-3/12 flex-col"
@@ -737,11 +719,11 @@ const EditLocale: NextPage = () => {
                       handler={() => {
                         if (
                           confirm(
-                            `Are you sure you want to delete locale ${locale.result[0].brand.value}-${locale.result[0].locale.value}?`
+                            `Are you sure you want to delete locale ${locale.result[0]?.brand.value}-${locale.result[0]?.locale.value}?`
                           )
                         ) {
                           deleteLocale(
-                            `/locales/single?key=${oldKey}&url=${locale?.result[0].url.value}`,
+                            `/locales/single?key=${oldKey}&url=${locale?.result[0]?.url.value}`,
                             {
                               onSettled: data => {
                                 console.log("data", data);

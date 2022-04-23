@@ -25,7 +25,7 @@ const HeadItem = ({
       <button
         onClick={() => setSortItem({ label: sortLabel, sort: !sortItem?.sort })}
         className="inline-flex h-full w-full items-center justify-start font-semibold tracking-wide"
-        disabled={/(matches|refresh)/gi.test(label) ? true : false} // Disables the sorting option for Seller matches and Refresh sellers
+        disabled={/matches/gi.test(label) ? true : false} // Disables the sorting option for Seller matches and Refresh sellers
       >
         <span>{label}</span>
         <Arrow
@@ -36,15 +36,6 @@ const HeadItem = ({
     </th>
   );
 };
-
-// const HeadItem = ({ label }: { label: string }) => (
-//   <th className="h-12 whitespace-nowrap border-y border-slate-700 pl-4 text-left leading-6	tracking-wide">
-//     <button className="inline-flex h-full w-full items-center justify-start font-semibold tracking-wide">
-//       <span>{label}</span>
-//       <Arrow asc={true} />
-//     </button>
-//   </th>
-// );
 
 const Row = ({ row }: any) => {
   return (

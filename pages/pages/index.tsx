@@ -56,10 +56,9 @@ const Page: NextPage = () => {
     "inXmlSitemap",
     "active",
     "SKU",
-    ...(locale?.result[0].fields || []),
+    ...(locale?.result[0]?.fields || []),
     "ok",
     "matches", // Not used for sorting, kept for preserving order of elements in array
-    "refresh sellers", // Not used for sorting, kept for preserving order of elements in array
     "lastScan"
   ];
 
@@ -75,7 +74,6 @@ const Page: NextPage = () => {
       psPayload["PriceSpider matches"] = page.PS?.matches
         .map(match => match.retailerName)
         .join(", ");
-      psPayload["Refresh sellers"] = page.PS && "ok";
       psPayload["Last scan"] =
         page.PS && new Date(page.PS?.lastScan).toDateString();
     }
@@ -86,7 +84,6 @@ const Page: NextPage = () => {
       binLitePayload["BIN Lite matches"] = page.BINLite?.matches
         .map(match => match.retailerName)
         .join(", ");
-      binLitePayload["Refresh sellers"] = page.BINLite && "ok";
       binLitePayload["Last scan"] =
         page.BINLite && new Date(page.BINLite?.lastScan).toDateString();
     }
@@ -97,7 +94,6 @@ const Page: NextPage = () => {
       scPayload["SmartCommerce matches"] = page.SC?.matches
         .map(match => match.retailerName)
         .join(", ");
-      scPayload["Refresh sellers"] = page.SC && "ok";
       scPayload["Last scan"] =
         page.SC && new Date(page.SC?.lastScan).toDateString();
     }
@@ -123,7 +119,7 @@ const Page: NextPage = () => {
       <Meta
         title={
           locale
-            ? `${locale?.result[0].brand.value} ${locale?.result[0].locale.value} pages`
+            ? `${locale?.result[0]?.brand.value} ${locale?.result[0]?.locale.value} pages`
             : "Loading..."
         }
         description="Locale pages"
@@ -166,8 +162,8 @@ const Page: NextPage = () => {
             <div className="mb-6 flex items-center justify-between">
               <div className="mt-6 flex max-w-2xl items-center text-sm text-gray-400">
                 <span>
-                  {locale?.result[0].brand.value}{" "}
-                  {locale?.result[0].locale.value} pages
+                  {locale?.result[0]?.brand.value}{" "}
+                  {locale?.result[0]?.locale.value} pages
                 </span>
               </div>
               <AddEntryButton
