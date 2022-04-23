@@ -1,18 +1,47 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { toStdCase } from "../../lib/helpers/utils";
+import { usePages } from "../../lib/hooks/usePage";
 import { urlRgx } from "../../lib/misc/regex";
-import { CheckMark } from "./ContenTable.icons";
+import { CheckMark } from "./ContentTable.icons";
 
 import { Arrow } from "./ContentTable.icons";
 
-const HeadItem = ({ label }: { label: string }) => (
-  <th className="h-12 whitespace-nowrap border-y border-slate-700 pl-4 text-left leading-6	tracking-wide">
-    <button className="inline-flex h-full w-full items-center justify-start font-semibold tracking-wide">
-      <span>{label}</span>
-      <Arrow asc={true} />
-    </button>
-  </th>
-);
+const HeadItem = ({
+  label,
+  sortItem,
+  setSortItem
+}: {
+  label: string;
+  sortItem: { label: string; sort: boolean };
+  setSortItem: Function;
+}) => {
+  return (
+    <th className="h-12 whitespace-nowrap border-y border-slate-700 pl-4 text-left leading-6	tracking-wide">
+      <button
+        onClick={() => setSortItem({ label, sort: !sortItem.sort })}
+        className="inline-flex h-full w-full items-center justify-start font-semibold tracking-wide"
+      >
+        <span>{label}</span>
+        <Arrow
+          className={`${sortItem.label !== label ? "invisible" : ""}`}
+          asc={sortItem.sort}
+        />
+      </button>
+    </th>
+  );
+};
+
+// const HeadItem = ({ label }: { label: string }) => (
+//   <th className="h-12 whitespace-nowrap border-y border-slate-700 pl-4 text-left leading-6	tracking-wide">
+//     <button className="inline-flex h-full w-full items-center justify-start font-semibold tracking-wide">
+//       <span>{label}</span>
+//       <Arrow asc={true} />
+//     </button>
+//   </th>
+// );
 
 const Row = ({ row }: any) => {
   return (
@@ -71,7 +100,7 @@ const RowItem = ({ label, endpoint }: { label: string; endpoint?: string }) => {
   );
 };
 
-const ResultsTable = ({ data }: any) => {
+const ResultsTable = ({ data, sortItem, setSortItem }: any) => {
   const titles = Object.keys(data?.[0] || {});
   return (
     <div className="max-w-full">
@@ -80,7 +109,12 @@ const ResultsTable = ({ data }: any) => {
           <thead className="">
             <tr className="">
               {titles?.map((title: string, i: number) => (
-                <HeadItem key={i} label={title} />
+                <HeadItem
+                  key={i}
+                  label={title}
+                  sortItem={sortItem}
+                  setSortItem={setSortItem}
+                />
               ))}
             </tr>
           </thead>

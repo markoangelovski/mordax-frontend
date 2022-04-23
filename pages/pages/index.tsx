@@ -15,7 +15,7 @@ import {
   Container,
   ContentContainer
 } from "../../components/Containers/Containers";
-import { handleLinkClick } from "../../lib/helpers/utils";
+import { handleLinkClick, toStdCase } from "../../lib/helpers/utils";
 import AddEntryButton from "../../components/AddEntryButton/AddEntryButton";
 import SearchEntries from "../../components/SearchEntries/SearchEntries";
 import ResultsTable from "../../components/ResultsTable/ContentTable";
@@ -23,14 +23,24 @@ import { usePages } from "../../lib/hooks/usePage";
 import { TableSkeleton } from "../../components/Skeletons/Skeletons";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 import Meta from "../../components/Meta/Meta";
+import { useEffect, useState } from "react";
+import { useQueryClient } from "react-query";
 
 type Payload = { [key: string]: string | boolean };
 
 const Page: NextPage = () => {
+  const [sortItem, setSortItem] = useState<{ label: string; sort: boolean }>({
+    label: "type",
+    sort: false
+  });
+
   const router = useRouter();
 
   const locale = useLocale(router.query.l as string);
-  const pagesData = usePages(router.query.l as string);
+  const pagesData = usePages(
+    router.query.l as string,
+    sortItem.sort ? sortItem.label : "-" + sortItem.label
+  );
   const pages = pagesData?.result;
 
   const skip = pagesData?.info.skip || 0;
@@ -42,7 +52,7 @@ const Page: NextPage = () => {
   const data = pages?.map(page => {
     const pageDataPayload: Payload = {};
     locale?.result[0].fields.forEach(key => {
-      pageDataPayload[key] = page.data?.[key]?.value;
+      pageDataPayload[toStdCase(key)] = page.data?.[key]?.value;
     });
 
     const psPayload: Payload = {};
@@ -173,7 +183,11 @@ const Page: NextPage = () => {
               </div>
             </div>
             {data ? (
-              <ResultsTable data={data} />
+              <ResultsTable
+                data={data}
+                sortItem={sortItem}
+                setSortItem={setSortItem}
+              />
             ) : (
               <TableSkeleton numRows={25} />
             )}

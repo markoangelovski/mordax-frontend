@@ -8,15 +8,19 @@ import { Page } from "../interfaces/pages";
 import fetchData from "../drivers/fetchData";
 import progressBar from "../helpers/progressBar";
 
-export const usePages = (localeUrl: string) => {
+export const usePages = (localeUrl: string, sort: string) => {
   const { oldKey } = useKey();
 
   const { data, isLoading, isFetching, isFetched } = useQuery<
     Result<Page>,
     Error
   >(
-    ["pages", localeUrl],
-    () => fetchData(`/pages?key=${oldKey}&localeUrl=${localeUrl}`, "GET"),
+    ["pages", localeUrl + sort],
+    () =>
+      fetchData(
+        `/pages?key=${oldKey}&localeUrl=${localeUrl}&sort=${sort}`,
+        "GET"
+      ),
     {
       enabled: !!oldKey && !!localeUrl,
       refetchOnWindowFocus: false
