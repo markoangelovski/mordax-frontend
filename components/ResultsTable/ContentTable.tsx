@@ -42,9 +42,12 @@ const HeadItem = ({
   );
 };
 
-const Row = ({ row }: any) => {
+const Row = ({ row, index }: any) => {
   return (
     <tr className="even:bg-gray-50 hover:bg-slate-100">
+      <td className="h-12 border-t border-white py-4 pl-4 leading-6">
+        {index}
+      </td>
       {Object.values(row || {}).map((rowItem: any, i) => {
         const { label, endpoint } = rowItem || {};
         return (
@@ -113,6 +116,13 @@ const ResultsTable = ({
         <table className="w-full">
           <thead className="">
             <tr className="">
+              {titles.length ? (
+                <th className="h-12 whitespace-nowrap border-y border-slate-700 pl-4 text-left leading-6	tracking-wide">
+                  <span className="inline-flex h-full w-full items-center justify-start font-semibold tracking-wide">
+                    {"#"}
+                  </span>
+                </th>
+              ) : null}
               {titles?.map((title: string, i: number) => (
                 <HeadItem
                   key={i}
@@ -127,7 +137,7 @@ const ResultsTable = ({
           </thead>
           <tbody>
             {data?.map((row: object, i: number) => {
-              return <Row key={i} row={row} />;
+              return <Row key={i} index={i + 1} row={row} />;
             })}
           </tbody>
         </table>
