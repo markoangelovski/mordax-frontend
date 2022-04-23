@@ -20,7 +20,7 @@ const MicroLink = ({ item }: PropsSingle) => {
       <button
         onClick={item.action}
         className={`font-semibold tracking-wide hover:text-gray-500 ${
-          item.active ? "text-sky-700" : ""
+          item.active ? "" : "text-sky-700"
         }`}
       >
         <span>{item.label}</span>

@@ -25,6 +25,7 @@ import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 import Meta from "../../components/Meta/Meta";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
+import SortSummary from "../../components/SortSummary/SortSummary";
 
 type Payload = { [key: string]: string | boolean };
 
@@ -48,6 +49,19 @@ const Page: NextPage = () => {
   const total = pagesData?.info.total || 0;
 
   const minEntriesCount = locale?.result.length ? 1 : 0;
+
+  const sortLabels: string[] = [
+    "url",
+    "type",
+    "inXmlSitemap",
+    "active",
+    "SKU",
+    ...(locale?.result[0].fields || []),
+    "ok",
+    "matches", // Not used for sorting, kept for preserving order of elements in array
+    "refresh sellers", // Not used for sorting, kept for preserving order of elements in array
+    "lastScan"
+  ];
 
   const data = pages?.map(page => {
     const pageDataPayload: Payload = {};
@@ -163,30 +177,21 @@ const Page: NextPage = () => {
             </div>
             <div className="mb-4">
               {/* Filter products by active status - dropdown placeholder */}
-              <div className="box-content flex h-14 items-center justify-between bg-slate-100 px-4 text-sm tracking-wide">
-                <div className="flex items-center">
-                  <div className="text-sm tracking-wide">
-                    <span>
-                      {/* TODO: normaliziraj pagination atribute u responsu, sad su svi različiti */}
-                      {`${skip ? skip : minEntriesCount} - ${
-                        skip ? skip + fetchedEntries : fetchedEntries
-                      } of
-                      ${total}
-                      Pages`}
-                    </span>
-                  </div>
-                  <div className="ml-2 box-content h-6 border-l border-slate-300 pl-2 leading-6">
-                    <span>Sort: Type, A–Z</span>
-                  </div>
-                </div>
-                <SearchEntries />
-              </div>
+              <SortSummary
+                type="Pages"
+                sortItem={sortItem}
+                fetchedEntries={fetchedEntries}
+                minEntriesCount={minEntriesCount}
+                skip={skip}
+                total={total}
+              />
             </div>
             {data ? (
               <ResultsTable
                 data={data}
                 sortItem={sortItem}
                 setSortItem={setSortItem}
+                sortLabels={sortLabels}
               />
             ) : (
               <TableSkeleton numRows={25} />

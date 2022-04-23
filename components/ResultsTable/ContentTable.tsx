@@ -12,22 +12,25 @@ import { Arrow } from "./ContentTable.icons";
 const HeadItem = ({
   label,
   sortItem,
-  setSortItem
+  setSortItem,
+  sortLabel
 }: {
   label: string;
   sortItem: { label: string; sort: boolean };
   setSortItem: Function;
+  sortLabel: string;
 }) => {
   return (
     <th className="h-12 whitespace-nowrap border-y border-slate-700 pl-4 text-left leading-6	tracking-wide">
       <button
-        onClick={() => setSortItem({ label, sort: !sortItem.sort })}
+        onClick={() => setSortItem({ label: sortLabel, sort: !sortItem?.sort })}
         className="inline-flex h-full w-full items-center justify-start font-semibold tracking-wide"
+        disabled={/(matches|refresh)/gi.test(label) ? true : false} // Disables the sorting option for Seller matches and Refresh sellers
       >
         <span>{label}</span>
         <Arrow
-          className={`${sortItem.label !== label ? "invisible" : ""}`}
-          asc={sortItem.sort}
+          className={`${sortItem?.label !== sortLabel ? "invisible" : ""}`}
+          asc={sortItem?.sort}
         />
       </button>
     </th>
@@ -100,7 +103,7 @@ const RowItem = ({ label, endpoint }: { label: string; endpoint?: string }) => {
   );
 };
 
-const ResultsTable = ({ data, sortItem, setSortItem }: any) => {
+const ResultsTable = ({ data, sortItem, setSortItem, sortLabels }: any) => {
   const titles = Object.keys(data?.[0] || {});
   return (
     <div className="max-w-full">
@@ -114,6 +117,7 @@ const ResultsTable = ({ data, sortItem, setSortItem }: any) => {
                   label={title}
                   sortItem={sortItem}
                   setSortItem={setSortItem}
+                  sortLabel={sortLabels[i]}
                 />
               ))}
             </tr>

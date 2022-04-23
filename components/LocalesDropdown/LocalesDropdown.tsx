@@ -44,7 +44,7 @@ const LocalesDropdown: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [searchedLocale, setSearchedLocale] = useState<string>("");
 
-  const locales = useLocales();
+  const locales = useLocales("brand");
   const router = useRouter();
 
   useEffect(() => {

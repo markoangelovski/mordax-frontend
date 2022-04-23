@@ -23,16 +23,33 @@ import ResultsTable from "../../components/ResultsTable/ContentTable";
 import { TableSkeleton } from "../../components/Skeletons/Skeletons";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 import Meta from "../../components/Meta/Meta";
+import { useState } from "react";
+import SortSummary from "../../components/SortSummary/SortSummary";
 
 const Locales: NextPage = () => {
+  const [sortItem, setSortItem] = useState<{ label: string; sort: boolean }>({
+    label: "brand",
+    sort: true
+  });
+
   const router = useRouter();
-  const locales = useLocales();
+  const locales = useLocales(
+    sortItem.sort ? sortItem.label : "-" + sortItem.label
+  );
 
   const skip = locales?.info.skip || 0;
-  const fetchedLocales = locales?.info.locales || 0;
+  const fetchedEntries = locales?.info.entries || 0;
   const total = locales?.info.total || 0;
 
-  const minLocaleCount = locales?.result.length ? 1 : 0;
+  const minEntriesCount = locales?.result.length ? 1 : 0;
+
+  const sortLabels: string[] = [
+    "brand",
+    "locale",
+    "url",
+    "createdAt",
+    "updatedAt"
+  ];
 
   const data = locales?.result.map(locale => ({
     Brand: {
@@ -83,26 +100,22 @@ const Locales: NextPage = () => {
             </div>
             <div className="mb-4">
               {/* Filter products by active status - dropdown placeholder */}
-              <div className="box-content flex h-14 items-center justify-between bg-slate-100 px-4 text-sm tracking-wide">
-                <div className="flex items-center">
-                  <div className="text-sm tracking-wide">
-                    <span>
-                      {`${skip ? skip : minLocaleCount} - ${
-                        skip ? skip + fetchedLocales : fetchedLocales
-                      } of
-                      ${total}
-                      Locales`}
-                    </span>
-                  </div>
-                  <div className="ml-2 box-content h-6 border-l border-slate-300 pl-2 leading-6">
-                    <span>Sort: Brand, A–Z</span>
-                  </div>
-                </div>
-                <SearchEntries />
-              </div>
+              <SortSummary
+                type="Locales"
+                sortItem={sortItem}
+                fetchedEntries={fetchedEntries}
+                minEntriesCount={minEntriesCount}
+                skip={skip}
+                total={total}
+              />
             </div>
             {data ? (
-              <ResultsTable data={data} />
+              <ResultsTable
+                data={data}
+                sortItem={sortItem}
+                setSortItem={setSortItem}
+                sortLabels={sortLabels}
+              />
             ) : (
               <TableSkeleton numRows={25} />
             )}
