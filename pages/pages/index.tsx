@@ -26,14 +26,27 @@ import Meta from "../../components/Meta/Meta";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import SortSummary from "../../components/SortSummary/SortSummary";
+import Filters from "../../components/Filters/Filters";
 
 type Payload = { [key: string]: string | boolean };
+
+interface DataItem {
+  URL: {
+    label: string;
+    endpoint: string;
+  };
+  Type: string | undefined;
+  "In XML Sitemap": boolean | undefined;
+  Active: boolean | undefined;
+  SKU: string | undefined;
+}
 
 const Page: NextPage = () => {
   const [sortItem, setSortItem] = useState<{ label: string; sort: boolean }>({
     label: "type",
     sort: false
   });
+  const [filterFields, setFilterFields] = useState<string[]>([]);
 
   const router = useRouter();
 
@@ -42,6 +55,28 @@ const Page: NextPage = () => {
     router.query.l as string,
     sortItem.sort ? sortItem.label : "-" + sortItem.label
   );
+
+  useEffect(() => {
+    const mappedLabels = sortLabels.map(label => {
+      if (label === "url") return "URL";
+      if (label === "type") return "Type";
+      if (label === "inXmlSitemap") return "In XML Sitemap";
+      if (label === "active") return "Active";
+      if (label === "ok" && locale?.result[0].PS) return "PriceSpider OK";
+      if (label === "matches" && locale?.result[0].PS)
+        return "PriceSpider matches";
+      if (label === "ok" && locale?.result[0].SC) return "SmartCommerce OK";
+      if (label === "matches" && locale?.result[0].SC)
+        return "SmartCommerce matches";
+      if (label === "ok" && locale?.result[0].BINLite) return "BIN Lite OK";
+      if (label === "matches" && locale?.result[0].BINLite)
+        return "BIN Lite matches";
+      if (label === "lastScan") return "Last scan";
+      return label;
+    });
+    setFilterFields(mappedLabels);
+  }, [locale]);
+
   const pages = pagesData?.result;
 
   const skip = pagesData?.info.skip || 0;
@@ -50,7 +85,7 @@ const Page: NextPage = () => {
 
   const minEntriesCount = locale?.result.length ? 1 : 0;
 
-  const sortLabels: string[] = [
+  const sortLabels = [
     "url",
     "type",
     "inXmlSitemap",
@@ -62,57 +97,65 @@ const Page: NextPage = () => {
     "lastScan"
   ];
 
-  const data = pages?.map(page => {
-    const pageDataPayload: Payload = {};
-    locale?.result[0].fields.forEach(key => {
-      pageDataPayload[toStdCase(key)] = page.data?.[key]?.value;
+  const data = pages
+    ?.map(page => {
+      const pageDataPayload: Payload = {};
+      locale?.result[0].fields.forEach(key => {
+        pageDataPayload[key] = page.data?.[key]?.value;
+      });
+
+      const psPayload: Payload = {};
+      if (locale?.result[0].PS) {
+        psPayload["PriceSpider OK"] = page.PS?.ok;
+        psPayload["PriceSpider matches"] = page.PS?.matches
+          .map(match => match.retailerName)
+          .join(", ");
+        psPayload["Last scan"] =
+          page.PS && new Date(page.PS?.lastScan).toDateString();
+      }
+
+      const binLitePayload: Payload = {};
+      if (locale?.result[0].BINLite) {
+        binLitePayload["BIN Lite OK"] = page.BINLite?.ok;
+        binLitePayload["BIN Lite matches"] = page.BINLite?.matches
+          .map(match => match.retailerName)
+          .join(", ");
+        binLitePayload["Last scan"] =
+          page.BINLite && new Date(page.BINLite?.lastScan).toDateString();
+      }
+
+      const scPayload: Payload = {};
+      if (locale?.result[0].SC) {
+        scPayload["SmartCommerce OK"] = page.SC?.ok;
+        scPayload["SmartCommerce matches"] = page.SC?.matches
+          .map(match => match.retailerName)
+          .join(", ");
+        scPayload["Last scan"] =
+          page.SC && new Date(page.SC?.lastScan).toDateString();
+      }
+
+      return {
+        URL: {
+          label: page.url,
+          endpoint: `/pages/edit?l=${router.query.l}&p=${page.id}`
+        },
+        Type: page.type,
+        "In XML Sitemap": page.inXmlSitemap,
+        Active: page.active,
+        SKU: page.SKU,
+        ...pageDataPayload,
+        ...psPayload,
+        ...binLitePayload,
+        ...scPayload
+      };
+    })
+    .map(item => {
+      Object.keys(item).forEach(key => {
+        if (filterFields?.indexOf(key) === -1)
+          delete item[key as keyof DataItem];
+      });
+      return item;
     });
-
-    const psPayload: Payload = {};
-    if (locale?.result[0].PS) {
-      psPayload["PriceSpider OK"] = page.PS?.ok;
-      psPayload["PriceSpider matches"] = page.PS?.matches
-        .map(match => match.retailerName)
-        .join(", ");
-      psPayload["Last scan"] =
-        page.PS && new Date(page.PS?.lastScan).toDateString();
-    }
-
-    const binLitePayload: Payload = {};
-    if (locale?.result[0].BINLite) {
-      binLitePayload["BIN Lite OK"] = page.BINLite?.ok;
-      binLitePayload["BIN Lite matches"] = page.BINLite?.matches
-        .map(match => match.retailerName)
-        .join(", ");
-      binLitePayload["Last scan"] =
-        page.BINLite && new Date(page.BINLite?.lastScan).toDateString();
-    }
-
-    const scPayload: Payload = {};
-    if (locale?.result[0].SC) {
-      scPayload["SmartCommerce OK"] = page.SC?.ok;
-      scPayload["SmartCommerce matches"] = page.SC?.matches
-        .map(match => match.retailerName)
-        .join(", ");
-      scPayload["Last scan"] =
-        page.SC && new Date(page.SC?.lastScan).toDateString();
-    }
-
-    return {
-      URL: {
-        label: page.url,
-        endpoint: `/pages/edit?l=${router.query.l}&p=${page.id}`
-      },
-      Type: page.type,
-      "In XML Sitemap": page.inXmlSitemap,
-      Active: page.active,
-      SKU: page.SKU,
-      ...pageDataPayload,
-      ...psPayload,
-      ...binLitePayload,
-      ...scPayload
-    };
-  });
 
   return (
     <Layout>
@@ -172,7 +215,10 @@ const Page: NextPage = () => {
               />
             </div>
             <div className="mb-4">
-              {/* Filter products by active status - dropdown placeholder */}
+              <Filters
+                fields={filterFields || []}
+                setFilterFields={setFilterFields}
+              />
               <SortSummary
                 type="Pages"
                 sortItem={sortItem}

@@ -522,6 +522,7 @@ const EditPage: NextPage = () => {
                         PMID: match.pmid,
                         SID: match.sid
                       }))}
+                      sortDisabled={true}
                     />
                   </div>
                 </>
@@ -610,6 +611,7 @@ const EditPage: NextPage = () => {
                         Logo: match.logo,
                         "Mini Logo": match.miniLogo
                       }))}
+                      sortDisabled={true}
                     />
                   </div>
                 </>
@@ -699,6 +701,7 @@ const EditPage: NextPage = () => {
                                 seller.RetailerName === match.retailerName
                             )?.Retailerlogo
                         }))}
+                        sortDisabled={true}
                       />
                     ) : (
                       <TableSkeleton numRows={5} />
