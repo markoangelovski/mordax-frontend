@@ -224,13 +224,13 @@ const EditLocale: NextPage = () => {
     add() {
       if (this.fieldName === "thirdParties") {
         if (!current3rdParty) return;
-        setThirdParties(parties => parties.add(current3rdParty));
+        setThirdParties(parties => parties.add(current3rdParty.trim()));
         setCurrent3rdParty("");
       }
 
       if (this.fieldName === "fields") {
         if (!currentField) return;
-        setFields(fields => fields.add(currentField));
+        setFields(fields => fields.add(currentField.trim()));
         setCurrentField("");
       }
     },

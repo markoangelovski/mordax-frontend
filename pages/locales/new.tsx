@@ -163,13 +163,13 @@ const NewPage: NextPage = () => {
 
       if (this.fieldName === "thirdParties") {
         if (!current3rdParty) return;
-        setThirdParties(parties => [...parties, current3rdParty]);
+        setThirdParties(parties => [...parties, current3rdParty.trim()]);
         setCurrent3rdParty("");
       }
 
       if (this.fieldName === "fields") {
         if (!currentField) return;
-        setFields(fields => [...fields, currentField]);
+        setFields(fields => [...fields, currentField.trim()]);
         setCurrentField("");
       }
     },

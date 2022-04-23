@@ -72,7 +72,7 @@ const EditPage: NextPage = () => {
 
   const binLiteSellers = useBinLite(
     router.query.l as string,
-    !!locale?.result[0].BINLite?.BINLiteKey
+    !!locale?.result[0]?.BINLite?.BINLiteKey
   );
 
   // Rerfresh sellers hook
@@ -313,7 +313,7 @@ const EditPage: NextPage = () => {
                       setCurrentField={setCurrentField}
                       label="Field"
                       className="w-3/12"
-                      data={locale?.result[0].fields || []}
+                      data={locale?.result[0]?.fields || []}
                     />
                     <Input
                       label="Value"
@@ -423,7 +423,7 @@ const EditPage: NextPage = () => {
                   </InputsRow>
                 </>
               )}
-              {locale?.result[0].PS ? (
+              {locale?.result[0]?.PS ? (
                 <>
                   <InputsRow>
                     {typeof page?.PS?.ok === "boolean" ? (
@@ -452,7 +452,7 @@ const EditPage: NextPage = () => {
                       label="PriceSpider Country"
                       placeholder="PS country..."
                       className="w-2/12"
-                      data={locale?.result[0].PS.psCountries || []}
+                      data={locale?.result[0]?.PS.psCountries || []}
                     />
                     <SelectInput
                       currentField={currentPsInstance}
@@ -460,7 +460,7 @@ const EditPage: NextPage = () => {
                       label="PriceSpider Instance"
                       placeholder="PS instance..."
                       className="w-2/12"
-                      data={locale?.result[0].PS.psInstances || []}
+                      data={locale?.result[0]?.PS.psInstances || []}
                     />
                     <SelectInput
                       currentField={currentPsSkuField}
@@ -468,7 +468,7 @@ const EditPage: NextPage = () => {
                       label="PriceSpider SKU Field"
                       placeholder="PS SKU Field..."
                       className="w-2/12"
-                      data={locale?.result[0].fields || []}
+                      data={locale?.result[0]?.fields || []}
                     />
                     <RefreshSellerMatches
                       className="flex w-3/12 flex-col"
@@ -526,7 +526,7 @@ const EditPage: NextPage = () => {
                   </div>
                 </>
               ) : null}
-              {locale?.result[0].SC ? (
+              {locale?.result[0]?.SC ? (
                 <>
                   <InputsRow>
                     {typeof page?.SC?.ok === "boolean" ? (
@@ -555,7 +555,7 @@ const EditPage: NextPage = () => {
                       label="SmartCommerce MP ID Field"
                       placeholder="SC MP ID Field..."
                       className="w-2/12"
-                      data={locale?.result[0].fields || []}
+                      data={locale?.result[0]?.fields || []}
                     />
                     <RefreshSellerMatches
                       className="flex w-3/12 flex-col"
@@ -614,7 +614,7 @@ const EditPage: NextPage = () => {
                   </div>
                 </>
               ) : null}
-              {locale?.result[0].BINLite ? (
+              {locale?.result[0]?.BINLite ? (
                 <>
                   <InputsRow>
                     {typeof page?.BINLite?.ok === "boolean" ? (
@@ -643,7 +643,7 @@ const EditPage: NextPage = () => {
                       label="BIN Lite SKU Field"
                       placeholder="BNL SKU Field..."
                       className="w-2/12"
-                      data={locale?.result[0].fields || []}
+                      data={locale?.result[0]?.fields || []}
                     />
                     <RefreshSellerMatches
                       className="flex w-3/12 flex-col"
