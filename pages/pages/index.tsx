@@ -47,6 +47,7 @@ const Page: NextPage = () => {
     sort: false
   });
   const [filterFields, setFilterFields] = useState<string[]>([]);
+  const [displayFields, setDisplayFields] = useState<string[]>([]);
 
   const router = useRouter();
 
@@ -75,6 +76,7 @@ const Page: NextPage = () => {
       return label;
     });
     setFilterFields(mappedLabels);
+    setDisplayFields(mappedLabels);
   }, [locale]);
 
   const pages = pagesData?.result;
@@ -218,6 +220,7 @@ const Page: NextPage = () => {
               <Filters
                 fields={filterFields || []}
                 setFilterFields={setFilterFields}
+                displayFields={displayFields}
               />
               <SortSummary
                 type="Pages"

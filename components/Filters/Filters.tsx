@@ -1,52 +1,87 @@
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, ChangeEventHandler, useState } from "react";
+
+const Toggle = ({
+  field,
+  checked,
+  handler
+}: {
+  field: string;
+  checked: boolean;
+  handler: ChangeEventHandler<HTMLInputElement>;
+}) => {
+  return (
+    <span className="ml-1 flex" key={field}>
+      <label htmlFor={field} className="ml-5 cursor-pointer md:mr-5">
+        {field}
+      </label>
+      <div className="relative">
+        <input
+          onChange={handler}
+          type="checkbox"
+          name={field}
+          id={field}
+          checked={checked}
+          className="peer h-5 w-10 cursor-pointer appearance-none rounded-full border border-red-600/50 checked:border-green-600/50"
+        />
+        <span className="pointer-events-none absolute top-1 left-1 block h-3 w-3 rounded-full bg-red-600/50 peer-checked:left-6 peer-checked:bg-green-600/50"></span>
+      </div>
+    </span>
+  );
+};
 
 const Filters = ({
   fields,
-  setFilterFields
+  setFilterFields,
+  displayFields
 }: {
   fields: string[];
   setFilterFields: Function;
+  displayFields: string[];
 }) => {
-  //   const [fieldsToDisplay, setFieldsToDisplay] = useState<string[]>(fields);
-  const fieldsToDisplay = useRef(fields);
   const [hiddenFields, setHiddenFields] = useState<string[]>([]);
 
-  //   useEffect(() => {
-  //     setFieldsToDisplay(fields);
-  //   }, [fields]);
-  console.log("fieldsToDisplay", fieldsToDisplay);
   return (
-    <div className="">
-      filters
-      {fieldsToDisplay.current.map(field => (
-        <div
-          key={field}
-          onClick={() => {
-            setHiddenFields([...hiddenFields, field]);
-            setFilterFields(
-              fields.filter(filteredField => filteredField !== field)
-            );
-          }}
-        >
-          {field}
-        </div>
+    <div className="flex flex-wrap">
+      <Toggle
+        field="Disable/Enable all"
+        checked={fields.length === displayFields.length}
+        handler={(e: ChangeEvent<HTMLInputElement>) => {
+          const checked = e.currentTarget.checked;
 
-        // <div key={field} className="flex justify-center">
-        //   <div className="form-check form-switch">
-        //     <input
-        //       className="form-check-input float-left -ml-10 h-5 w-9 cursor-pointer appearance-none rounded-full bg-white bg-gray-300 bg-contain bg-no-repeat align-top shadow-sm focus:outline-none"
-        //       type="checkbox"
-        //       role="switch"
-        //       id={field}
-        //     />
-        //     <label
-        //       className="form-check-label inline-block text-gray-800"
-        //       htmlFor={field}
-        //     >
-        //       {field}
-        //     </label>
-        //   </div>
-        // </div>
+          if (checked) {
+            setFilterFields(displayFields);
+            setHiddenFields([]);
+          }
+
+          if (!checked) {
+            setFilterFields([]);
+            setHiddenFields(fields);
+          }
+        }}
+      />
+      {displayFields.map(field => (
+        <Toggle
+          key={field}
+          field={field}
+          checked={fields.indexOf(field) > -1}
+          handler={(e: ChangeEvent<HTMLInputElement>) => {
+            const checked = e.currentTarget.checked;
+
+            if (checked) {
+              setFilterFields([...fields, field]);
+              setHiddenFields(
+                hiddenFields.filter(hiddenField => hiddenField !== field)
+              );
+            }
+
+            if (!checked) {
+              setHiddenFields([...hiddenFields, field]);
+              setFilterFields(
+                fields.filter(filteredField => filteredField !== field)
+              );
+            }
+          }}
+        />
       ))}
     </div>
   );

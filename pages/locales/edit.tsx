@@ -647,26 +647,6 @@ const EditLocale: NextPage = () => {
                       className="w-3/12"
                       data={locale?.result[0]?.fields || []}
                     />
-                    {/* <RefreshSellerMatches
-                      className="flex w-3/12 flex-col"
-                      active={getIsActive()}
-                      refreshSellersMsg={refreshSellersMsg}
-                      isRsLoading={isRsLoading}
-                      handler={() => {
-                        refreshSellers(getEndpoint(), {
-                          onSettled: (data, error) => {
-                            if (
-                              data instanceof Error ||
-                              error ||
-                              data.hasErrors
-                            )
-                              return setRefreshSellersMsg("false");
-
-                            setRefreshSellersMsg("true");
-                          }
-                        });
-                      }}
-                    /> */}
                   </InputsRow>
                   <InputsRow>
                     <Input
