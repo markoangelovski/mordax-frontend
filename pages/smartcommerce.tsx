@@ -77,7 +77,7 @@ const smartCommerce: NextPage = () => {
               active: active === "retailers",
               action: () => {
                 setActive("retailers");
-                setActiveSwitch("table");
+                setActiveSwitch(activeSwitch);
               }
             },
             {
@@ -85,7 +85,9 @@ const smartCommerce: NextPage = () => {
               active: active === "button",
               action: () => {
                 setActive("button");
-                setActiveSwitch("text");
+                setActiveSwitch(
+                  activeSwitch === "table" ? "text" : activeSwitch
+                );
               }
             },
             {
@@ -93,7 +95,9 @@ const smartCommerce: NextPage = () => {
               active: active === "carousel",
               action: () => {
                 setActive("carousel");
-                setActiveSwitch("text");
+                setActiveSwitch(
+                  activeSwitch === "table" ? "text" : activeSwitch
+                );
               }
             }
           ]}
