@@ -12,10 +12,10 @@ import progressBar from "../helpers/progressBar";
 
 const useLocales = (
   sort: string,
-  paginationPage: number,
-  perPage: number
+  paginationPage?: number,
+  perPage?: number
 ): Result<Locale> | undefined => {
-  const skip = paginationPage * perPage;
+  const skip = 0;
   const { oldKey } = useKey();
 
   const { data, isLoading, isFetching, isFetched } = useQuery<
