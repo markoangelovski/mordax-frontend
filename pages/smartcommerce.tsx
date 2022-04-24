@@ -42,11 +42,20 @@ const smartCommerce: NextPage = () => {
 
   const locale = useLocale(router.query.l as string, true);
 
-  const { isLoading, data } = useSmartCommerce(
+  const data = useSmartCommerce(
     // selectedEndpoint as string,
     active,
     selectedPage as string,
     selectedField as string
+  );
+
+  useEffect(
+    () => () => {
+      // Clear state every time a new locale is selected from the Select Locales dropdown
+      setSelectedField(null);
+      setSelectedPage(null);
+    },
+    [locale]
   );
 
   return (
