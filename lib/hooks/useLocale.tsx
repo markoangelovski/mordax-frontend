@@ -11,9 +11,16 @@ import { useRouter } from "next/router";
 
 const useLocale = (
   locale: string,
-  pages?: boolean,
-  filter?: string
+  pages: boolean,
+  filter?: string,
+  sort?: string,
+  paginationPage?: number,
+  perPage?: number
 ): Result<Locale> | undefined => {
+  paginationPage = paginationPage || 0;
+  perPage = perPage || 0;
+  const skip = paginationPage * perPage;
+
   const { oldKey } = useKey();
 
   const router = useRouter();
@@ -21,7 +28,10 @@ const useLocale = (
   const queryParams = new URLSearchParams({
     key: oldKey as string,
     url: locale,
-    includePages: pages?.toString() || "false"
+    includePages: pages?.toString() || "false",
+    sort: sort || "",
+    skip: skip.toString(),
+    limit: perPage.toString()
   });
   if (filter) queryParams.append("filter", filter);
 
@@ -29,7 +39,7 @@ const useLocale = (
     Result<Locale>,
     Error
   >(
-    ["locale", locale],
+    ["locale", locale + sort, perPage],
     () =>
       fetchData(
         // `/locales/single?key=${oldKey}&url=${locale}&includePages=${pages}`,
@@ -38,7 +48,8 @@ const useLocale = (
       ),
     {
       enabled: !!oldKey && !!locale && locale !== "undefined",
-      refetchOnWindowFocus: false
+      refetchOnWindowFocus: false,
+      keepPreviousData: true
     }
   );
 

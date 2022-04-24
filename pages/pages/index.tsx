@@ -54,9 +54,10 @@ const Page: NextPage = () => {
 
   const router = useRouter();
 
-  const locale = useLocale(router.query.l as string);
-  const pagesData = usePages(
+  const locale = useLocale(
     router.query.l as string,
+    true,
+    "",
     sortItem.sort ? sortItem.label : "-" + sortItem.label,
     paginationPage,
     perPage
@@ -84,11 +85,11 @@ const Page: NextPage = () => {
     setDisplayFields(mappedLabels);
   }, [locale]);
 
-  const pages = pagesData?.result;
+  const pages = locale?.result[0].pages;
 
-  const skipped = pagesData?.info.skipped || 0;
-  const fetchedEntries = pagesData?.info.entries || 0;
-  const total = pagesData?.info.total || 0;
+  const skipped = locale?.info.skipped || 0;
+  const fetchedEntries = locale?.info.entries || 0;
+  const total = locale?.info.total || 0;
 
   const minEntriesCount = locale?.result.length ? 1 : 0;
 
