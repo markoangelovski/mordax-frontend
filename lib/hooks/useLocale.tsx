@@ -11,11 +11,19 @@ import { useRouter } from "next/router";
 
 const useLocale = (
   locale: string,
-  pages?: boolean
+  pages?: boolean,
+  filter?: string
 ): Result<Locale> | undefined => {
   const { oldKey } = useKey();
 
   const router = useRouter();
+
+  const queryParams = new URLSearchParams({
+    key: oldKey as string,
+    url: locale,
+    includePages: pages?.toString() || "false"
+  });
+  if (filter) queryParams.append("filter", filter);
 
   const { data, isLoading, isFetching, isFetched } = useQuery<
     Result<Locale>,
@@ -24,7 +32,8 @@ const useLocale = (
     ["locale", locale],
     () =>
       fetchData(
-        `/locales/single?key=${oldKey}&url=${locale}&includePages=${pages}`,
+        // `/locales/single?key=${oldKey}&url=${locale}&includePages=${pages}`,
+        `/locales/single?${queryParams}`,
         "GET"
       ),
     {
@@ -34,7 +43,6 @@ const useLocale = (
   );
 
   // When any errors occurr with the selected locale, refresh the URL to /locales in order to reload to first default locale.
-  // if (data?.hasErrors) return (window.location.href = "/locales");
   if (data?.hasErrors)
     router.push("/locales", undefined, {
       shallow: true

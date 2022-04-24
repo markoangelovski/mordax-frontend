@@ -47,7 +47,7 @@ const priceSpider: NextPage = () => {
 
   const router = useRouter();
 
-  const locale = useLocale(router.query.l as string, true);
+  const locale = useLocale(router.query.l as string, true, "type:product");
 
   const fields = locale?.result[0].fields;
 
@@ -107,7 +107,7 @@ const priceSpider: NextPage = () => {
                     currentField={selectedField || ""}
                     setCurrentField={setSelectedField}
                     label="PriceSpider SKU Field"
-                    placeholder="PS SKU Field..."
+                    placeholder="Select PS SKU Field..."
                     className="w-3/12"
                     data={locale?.result[0]?.fields || []}
                   />
@@ -115,7 +115,7 @@ const priceSpider: NextPage = () => {
                     currentField={selectedPage || ""}
                     setCurrentField={setSelectedPage}
                     label="Product page"
-                    placeholder="Product page URL..."
+                    placeholder="Select product page URL..."
                     className="w-9/12"
                     data={locale?.result[0].pages?.map(page => page.url) || []}
                   />
@@ -125,7 +125,7 @@ const priceSpider: NextPage = () => {
                     currentField={selectedCountry || ""}
                     setCurrentField={setSelectedCountry}
                     label="PriceSpider Country"
-                    placeholder="PS country..."
+                    placeholder="Select PS country..."
                     className="w-4/12"
                     data={locale?.result[0]?.PS?.psCountries || []}
                   />
@@ -133,7 +133,7 @@ const priceSpider: NextPage = () => {
                     currentField={selectedInstance || ""}
                     setCurrentField={setSelectedInstance}
                     label="PriceSpider Instance"
-                    placeholder="PS instance..."
+                    placeholder="Select PS instance..."
                     className="w-4/12"
                     data={locale?.result[0]?.PS?.psInstances || []}
                   />
@@ -141,7 +141,7 @@ const priceSpider: NextPage = () => {
                     currentField={selectedLang || ""}
                     setCurrentField={setSelectedLang}
                     label="PriceSpider Language"
-                    placeholder="PS language..."
+                    placeholder="Select PS language..."
                     className="w-4/12"
                     data={locale?.result[0]?.PS?.psLanguages || []}
                   />

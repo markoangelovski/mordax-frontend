@@ -43,7 +43,7 @@ const smartCommerce: NextPage = () => {
 
   const router = useRouter();
 
-  const locale = useLocale(router.query.l as string, true);
+  const locale = useLocale(router.query.l as string, true, "type:product");
 
   const data = useSmartCommerce(
     // selectedEndpoint as string,
@@ -116,7 +116,7 @@ const smartCommerce: NextPage = () => {
                   currentField={selectedField || ""}
                   setCurrentField={setSelectedField}
                   label="SmartCommerce MP ID Field"
-                  placeholder="SC MP ID Field..."
+                  placeholder="Select SC MP ID Field..."
                   className="w-3/12"
                   data={locale?.result[0]?.fields || []}
                 />
@@ -124,7 +124,7 @@ const smartCommerce: NextPage = () => {
                   currentField={selectedPage || ""}
                   setCurrentField={setSelectedPage}
                   label="Product page"
-                  placeholder="Product page URL..."
+                  placeholder="Select product page URL..."
                   className="w-9/12"
                   data={locale?.result[0].pages?.map(page => page.url) || []}
                 />

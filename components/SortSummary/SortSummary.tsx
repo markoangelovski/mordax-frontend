@@ -37,7 +37,7 @@ const SortSummary = ({
         <select
           name="pets"
           id="pet-select"
-          className="w-16 border-l border-slate-300 bg-slate-100 pl-2 focus:outline-none"
+          className="w-16 cursor-pointer border-l border-slate-300 bg-slate-100 pl-2 focus:outline-none"
           onChange={e => setPerPage(e.currentTarget.value)}
         >
           <option value={25}>25</option>

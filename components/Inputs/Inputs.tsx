@@ -176,19 +176,21 @@ export const SelectInput = ({
             className="fixed inset-0 z-50 bg-black opacity-20"
             onClick={() => setIsOpen(false)}
           ></div>
-          <div className="absolute z-50 mr-4 min-w-[200px] overflow-hidden rounded border bg-white shadow-xl">
-            {data.map((item, i) => (
-              <span
-                key={i}
-                className="flex h-10 cursor-pointer items-center items-center py-2.5 pl-3 pr-3 hover:bg-gray-100"
-                onClick={() => {
-                  setCurrentField(item);
-                  setIsOpen(false);
-                }}
-              >
-                {item}
-              </span>
-            ))}
+          <div className="absolute z-50 mr-4 min-w-[200px] rounded border bg-white shadow-xl">
+            <div className="max-h-96 overflow-auto">
+              {data.map((item, i) => (
+                <span
+                  key={i}
+                  className="flex h-10 cursor-pointer items-center items-center py-2.5 pl-3 pr-3 hover:bg-gray-100"
+                  onClick={() => {
+                    setCurrentField(item);
+                    setIsOpen(false);
+                  }}
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       ) : null}
