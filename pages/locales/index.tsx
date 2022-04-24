@@ -19,7 +19,7 @@ import {
 } from "../../components/Containers/Containers";
 
 import { handleLinkClick } from "../../lib/helpers/utils";
-import ResultsTable from "../../components/ResultsTable/ContentTable";
+import ContentTable from "../../components/ContentTable/ContentTable";
 import { TableSkeleton } from "../../components/Skeletons/Skeletons";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 import Meta from "../../components/Meta/Meta";
@@ -116,7 +116,7 @@ const Locales: NextPage = () => {
               />
             </div>
             {data ? (
-              <ResultsTable
+              <ContentTable
                 data={data}
                 sortItem={sortItem}
                 setSortItem={setSortItem}

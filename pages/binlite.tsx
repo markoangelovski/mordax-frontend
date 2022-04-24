@@ -23,14 +23,21 @@ import { BinLiteProduct } from "../lib/interfaces/binLite";
 import TextView from "../components/TextView/TextView";
 import JsonView from "../components/JsonView/JsonView";
 import Meta from "../components/Meta/Meta";
+import ContentTable from "../components/ContentTable/ContentTable";
+import {
+  LinesSkeleton,
+  TableSkeleton
+} from "../components/Skeletons/Skeletons";
 
 const binLite: NextPage = () => {
-  // Set default active switch to text
-  const [activeSwitch, setActiveSwitch] = useState<string>("text");
+  // Currently selected active section
+  const [active, setActive] = useState<string>("retailers");
+  // Set default active switch to table
+  const [activeSwitch, setActiveSwitch] = useState<string>("table");
 
   const router = useRouter();
 
-  const sellers = useBinLite(router.query.l as string);
+  const data = useBinLite(router.query.l as string);
 
   return (
     <Layout>
@@ -43,13 +50,47 @@ const binLite: NextPage = () => {
       <section className="">
         <CurrentSection label="BIN Lite Inspector" />
         <TextJsonSwitch
+          showTable={active === "retailers"}
           activeSwitch={activeSwitch}
           setActiveSwitch={setActiveSwitch}
         />
         <Container>
           <ContentContainer>
-            {activeSwitch === "text" ? <TextView data={sellers} /> : null}
-            {activeSwitch === "json" ? <JsonView data={sellers} /> : null}
+            {!data?.hasErrors ? null : (
+              <div>
+                Locale <strong>{router.query.l} </strong>
+                does not have BIN Lite-related data.
+              </div>
+            )}
+
+            {activeSwitch === "table" ? (
+              data ? (
+                <div className="mt-4">
+                  <ContentTable
+                    data={data?.result.map(seller => ({
+                      RetailerName: seller.RetailerName,
+                      BuyNowUrl: seller.BuyNowUrl,
+                      Retailerlogo:
+                        "data:image/png;base64," + seller.Retailerlogo
+                    }))}
+                    sortDisabled={true}
+                  />
+                </div>
+              ) : (
+                <TableSkeleton numRows={10} />
+              )
+            ) : null}
+
+            {activeSwitch === "text" ? (
+              data ? (
+                <TextView data={data?.result} />
+              ) : (
+                <LinesSkeleton numRows={10} />
+              )
+            ) : null}
+
+            {/* {activeSwitch === "text" ? <TextView data={data?.result} /> : null} */}
+            {activeSwitch === "json" ? <JsonView data={data?.result} /> : null}
           </ContentContainer>
         </Container>
       </section>

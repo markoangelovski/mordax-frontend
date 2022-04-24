@@ -17,6 +17,16 @@ export const TableSkeleton = ({ numRows }: { numRows: number }) => {
   );
 };
 
+export const LinesSkeleton = ({ numRows }: { numRows: number }) => {
+  return (
+    <div className="mt-5 animate-pulse">
+      {Array.from({ length: numRows }, (_, i) => (
+        <div key={i} className="mt-2 h-4 bg-slate-500/[.13]"></div>
+      ))}
+    </div>
+  );
+};
+
 export const MetadaSkeleton: React.FC = () => (
   <div className="mt-2 flex animate-pulse justify-between">
     <div className="h-48 w-48 bg-slate-500/[.13]"></div>

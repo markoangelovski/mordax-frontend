@@ -30,7 +30,7 @@ const useBinLite = (locale: string, hasBnl?: boolean) => {
 
   progressBar(isLoading, isFetching, isFetched);
 
-  return data?.result;
+  return data;
 };
 
 export default useBinLite;

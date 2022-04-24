@@ -18,7 +18,7 @@ import {
 import { handleLinkClick, toStdCase } from "../../lib/helpers/utils";
 import AddEntryButton from "../../components/AddEntryButton/AddEntryButton";
 import SearchEntries from "../../components/SearchEntries/SearchEntries";
-import ResultsTable from "../../components/ResultsTable/ContentTable";
+import ContentTable from "../../components/ContentTable/ContentTable";
 import { usePages } from "../../lib/hooks/usePage";
 import { TableSkeleton } from "../../components/Skeletons/Skeletons";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
@@ -238,7 +238,7 @@ const Page: NextPage = () => {
               />
             </div>
             {data ? (
-              <ResultsTable
+              <ContentTable
                 data={data}
                 sortItem={sortItem}
                 setSortItem={setSortItem}

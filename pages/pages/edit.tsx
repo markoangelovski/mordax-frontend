@@ -30,7 +30,7 @@ import { InputsRow } from "../../components/LayoutElements/LayoutElements";
 import { Input, SelectInput } from "../../components/Inputs/Inputs";
 import useLocale from "../../lib/hooks/useLocale";
 import Button from "../../components/Button/Button";
-import ResultsTable from "../../components/ResultsTable/ContentTable";
+import ContentTable from "../../components/ContentTable/ContentTable";
 import useBinLite from "../../lib/hooks/useBinLite";
 import { DeleteEntryIcon } from "../../components/Inputs/Inputs.icons";
 import { Result } from "../../lib/interfaces/interfaces";
@@ -70,7 +70,7 @@ const EditPage: NextPage = () => {
 
   const page = usePage(router.query.p as string);
 
-  const binLiteSellers = useBinLite(
+  const binLiteData = useBinLite(
     router.query.l as string,
     !!locale?.result[0]?.BINLite?.BINLiteKey
   );
@@ -515,7 +515,7 @@ const EditPage: NextPage = () => {
                     </div>
                   </InputsRow>
                   <div className="mt-5 mr-4">
-                    <ResultsTable
+                    <ContentTable
                       data={page?.PS?.matches.map(match => ({
                         Name: match.retailerName,
                         Price: match.price,
@@ -599,7 +599,7 @@ const EditPage: NextPage = () => {
                     </div>
                   </InputsRow>
                   <div className="mt-5 mr-4">
-                    <ResultsTable
+                    <ContentTable
                       data={page?.SC?.matches.map(match => ({
                         Name: match.retailerName,
                         URL: {
@@ -686,8 +686,8 @@ const EditPage: NextPage = () => {
                     </div>
                   </InputsRow>
                   <div className="mt-5 mr-4">
-                    {binLiteSellers ? (
-                      <ResultsTable
+                    {binLiteData ? (
+                      <ContentTable
                         data={page?.BINLite?.matches.map(match => ({
                           Name: match.retailerName,
                           URL: {
@@ -696,7 +696,7 @@ const EditPage: NextPage = () => {
                           },
                           Logo:
                             "data:image/png;base64," +
-                            binLiteSellers?.find(
+                            binLiteData.result?.find(
                               seller =>
                                 seller.RetailerName === match.retailerName
                             )?.Retailerlogo

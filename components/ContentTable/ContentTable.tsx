@@ -69,15 +69,18 @@ const RowItem = ({ label, endpoint }: { label: string; endpoint?: string }) => {
     <td className="h-12 border-t border-white py-4 pl-4 leading-6">
       <div
         className={`flex overflow-hidden ${
-          endpoint && urlRgx.test(endpoint) ? "max-w-xs" : ""
+          endpoint && urlRgx.test(endpoint) ? "max-w-xs" : "max-w-3xl"
         } ${typeof label === "boolean" ? "justify-center" : ""}`}
       >
-        <div className="min-w-0 shrink grow-0">
+        <div
+          className="min-w-0 shrink grow-0"
+          title={typeof label !== "boolean" ? label : ""}
+        >
           {endpoint?.length ? ( // Displays a label with an endpoint as a link
             <Link href={endpoint}>
               <a
                 title={label}
-                className="block overflow-hidden overflow-hidden text-ellipsis whitespace-nowrap text-sky-700"
+                className="block overflow-hidden text-ellipsis whitespace-nowrap text-sky-700"
               >
                 {/* rlRgx.test(endpoint) added to recalculate max width in ancestor div. Otherwise it always defaulted to false and max width was not set. */}
                 {urlRgx.test(endpoint)}
@@ -94,7 +97,7 @@ const RowItem = ({ label, endpoint }: { label: string; endpoint?: string }) => {
             </div>
           ) : (
             // Displays normal label or CheckMark icon for boolean values
-            <span className="whitespace-nowrap">
+            <span className="max-w-5xl select-all text-ellipsis whitespace-nowrap whitespace-nowrap">
               {typeof label === "boolean" ? <CheckMark bool={label} /> : label}
             </span>
           )}
@@ -104,7 +107,7 @@ const RowItem = ({ label, endpoint }: { label: string; endpoint?: string }) => {
   );
 };
 
-const ResultsTable = ({
+const ContentTable = ({
   data,
   sortItem,
   setSortItem,
@@ -148,4 +151,4 @@ const ResultsTable = ({
   );
 };
 
-export default ResultsTable;
+export default ContentTable;

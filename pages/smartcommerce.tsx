@@ -26,8 +26,11 @@ import TextView from "../components/TextView/TextView";
 import Meta from "../components/Meta/Meta";
 import { SelectInput } from "../components/Inputs/Inputs";
 import { InputsRow } from "../components/LayoutElements/LayoutElements";
-import ResultsTable from "../components/ResultsTable/ContentTable";
-import { TableSkeleton } from "../components/Skeletons/Skeletons";
+import ContentTable from "../components/ContentTable/ContentTable";
+import {
+  LinesSkeleton,
+  TableSkeleton
+} from "../components/Skeletons/Skeletons";
 
 const smartCommerce: NextPage = () => {
   // Currently selected active section
@@ -103,35 +106,61 @@ const smartCommerce: NextPage = () => {
         />
         <Container>
           <ContentContainer>
-            <InputsRow>
-              <SelectInput
-                currentField={selectedField || ""}
-                setCurrentField={setSelectedField}
-                label="SmartCommerce MP ID Field"
-                placeholder="SC MP ID Field..."
-                className="w-3/12"
-                data={locale?.result[0]?.fields || []}
-              />
-              <SelectInput
-                currentField={selectedPage || ""}
-                setCurrentField={setSelectedPage}
-                label="Product page"
-                placeholder="Product page URL..."
-                className="w-9/12"
-                data={locale?.result[0].pages?.map(page => page.url) || []}
-              />
-            </InputsRow>
+            {locale?.result[0]?.SC ? (
+              <InputsRow>
+                <SelectInput
+                  currentField={selectedField || ""}
+                  setCurrentField={setSelectedField}
+                  label="SmartCommerce MP ID Field"
+                  placeholder="SC MP ID Field..."
+                  className="w-3/12"
+                  data={locale?.result[0]?.fields || []}
+                />
+                <SelectInput
+                  currentField={selectedPage || ""}
+                  setCurrentField={setSelectedPage}
+                  label="Product page"
+                  placeholder="Product page URL..."
+                  className="w-9/12"
+                  data={locale?.result[0].pages?.map(page => page.url) || []}
+                />
+              </InputsRow>
+            ) : (
+              <div>
+                Locale{" "}
+                <strong>
+                  {locale?.result[0].brand.value}{" "}
+                  {locale?.result[0].locale.value}{" "}
+                </strong>
+                does not have SC-related data.
+              </div>
+            )}
+
             {activeSwitch === "table" && selectedField && selectedPage ? (
               data ? (
                 <div className="mt-4">
-                  <ResultsTable data={data?.result} />
+                  <ContentTable data={data?.result} sortDisabled={true} />
                 </div>
               ) : (
                 <TableSkeleton numRows={10} />
               )
             ) : null}
-            {activeSwitch === "text" ? <TextView data={data?.result} /> : null}
-            {activeSwitch === "json" ? <JsonView data={data?.result} /> : null}
+
+            {activeSwitch === "text" && selectedField && selectedPage ? (
+              data ? (
+                <TextView data={data?.result} />
+              ) : (
+                <LinesSkeleton numRows={40} />
+              )
+            ) : null}
+
+            {activeSwitch === "json" && selectedField && selectedPage ? (
+              data ? (
+                <JsonView data={data?.result} />
+              ) : (
+                <LinesSkeleton numRows={40} />
+              )
+            ) : null}
           </ContentContainer>
         </Container>
       </section>
