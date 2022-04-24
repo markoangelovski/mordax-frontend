@@ -2,7 +2,7 @@ export interface Result<T> {
   hasErrors: Boolean;
   errors: Object[];
   info: {
-    skip?: number;
+    skipped?: number;
     limit: number;
     locales?: number;
     total?: number;

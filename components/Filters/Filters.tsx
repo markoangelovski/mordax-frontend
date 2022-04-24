@@ -10,11 +10,11 @@ const Toggle = ({
   handler: ChangeEventHandler<HTMLInputElement>;
 }) => {
   return (
-    <span className="ml-1 flex" key={field}>
-      <label htmlFor={field} className="ml-5 cursor-pointer md:mr-5">
+    <span className="flex" key={field}>
+      <label htmlFor={field} className="mr-5 cursor-pointer">
         {field}
       </label>
-      <div className="relative">
+      <div className="relative mr-5 flex items-center">
         <input
           onChange={handler}
           type="checkbox"
@@ -23,7 +23,7 @@ const Toggle = ({
           checked={checked}
           className="peer h-5 w-10 cursor-pointer appearance-none rounded-full border border-red-600/50 checked:border-green-600/50"
         />
-        <span className="pointer-events-none absolute top-1 left-1 block h-3 w-3 rounded-full bg-red-600/50 peer-checked:left-6 peer-checked:bg-green-600/50"></span>
+        <span className="pointer-events-none absolute  left-1 block h-3 w-3 rounded-full bg-red-600/50 peer-checked:left-6 peer-checked:bg-green-600/50"></span>
       </div>
     </span>
   );
@@ -41,7 +41,7 @@ const Filters = ({
   const [hiddenFields, setHiddenFields] = useState<string[]>([]);
 
   return (
-    <div className="flex flex-wrap">
+    <div className="mb-4 flex flex-wrap">
       <Toggle
         field="Disable/Enable all"
         checked={fields.length === displayFields.length}

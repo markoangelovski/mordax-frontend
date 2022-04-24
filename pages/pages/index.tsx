@@ -49,12 +49,17 @@ const Page: NextPage = () => {
   const [filterFields, setFilterFields] = useState<string[]>([]);
   const [displayFields, setDisplayFields] = useState<string[]>([]);
 
+  const [paginationPage, setPaginationPage] = useState<number>(0);
+  const [perPage, setPerPage] = useState<number>(25);
+
   const router = useRouter();
 
   const locale = useLocale(router.query.l as string);
   const pagesData = usePages(
     router.query.l as string,
-    sortItem.sort ? sortItem.label : "-" + sortItem.label
+    sortItem.sort ? sortItem.label : "-" + sortItem.label,
+    paginationPage,
+    perPage
   );
 
   useEffect(() => {
@@ -81,7 +86,7 @@ const Page: NextPage = () => {
 
   const pages = pagesData?.result;
 
-  const skip = pagesData?.info.skip || 0;
+  const skipped = pagesData?.info.skipped || 0;
   const fetchedEntries = pagesData?.info.entries || 0;
   const total = pagesData?.info.total || 0;
 
@@ -227,8 +232,9 @@ const Page: NextPage = () => {
                 sortItem={sortItem}
                 fetchedEntries={fetchedEntries}
                 minEntriesCount={minEntriesCount}
-                skip={skip}
+                skipped={skipped}
                 total={total}
+                setPerPage={setPerPage}
               />
             </div>
             {data ? (

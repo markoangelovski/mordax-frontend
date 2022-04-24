@@ -10,18 +10,28 @@ import { Result } from "../interfaces/interfaces";
 import { Locale } from "../interfaces/locales";
 import progressBar from "../helpers/progressBar";
 
-const useLocales = (sort: string): Result<Locale> | undefined => {
+const useLocales = (
+  sort: string,
+  paginationPage: number,
+  perPage: number
+): Result<Locale> | undefined => {
+  const skip = paginationPage * perPage;
   const { oldKey } = useKey();
 
   const { data, isLoading, isFetching, isFetched } = useQuery<
     Result<Locale>,
     Error
   >(
-    ["locales", sort],
-    () => fetchData(`/locales?key=${oldKey}&sort=${sort}`, "GET"),
+    ["locales", sort, perPage],
+    () =>
+      fetchData(
+        `/locales?key=${oldKey}&sort=${sort}&skip=${skip}&limit=${perPage}`,
+        "GET"
+      ),
     {
       enabled: !!oldKey,
-      refetchOnWindowFocus: false
+      refetchOnWindowFocus: false,
+      keepPreviousData: true
     }
   );
 

@@ -45,9 +45,11 @@ const HeadItem = ({
 const Row = ({ row, index }: any) => {
   return (
     <tr className="even:bg-gray-50 hover:bg-slate-100">
-      <td className="h-12 border-t border-white py-4 pl-4 leading-6">
-        {index}
-      </td>
+      {Object.values(row).length ? (
+        <td className="h-12 border-t border-white py-4 pl-4 leading-6 text-slate-400">
+          {index}
+        </td>
+      ) : null}
       {Object.values(row || {}).map((rowItem: any, i) => {
         const { label, endpoint } = rowItem || {};
         return (

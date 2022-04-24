@@ -32,12 +32,17 @@ const Locales: NextPage = () => {
     sort: true
   });
 
+  const [paginationPage, setPaginationPage] = useState<number>(0);
+  const [perPage, setPerPage] = useState<number>(25);
+
   const router = useRouter();
   const locales = useLocales(
-    sortItem.sort ? sortItem.label : "-" + sortItem.label
+    sortItem.sort ? sortItem.label : "-" + sortItem.label,
+    paginationPage,
+    perPage
   );
 
-  const skip = locales?.info.skip || 0;
+  const skipped = locales?.info.skipped || 0;
   const fetchedEntries = locales?.info.entries || 0;
   const total = locales?.info.total || 0;
 
@@ -105,8 +110,9 @@ const Locales: NextPage = () => {
                 sortItem={sortItem}
                 fetchedEntries={fetchedEntries}
                 minEntriesCount={minEntriesCount}
-                skip={skip}
+                skipped={skipped}
                 total={total}
+                setPerPage={setPerPage}
               />
             </div>
             {data ? (

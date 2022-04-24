@@ -8,22 +8,29 @@ import { Page } from "../interfaces/pages";
 import fetchData from "../drivers/fetchData";
 import progressBar from "../helpers/progressBar";
 
-export const usePages = (localeUrl: string, sort: string) => {
+export const usePages = (
+  localeUrl: string,
+  sort: string,
+  paginationPage: number,
+  perPage: number
+) => {
+  const skip = paginationPage * perPage;
   const { oldKey } = useKey();
 
   const { data, isLoading, isFetching, isFetched } = useQuery<
     Result<Page>,
     Error
   >(
-    ["pages", localeUrl + sort],
+    ["pages", localeUrl + sort, perPage],
     () =>
       fetchData(
-        `/pages?key=${oldKey}&localeUrl=${localeUrl}&sort=${sort}`,
+        `/pages?key=${oldKey}&localeUrl=${localeUrl}&sort=${sort}&skip=${skip}&limit=${perPage}`,
         "GET"
       ),
     {
       enabled: !!oldKey && !!localeUrl,
-      refetchOnWindowFocus: false
+      refetchOnWindowFocus: false,
+      keepPreviousData: true
     }
   );
 
