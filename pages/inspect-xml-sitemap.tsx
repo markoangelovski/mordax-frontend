@@ -20,6 +20,7 @@ import JsonView from "../components/JsonView/JsonView";
 import TextJsonSwitch from "../components/TextJsonSwitch/TextJsonSwitch";
 import TextView from "../components/TextView/TextView";
 import Meta from "../components/Meta/Meta";
+import { LinesSkeleton } from "../components/Skeletons/Skeletons";
 
 const inspectXmlSitemap: NextPage = () => {
   // Set default active switch to text
@@ -45,8 +46,20 @@ const inspectXmlSitemap: NextPage = () => {
         />
         <Container>
           <ContentContainer>
-            {activeSwitch === "text" ? <TextView data={xmlSitemap} /> : null}
-            {activeSwitch === "json" ? <JsonView data={xmlSitemap} /> : null}
+            {activeSwitch === "text" ? (
+              xmlSitemap ? (
+                <TextView data={xmlSitemap} />
+              ) : (
+                <LinesSkeleton numRows={45} />
+              )
+            ) : null}
+            {activeSwitch === "json" ? (
+              xmlSitemap ? (
+                <JsonView data={xmlSitemap} />
+              ) : (
+                <LinesSkeleton numRows={45} />
+              )
+            ) : null}
           </ContentContainer>
         </Container>
       </section>
