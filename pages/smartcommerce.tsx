@@ -24,21 +24,25 @@ import TextJsonSwitch from "../components/TextJsonSwitch/TextJsonSwitch";
 import JsonView from "../components/JsonView/JsonView";
 import TextView from "../components/TextView/TextView";
 import Meta from "../components/Meta/Meta";
+import { SelectInput } from "../components/Inputs/Inputs";
+import { InputsRow } from "../components/LayoutElements/LayoutElements";
+import ResultsTable from "../components/ResultsTable/ContentTable";
+import { TableSkeleton } from "../components/Skeletons/Skeletons";
 
 const smartCommerce: NextPage = () => {
-  // Set default active switch to text
-  const [activeSwitch, setActiveSwitch] = useState<string>("text");
+  // Currently selected active section
+  const [active, setActive] = useState<string>("retailers");
+  // Set default active switch to table
+  const [activeSwitch, setActiveSwitch] = useState<string>("table");
 
   const [selectedField, setSelectedField] = useState<string | null>(null);
   const [selectedPage, setSelectedPage] = useState<string | null>(null);
-
-  const [active, setActive] = useState<string>("retailers"); // Currently selected active section
 
   const router = useRouter();
 
   const locale = useLocale(router.query.l as string, true);
 
-  const result = useSmartCommerce(
+  const { isLoading, data } = useSmartCommerce(
     // selectedEndpoint as string,
     active,
     selectedPage as string,
@@ -59,59 +63,66 @@ const smartCommerce: NextPage = () => {
             {
               label: "Retailers",
               active: active === "retailers",
-              action: () => setActive("retailers")
+              action: () => {
+                setActive("retailers");
+                setActiveSwitch("table");
+              }
             },
             {
               label: "Button",
               active: active === "button",
-              action: () => setActive("button")
+              action: () => {
+                setActive("button");
+                setActiveSwitch("text");
+              }
             },
             {
               label: "Carousel",
               active: active === "carousel",
-              action: () => setActive("carousel")
+              action: () => {
+                setActive("carousel");
+                setActiveSwitch("text");
+              }
             }
           ]}
         />
         <CurrentSection label="SmartCommerce Inspector" />
         <TextJsonSwitch
+          showTable={active === "retailers"}
           activeSwitch={activeSwitch}
           setActiveSwitch={setActiveSwitch}
         />
         <Container>
           <ContentContainer>
-            <label htmlFor="mpid-field">
-              Select SmartCommerce MP ID field:{" "}
-            </label>
-            <select
-              name="mpid-field"
-              id="mpid-field"
-              onInput={e => setSelectedField(e.currentTarget.value)}
-            >
-              <option value="">--Please choose an option--</option>
-              {locale?.result[0].fields.map(field => (
-                <option key={field} value={field}>
-                  {field}
-                </option>
-              ))}
-            </select>
-            <br />
-            <label htmlFor="sc-product">Select product: </label>
-            <select
-              name="sc-product"
-              id="sc-product"
-              onInput={e => setSelectedPage(e.currentTarget.value)}
-            >
-              <option value="">--Please choose an option--</option>
-              {locale?.result[0].pages?.map(page => (
-                <option key={page.id} value={page.url}>
-                  {page.url}
-                </option>
-              ))}
-            </select>
-            <br />
-            {activeSwitch === "text" ? <TextView data={result} /> : null}
-            {activeSwitch === "json" ? <JsonView data={result} /> : null}
+            <InputsRow>
+              <SelectInput
+                currentField={selectedField || ""}
+                setCurrentField={setSelectedField}
+                label="SmartCommerce MP ID Field"
+                placeholder="SC MP ID Field..."
+                className="w-3/12"
+                data={locale?.result[0]?.fields || []}
+              />
+              <SelectInput
+                currentField={selectedPage || ""}
+                setCurrentField={setSelectedPage}
+                label="Product page"
+                placeholder="Product page URL..."
+                className="w-9/12"
+                data={locale?.result[0].pages?.map(page => page.url) || []}
+              />
+            </InputsRow>
+            {activeSwitch === "table" && selectedField && selectedPage ? (
+              data ? (
+                <div className="mt-4">
+                  <ResultsTable data={data?.result} />
+                </div>
+              ) : (
+                <TableSkeleton numRows={10} />
+              )
+            ) : null}
+            {activeSwitch === "text" ? <TextView data={data?.result} /> : null}
+            {activeSwitch === "json" ? <JsonView data={data?.result} /> : null}
           </ContentContainer>
         </Container>
       </section>

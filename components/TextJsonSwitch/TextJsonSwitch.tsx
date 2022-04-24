@@ -1,14 +1,31 @@
 import { Container } from "../Containers/Containers";
 
 interface Switch {
+  showTable?: boolean;
   activeSwitch: string;
   setActiveSwitch: (active: string) => void;
 }
 
-const TextJsonSwitch = ({ activeSwitch, setActiveSwitch }: Switch) => {
+const TextJsonSwitch = ({
+  showTable = false,
+  activeSwitch,
+  setActiveSwitch
+}: Switch) => {
   return (
     <Container className="min-h-full bg-slate-50">
       <div className="-mt-1 inline-flex px-6">
+        {showTable ? (
+          <span className="pr-8">
+            <button
+              onClick={() => setActiveSwitch("table")}
+              className={`pb-1 ${
+                activeSwitch === "table" ? "border-b-2 border-sky-700" : ""
+              }`}
+            >
+              <span>Table</span>
+            </button>
+          </span>
+        ) : null}
         <span className="pr-8">
           <button
             onClick={() => setActiveSwitch("text")}

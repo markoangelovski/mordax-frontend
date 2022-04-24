@@ -34,7 +34,7 @@ const useSmartCommerce = (
 
   progressBar(isLoading, isFetching, isFetched);
 
-  return data?.result;
+  return { isLoading, data };
 };
 
 export default useSmartCommerce;

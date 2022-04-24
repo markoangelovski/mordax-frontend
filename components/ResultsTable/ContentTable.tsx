@@ -28,7 +28,7 @@ const HeadItem = ({
         type="button"
         onClick={() => setSortItem({ label: sortLabel, sort: !sortItem?.sort })}
         className="inline-flex h-full w-full items-center justify-start font-semibold tracking-wide"
-        disabled={sortDisabled || /matches/gi.test(label) ? true : false} // Disables the sorting option for Seller matches and Refresh sellers
+        disabled={sortDisabled || /matches/gi.test(label) ? true : false} // Disables the sorting option for Seller matches
       >
         <span>{label}</span>
         <Arrow
