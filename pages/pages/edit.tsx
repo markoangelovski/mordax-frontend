@@ -66,7 +66,7 @@ const EditPage: NextPage = () => {
 
   const { oldKey } = useKey();
 
-  const locale = useLocale(router.query.l as string);
+  const locale = useLocale(router.query.l as string, false);
 
   const page = usePage(router.query.p as string);
 
