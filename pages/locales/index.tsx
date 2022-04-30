@@ -28,7 +28,7 @@ import SortSummary from "../../components/SortSummary/SortSummary";
 
 const Locales: NextPage = () => {
   const [sortItem, setSortItem] = useState<{ label: string; sort: boolean }>({
-    label: "brand",
+    label: "brand,locale",
     sort: true
   });
 
@@ -48,8 +48,8 @@ const Locales: NextPage = () => {
 
   const minEntriesCount = locales?.result.length ? 1 : 0;
 
-  const sortLabels: string[] = [
-    "brand",
+  const sortLabels = [
+    "brand,locale",
     "locale",
     "url",
     "createdAt",

@@ -22,7 +22,7 @@ import {
   Container,
   ContentContainer
 } from "../../components/Containers/Containers";
-import { handleLinkClick } from "../../lib/helpers/utils";
+import { handleLinkClick, handleLinkClick2 } from "../../lib/helpers/utils";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 import Details from "../../components/Details/Details";
 import LocaleStats from "../../components/LocaleStats/LocaleStats";
@@ -712,7 +712,8 @@ const EditLocale: NextPage = () => {
                             }
                           );
                           progressBar(isDlLoading, isDlLoading, isDlSuccess);
-                          handleLinkClick(router, "locales");
+                          // TODO: Refectch locales before redirecting back to /locales
+                          handleLinkClick2(router, "locales");
                         }
                       }}
                     />
