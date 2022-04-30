@@ -1,6 +1,11 @@
 import { value } from "./interfaces";
 import { Page } from "./pages";
 
+export interface DropdownLocale {
+  brand: string;
+  url: string;
+}
+
 export interface Stats {
   [pages: string]: number;
   entries: number;

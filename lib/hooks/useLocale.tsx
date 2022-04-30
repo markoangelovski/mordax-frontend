@@ -11,12 +11,13 @@ import { useRouter } from "next/router";
 
 const useLocale = (
   locale: string,
-  pages: boolean,
+  pages?: boolean,
   filter?: string,
   sort?: string,
   paginationPage?: number,
   perPage?: number
 ): Result<Locale> | undefined => {
+  pages = pages || false;
   paginationPage = paginationPage || 0;
   perPage = perPage || 0;
   const skip = paginationPage * perPage;
@@ -30,9 +31,9 @@ const useLocale = (
     url: locale,
     includePages: pages?.toString() || "false",
     sort: sort || "",
-    skip: skip.toString(),
-    limit: perPage.toString()
+    skip: skip.toString()
   });
+  if (perPage) queryParams.append("limit", perPage.toString());
   if (filter) queryParams.append("filter", filter);
 
   const { data, isLoading, isFetching, isFetched } = useQuery<

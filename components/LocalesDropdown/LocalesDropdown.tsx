@@ -3,12 +3,12 @@ import { useRouter } from "next/router";
 
 import { Arrow, Clear, CheckMark } from "./LocalesDropdown.icons";
 
-import useLocales from "../../lib/hooks/useLocales";
-import { Locale } from "../../lib/interfaces/locales";
+import useLocales, { useAllLocales } from "../../lib/hooks/useLocales";
+import { DropdownLocale, Locale } from "../../lib/interfaces/locales";
 
 interface Props {
-  locale: Locale;
-  selectedLocale: Locale | undefined;
+  locale: DropdownLocale;
+  selectedLocale: DropdownLocale | undefined;
   setIsOpen: Function;
   setSearchedLocale: Function;
 }
@@ -25,17 +25,17 @@ const LocaleItem = ({
     <span
       className="flex h-10 cursor-pointer items-center items-center py-2.5 pl-7 pr-3 hover:bg-gray-100"
       onClick={() => {
-        router.push(`?l=${locale.url.value}`, undefined, {
+        router.push(`?l=${locale.url}`, undefined, {
           shallow: true
         });
         setIsOpen(false);
         setSearchedLocale("");
       }}
     >
-      {selectedLocale?.url.value === locale.url.value && (
+      {selectedLocale?.url === locale.url && (
         <CheckMark className="absolute left-2 h-3 w-3" />
       )}
-      {locale.brand.value} {locale.locale.value}
+      {locale.brand}
     </span>
   );
 };
@@ -44,23 +44,23 @@ const LocalesDropdown: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [searchedLocale, setSearchedLocale] = useState<string>("");
 
-  const locales = useLocales("brand");
+  const locales = useAllLocales();
   const router = useRouter();
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(window.location.search);
-    const existingLocale = queryParams.get("l");
+    const existingLocale = new URLSearchParams(window.location.search).get("l");
+    // const existingLocale = queryParams.get("l");
 
     if (!existingLocale) {
       locales &&
-        router.push(`?l=${locales.result[0].url.value}`, undefined, {
+        router.push(`?l=${locales.result[0].url}`, undefined, {
           shallow: true
         });
     }
   }, [locales]);
 
   const selectedLocale = locales?.result.find(
-    locale => locale.url.value === router.query.l
+    locale => locale.url === router.query.l
   );
 
   return (
@@ -72,11 +72,7 @@ const LocalesDropdown: React.FC = () => {
         >
           {locales && (
             <span>
-              {selectedLocale
-                ? selectedLocale.brand.value + " " + selectedLocale.locale.value
-                : locales.result[0].brand.value +
-                  " " +
-                  locales.result[0].locale.value}
+              {selectedLocale ? selectedLocale.brand : locales.result[0].brand}
             </span>
           )}
           {isOpen ? (
@@ -105,6 +101,7 @@ const LocalesDropdown: React.FC = () => {
                       value={searchedLocale}
                       onChange={e => setSearchedLocale(e.target.value)}
                       autoComplete="off"
+                      autoFocus
                     />
                     <button className="mx-2 flex cursor-pointer align-middle">
                       {searchedLocale.length ? (
@@ -137,11 +134,7 @@ const LocalesDropdown: React.FC = () => {
                             } catch (error: any) {
                               console.warn(error.message);
                             }
-                            if (
-                              rgx?.test(locale.brand.value) ||
-                              rgx?.test(locale.locale.value)
-                            )
-                              return true;
+                            if (rgx?.test(locale.brand)) return true;
                           })
                           .map((locale, i) => (
                             <LocaleItem

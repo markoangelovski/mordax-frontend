@@ -49,7 +49,7 @@ const NewPage: NextPage = () => {
 
   const router = useRouter();
 
-  const locale = useLocale(router.query.l as string, false);
+  const locale = useLocale(router.query.l as string);
 
   const { mutate, isLoading, isIdle, isSuccess } = useMutation(
     (endpoint: string) => fetchData(endpoint, "POST")

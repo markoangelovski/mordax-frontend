@@ -7,7 +7,7 @@ import useKey from "./useKey";
 import fetchData from "../drivers/fetchData";
 
 import { Result } from "../interfaces/interfaces";
-import { Locale } from "../interfaces/locales";
+import { DropdownLocale, Locale } from "../interfaces/locales";
 import progressBar from "../helpers/progressBar";
 
 const useLocales = (
@@ -41,3 +41,19 @@ const useLocales = (
 };
 
 export default useLocales;
+
+export const useAllLocales = (): Result<DropdownLocale> | undefined => {
+  const { oldKey } = useKey();
+
+  const { data, isLoading, isFetching, isFetched } = useQuery<
+    Result<DropdownLocale>,
+    Error
+  >("locales", () => fetchData(`/locales/all?key=${oldKey}`, "GET"), {
+    enabled: !!oldKey,
+    refetchOnWindowFocus: false
+  });
+
+  progressBar(isLoading, isFetching, isFetched);
+
+  return data;
+};
