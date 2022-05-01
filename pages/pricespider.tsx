@@ -47,7 +47,12 @@ const priceSpider: NextPage = () => {
 
   const router = useRouter();
 
-  const locale = useLocale(router.query.l as string, true, "type:product");
+  const locale = useLocale(
+    router.query.l as string,
+    true,
+    "type:product",
+    "url"
+  );
 
   const fields = locale?.result[0].fields;
 

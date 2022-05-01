@@ -43,7 +43,12 @@ const smartCommerce: NextPage = () => {
 
   const router = useRouter();
 
-  const locale = useLocale(router.query.l as string, true, "type:product");
+  const locale = useLocale(
+    router.query.l as string,
+    true,
+    "type:product",
+    "url"
+  );
 
   const data = useSmartCommerce(
     // selectedEndpoint as string,
