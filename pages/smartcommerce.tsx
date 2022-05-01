@@ -152,7 +152,7 @@ const smartCommerce: NextPage = () => {
 
             {activeSwitch === "text" && selectedField && selectedPage ? (
               data ? (
-                <TextView data={data?.result} />
+                <TextView className="mt-4" data={data?.result} />
               ) : (
                 <LinesSkeleton numRows={40} />
               )

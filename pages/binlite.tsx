@@ -177,7 +177,7 @@ const binLite: NextPage = () => {
 
             {active === "retailers" && activeSwitch === "json" && hasBnl ? (
               retailerData ? (
-                <JsonView data={retailerData?.result} />
+                <JsonView className="-mt-4" data={retailerData?.result} />
               ) : (
                 <LinesSkeleton numRows={10} />
               )
@@ -210,7 +210,7 @@ const binLite: NextPage = () => {
             selectedField &&
             selectedPage.id ? (
               productData ? (
-                <TextView data={productData?.result} />
+                <TextView className="py-4" data={productData?.result} />
               ) : (
                 <LinesSkeleton numRows={40} />
               )

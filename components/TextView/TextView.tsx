@@ -1,4 +1,4 @@
-const TextView = ({ data }: any) => {
+const TextView = ({ className, data }: any) => {
   let html = "";
 
   function tree(data: any) {
@@ -25,7 +25,8 @@ const TextView = ({ data }: any) => {
 
   return (
     <div
-      className="-ml-4 overflow-auto py-4"
+      // className="-ml-4 overflow-auto py-4"
+      className={`${className} -ml-4 overflow-auto pb-4`}
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );

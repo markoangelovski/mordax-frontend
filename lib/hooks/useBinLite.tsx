@@ -8,13 +8,8 @@ import { BinLiteProduct } from "../interfaces/binLite";
 import fetchData from "../drivers/fetchData";
 import progressBar from "../helpers/progressBar";
 
-const useBinLite = (locale: string, hasBnl?: boolean) => {
+const useBinLite = (locale: string, hasBnl: boolean) => {
   const { oldKey } = useKey();
-
-  // If hasBnl argument is not passed, set it to true in order to fetch BNL data.
-  // /binlite page uses this hook without the hasBnl flag in order to fetch BIN Lite data for all locales.
-  // /pages/edit uses this hook with hasBnl flag in order to fetch BIN Lite data only for locales that have BIN Lite
-  if (typeof hasBnl === "undefined") hasBnl = true;
 
   const { data, isLoading, isFetching, isFetched } = useQuery<
     Result<BinLiteProduct>,
@@ -23,7 +18,7 @@ const useBinLite = (locale: string, hasBnl?: boolean) => {
     ["binLite", locale],
     () => fetchData(`/binlite/retailers?key=${oldKey}&url=${locale}`, "GET"),
     {
-      enabled: !!oldKey && !!locale && hasBnl,
+      enabled: !!oldKey && !!locale && hasBnl, // hasBnl is trigger used to enable/disable the API call if locale has BNL or not
       refetchOnWindowFocus: false
     }
   );

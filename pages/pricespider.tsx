@@ -162,7 +162,7 @@ const priceSpider: NextPage = () => {
             activeSwitch === "text" &&
             locale?.result[0].PS?.psAccountId ? (
               config ? (
-                <TextView data={config} />
+                <TextView className="mt-4" data={config} />
               ) : (
                 <LinesSkeleton numRows={13} />
               )
@@ -181,7 +181,7 @@ const priceSpider: NextPage = () => {
             activeSwitch === "text" &&
             locale?.result[0].PS?.psAccountId ? (
               cidConfig ? (
-                <TextView data={cidConfig} />
+                <TextView className="mt-4" data={cidConfig} />
               ) : (
                 <LinesSkeleton numRows={45} />
               )
@@ -200,7 +200,7 @@ const priceSpider: NextPage = () => {
             activeSwitch === "text" &&
             locale?.result[0].PS?.psAccountId ? (
               dataSkusMap ? (
-                <TextView data={dataSkusMap} />
+                <TextView className="mt-4" data={dataSkusMap} />
               ) : (
                 <LinesSkeleton numRows={45} />
               )

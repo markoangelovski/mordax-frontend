@@ -55,7 +55,7 @@ const inspectXmlSitemap: NextPage = () => {
             ) : null}
             {activeSwitch === "json" ? (
               xmlSitemap ? (
-                <JsonView data={xmlSitemap} />
+                <JsonView className="-mt-4" data={xmlSitemap} />
               ) : (
                 <LinesSkeleton numRows={45} />
               )
