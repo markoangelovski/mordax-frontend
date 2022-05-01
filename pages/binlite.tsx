@@ -45,13 +45,20 @@ const binLite: NextPage = () => {
 
   const router = useRouter();
 
-  const locale = useLocale(router.query.l as string, true, "type:product");
+  const locale = useLocale(
+    router.query.l as string,
+    true,
+    "type:product",
+    "url"
+  );
 
-  const retailerData = useBinLite(router.query.l as string);
+  const hasBnl = !!locale?.result[0].BINLite?.BINLiteKey;
+
+  const retailerData = useBinLite(router.query.l as string, hasBnl);
 
   const bnlSku = locale?.result[0].pages?.find(
     page => page.id === selectedPage.id
-  )?.data[selectedField || ""].value;
+  )?.data[selectedField || ""]?.value;
 
   const productData = useBinLiteSingleProduct(
     router.query.l as string,
@@ -137,12 +144,12 @@ const binLite: NextPage = () => {
                   {locale?.result[0].brand.value}{" "}
                   {locale?.result[0].locale.value}{" "}
                 </strong>
-                does not have PS-related data.
+                does not have BIN Lite-related data.
               </div>
             )}
 
             {/* Displays all retailers */}
-            {active === "retailers" && activeSwitch === "table" ? (
+            {active === "retailers" && activeSwitch === "table" && hasBnl ? (
               retailerData ? (
                 <div className="mt-4">
                   <ContentTable
@@ -160,7 +167,7 @@ const binLite: NextPage = () => {
               )
             ) : null}
 
-            {active === "retailers" && activeSwitch === "text" ? (
+            {active === "retailers" && activeSwitch === "text" && hasBnl ? (
               retailerData ? (
                 <TextView data={retailerData?.result} />
               ) : (
@@ -168,7 +175,7 @@ const binLite: NextPage = () => {
               )
             ) : null}
 
-            {active === "retailers" && activeSwitch === "json" ? (
+            {active === "retailers" && activeSwitch === "json" && hasBnl ? (
               retailerData ? (
                 <JsonView data={retailerData?.result} />
               ) : (
@@ -198,7 +205,10 @@ const binLite: NextPage = () => {
               )
             ) : null}
 
-            {active === "product" && activeSwitch === "text" ? (
+            {active === "product" &&
+            activeSwitch === "text" &&
+            selectedField &&
+            selectedPage.id ? (
               productData ? (
                 <TextView data={productData?.result} />
               ) : (
@@ -206,7 +216,10 @@ const binLite: NextPage = () => {
               )
             ) : null}
 
-            {active === "product" && activeSwitch === "json" ? (
+            {active === "product" &&
+            activeSwitch === "json" &&
+            selectedField &&
+            selectedPage.id ? (
               productData ? (
                 <JsonView data={productData?.result} />
               ) : (
