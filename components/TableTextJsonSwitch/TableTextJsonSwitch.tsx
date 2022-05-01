@@ -6,7 +6,7 @@ interface Switch {
   setActiveSwitch: (active: string) => void;
 }
 
-const TextJsonSwitch = ({
+const TableTextJsonSwitch = ({
   showTable = false,
   activeSwitch,
   setActiveSwitch
@@ -51,4 +51,4 @@ const TextJsonSwitch = ({
   );
 };
 
-export default TextJsonSwitch;
+export default TableTextJsonSwitch;

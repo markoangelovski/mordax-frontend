@@ -25,7 +25,7 @@ import {
   Container,
   ContentContainer
 } from "../components/Containers/Containers";
-import TextJsonSwitch from "../components/TextJsonSwitch/TextJsonSwitch";
+import TableTextJsonSwitch from "../components/TableTextJsonSwitch/TableTextJsonSwitch";
 import JsonView from "../components/JsonView/JsonView";
 import TextView from "../components/TextView/TextView";
 import Meta from "../components/Meta/Meta";
@@ -94,7 +94,7 @@ const priceSpider: NextPage = () => {
           ]}
         />
         <CurrentSection label="PriceSpider Inspector" />
-        <TextJsonSwitch
+        <TableTextJsonSwitch
           activeSwitch={activeSwitch}
           setActiveSwitch={setActiveSwitch}
         />

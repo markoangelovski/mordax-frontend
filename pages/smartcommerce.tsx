@@ -20,7 +20,7 @@ import {
   ContentContainer
 } from "../components/Containers/Containers";
 import MicroLinks from "../components/MicroLinks/MicroLinks";
-import TextJsonSwitch from "../components/TextJsonSwitch/TextJsonSwitch";
+import TableTextJsonSwitch from "../components/TableTextJsonSwitch/TableTextJsonSwitch";
 import JsonView from "../components/JsonView/JsonView";
 import TextView from "../components/TextView/TextView";
 import Meta from "../components/Meta/Meta";
@@ -103,7 +103,7 @@ const smartCommerce: NextPage = () => {
           ]}
         />
         <CurrentSection label="SmartCommerce Inspector" />
-        <TextJsonSwitch
+        <TableTextJsonSwitch
           showTable={active === "retailers"}
           activeSwitch={activeSwitch}
           setActiveSwitch={setActiveSwitch}

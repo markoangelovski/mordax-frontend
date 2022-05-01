@@ -34,3 +34,27 @@ const useBinLite = (locale: string, hasBnl?: boolean) => {
 };
 
 export default useBinLite;
+
+export const useBinLiteSingleProduct = (locale: string, BINLiteSku: string) => {
+  const { oldKey } = useKey();
+
+  const { data, isLoading, isFetching, isFetched } = useQuery<
+    Result<BinLiteProduct>,
+    Error
+  >(
+    ["binLite", locale, BINLiteSku],
+    () =>
+      fetchData(
+        `/binlite/product?key=${oldKey}&url=${locale}&BINLiteSku=${BINLiteSku}`,
+        "GET"
+      ),
+    {
+      enabled: !!oldKey && !!locale && !!BINLiteSku,
+      refetchOnWindowFocus: false
+    }
+  );
+
+  progressBar(isLoading, isFetching, isFetched);
+
+  return data;
+};

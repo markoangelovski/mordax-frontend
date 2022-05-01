@@ -17,7 +17,7 @@ import {
   ContentContainer
 } from "../components/Containers/Containers";
 import JsonView from "../components/JsonView/JsonView";
-import TextJsonSwitch from "../components/TextJsonSwitch/TextJsonSwitch";
+import TableTextJsonSwitch from "../components/TableTextJsonSwitch/TableTextJsonSwitch";
 import TextView from "../components/TextView/TextView";
 import Meta from "../components/Meta/Meta";
 import { LinesSkeleton } from "../components/Skeletons/Skeletons";
@@ -40,7 +40,7 @@ const inspectXmlSitemap: NextPage = () => {
 
       <section className="">
         <CurrentSection label="XML Sitemap Inspector" />
-        <TextJsonSwitch
+        <TableTextJsonSwitch
           activeSwitch={activeSwitch}
           setActiveSwitch={setActiveSwitch}
         />
