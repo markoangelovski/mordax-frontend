@@ -1,6 +1,10 @@
 export interface Result<T> {
   hasErrors: Boolean;
-  errors: Object[];
+  errors: {
+    message: string;
+    statusCode: number;
+    code: string;
+  }[];
   info: {
     skipped?: number;
     limit: number;
