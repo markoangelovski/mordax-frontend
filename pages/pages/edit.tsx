@@ -516,12 +516,27 @@ const EditPage: NextPage = () => {
                   </InputsRow>
                   <div className="mt-5 mr-4">
                     <ContentTable
-                      data={page?.PS?.matches.map(match => ({
-                        Name: match.retailerName,
-                        Price: match.price,
-                        PMID: match.pmid,
-                        SID: match.sid
-                      }))}
+                      data={page?.PS?.matches.map(match => {
+                        interface Payload {
+                          Name: string;
+                          Price: string;
+                          PMID: string;
+                          SID: string;
+                          "Seller link"?: string;
+                        }
+
+                        const payload: Payload = {
+                          Name: match.retailerName,
+                          Price: match.price,
+                          PMID: match.pmid,
+                          SID: match.sid
+                        };
+
+                        if (match.sellerLink)
+                          payload["Seller link"] = match.sellerLink;
+
+                        return payload;
+                      })}
                       sortDisabled={true}
                     />
                   </div>

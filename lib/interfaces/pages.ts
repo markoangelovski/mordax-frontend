@@ -59,6 +59,7 @@ type PsMatch = {
   sid: string;
   retailerName: string;
   price: string;
+  sellerLink: string;
 };
 
 type BinLiteMatch = {
